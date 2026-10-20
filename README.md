@@ -34,7 +34,7 @@ Link the built CSS, then use the semantic variables:
 .note { color: var(--fds-color-text-muted); border-radius: var(--fds-radius-md); }
 ```
 
-To change a token, edit `tokens/src/**/*.tokens.json`, then rebuild:
+To change a token, edit `tokens/*.tokens.json`, then rebuild:
 
 ```sh
 npm install

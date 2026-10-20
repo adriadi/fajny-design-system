@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "$description": "Project themes (decision 16). A theme only re-points existing semantic tokens; it never adds a new meaning. Built as [data-fds-theme=\"<name>\"] blocks that override the :root values.",
+    "hawk": {
+      "color": {
+        "$type": "color",
+        "text-emphasis": { "$value": "{blue.600}" },
+        "theme":         { "$value": "{indigo.900}" },
+        "theme-subtle":  { "$value": "{indigo.100}" },
+        "theme-muted":   { "$value": "{indigo.300}" }
+      }
+    },
+    "curaay": {
+      "color": {
+        "$type": "color",
+        "text-emphasis": { "$value": "{violet.600}" }
+      }
+    }
+  }
+}

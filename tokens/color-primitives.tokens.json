@@ -1,0 +1,50 @@
+{
+  "$description": "Raw palette, taken from the portfolio (adriannadziadyk.de). Components and agents never use these directly: use the semantic color-* tokens.",
+  "navy": {
+    "$type": "color",
+    "900": { "$value": "#1B3A6B", "$description": "Brand navy. The one text colour (decision 20)." },
+    "700": { "$value": "#254D8F", "$description": "Hover on navy fills." },
+    "300": { "$value": "#7FA8D4", "$description": "Case-study pull-quote border." },
+    "100": { "$value": "#E4EAF4", "$description": "Case-study pull-quote background." }
+  },
+  "gold": {
+    "$type": "color",
+    "500": { "$value": "#E8B84B", "$description": "Brand gold. Fills and accents on light backgrounds; text only on navy." },
+    "800": { "$value": "#9A7420", "$description": "Italic headings on light backgrounds (decision 18)." }
+  },
+  "sand": {
+    "$type": "color",
+    "50":  { "$value": "#F5F1EB", "$description": "Page background." },
+    "100": { "$value": "#EDE8E0" },
+    "300": { "$value": "#D9D1C5" }
+  },
+  "stone": {
+    "$type": "color",
+    "600": { "$value": "#6B6359", "$description": "Muted text." },
+    "400": { "$value": "#8C8274", "$description": "Input underlines." }
+  },
+  "white": { "$type": "color", "$value": "#FFFFFF" },
+  "red": {
+    "$type": "color",
+    "700": { "$value": "#B32228", "$description": "Error. oklch(50% 0.18 25), from the portfolio's contact form." }
+  },
+  "green": {
+    "$type": "color",
+    "700": { "$value": "#176700", "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal." }
+  },
+  "indigo": {
+    "$type": "color",
+    "$description": "Hawk project theme.",
+    "900": { "$value": "#000078" },
+    "300": { "$value": "#8890CC" },
+    "100": { "$value": "#E8E9F4" }
+  },
+  "blue": {
+    "$type": "color",
+    "600": { "$value": "#2532E5", "$description": "Hawk project theme: italic headings." }
+  },
+  "violet": {
+    "$type": "color",
+    "600": { "$value": "#714EC4", "$description": "Curaay project theme: italic headings." }
+  }
+}

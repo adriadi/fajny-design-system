@@ -1,0 +1,35 @@
+{
+  "color": {
+    "$type": "color",
+    "$description": "Named by role, not by hue. Components and agents use only these.",
+
+    "text":                  { "$value": "{navy.900}",       "$description": "All text: headings, body, labels, links. The only text colour (decision 20)." },
+    "text-muted":            { "$value": "{stone.600}",      "$description": "Secondary text: captions, meta, hints. 4.85:1 or better on every light background." },
+    "text-placeholder":      { "$value": "{color.text-muted}", "$description": "Input placeholders (decision 19)." },
+    "text-emphasis":         { "$value": "{gold.800}",       "$description": "Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–4.3:1 it passes AA only as large text. Project themes change it." },
+    "text-on-dark":          { "$value": "{sand.50}",        "$description": "Text on color-surface-dark." },
+    "text-emphasis-on-dark": { "$value": "{gold.500}",       "$description": "Italic words in headings on color-surface-dark. 6.1:1." },
+    "text-on-action":        { "$value": "{sand.50}",        "$description": "Text on color-action and color-action-hover." },
+
+    "background":            { "$value": "{sand.50}",        "$description": "Page background." },
+    "surface":               { "$value": "{white}",          "$description": "Cards and raised panels." },
+    "surface-subtle":        { "$value": "{sand.100}",       "$description": "Alternate sections, e.g. the contact section." },
+    "surface-dark":          { "$value": "{navy.900}",       "$description": "Dark sections and the footer." },
+
+    "border":                { "$value": "{sand.300}",       "$description": "Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs." },
+    "border-input":          { "$value": "{stone.400}",      "$description": "Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1)." },
+    "border-strong":         { "$value": "{navy.900}",       "$description": "Focused or active input underline." },
+    "focus":                 { "$value": "{navy.900}",       "$description": "Keyboard focus ring." },
+
+    "action":                { "$value": "{navy.900}",       "$description": "Primary button background." },
+    "action-hover":          { "$value": "{navy.700}" },
+    "error":                 { "$value": "{red.700}",        "$description": "The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle." },
+    "success":               { "$value": "{green.700}",      "$description": "The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle." },
+
+    "accent":                { "$value": "{gold.500}",      "$description": "Brand gold fill: accent button background, secondary-link underline. Not a text colour on light backgrounds." },
+
+    "theme":                 { "$value": "{navy.900}",       "$description": "Project theme colour in case studies: eyebrow rules, links, metric numbers. Project themes change it (decision 16)." },
+    "theme-subtle":          { "$value": "{navy.100}",       "$description": "Theme-tinted background, e.g. pull quotes." },
+    "theme-muted":           { "$value": "{navy.300}",       "$description": "Theme-tinted decorative border, e.g. the pull-quote rule." }
+  }
+}
