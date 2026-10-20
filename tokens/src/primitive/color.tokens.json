@@ -1,0 +1,36 @@
+{
+  "color": {
+    "$type": "color",
+    "$description": "Raw palette, taken from the portfolio (adriannadziadyk.de). Components never use these directly: use the semantic colours.",
+    "navy": {
+      "900": { "$value": "#1B3A6B", "$description": "Brand navy." },
+      "700": { "$value": "#254D8F" },
+      "500": { "$value": "#3D6CB0" },
+      "300": { "$value": "#7FA8D4" },
+      "100": { "$value": "#E4EAF4" }
+    },
+    "gold": {
+      "500": { "$value": "#E8B84B", "$description": "Brand gold." },
+      "700": { "$value": "#C99A2E" }
+    },
+    "sand": {
+      "50":  { "$value": "#F5F1EB", "$description": "Page background." },
+      "100": { "$value": "#EDE8E0" },
+      "200": { "$value": "#E6E0D6" },
+      "300": { "$value": "#D9D1C5" }
+    },
+    "ink": {
+      "900": { "$value": "#1A1714" },
+      "600": { "$value": "#6B6359" }
+    },
+    "white": { "$value": "#FFFFFF" },
+    "red": {
+      "700": { "$value": "#B32228", "$description": "oklch(50% 0.18 25). 5.9:1 on sand.50." },
+      "100": { "$value": "#FFEBE8" }
+    },
+    "green": {
+      "700": { "$value": "#176700", "$description": "oklch(45% 0.15 140). 6.3:1 on sand.50." },
+      "100": { "$value": "#D7F6D0" }
+    }
+  }
+}

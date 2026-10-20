@@ -1,0 +1,27 @@
+{
+  "shadow": {
+    "$type": "shadow",
+    "sm": {
+      "$value": { "color": "#1B3A6B12", "offsetX": "0px", "offsetY": "4px",  "blur": "20px", "spread": "0px" },
+      "$description": "Hover on text cards."
+    },
+    "md": {
+      "$value": { "color": "#1B3A6B33", "offsetX": "0px", "offsetY": "4px",  "blur": "24px", "spread": "0px" },
+      "$description": "Primary button at rest."
+    },
+    "lg": {
+      "$value": { "color": "#1B3A6B4D", "offsetX": "0px", "offsetY": "20px", "blur": "60px", "spread": "0px" },
+      "$description": "Hover on image cards."
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": "150ms", "$description": "Colour and border changes." },
+    "base": { "$value": "250ms", "$description": "Hover lifts, arrows." },
+    "slow": { "$value": "650ms", "$description": "Scroll reveal." }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": { "$value": [0.4, 0, 0.2, 1] }
+  }
+}

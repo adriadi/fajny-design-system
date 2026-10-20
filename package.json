@@ -1,0 +1,13 @@
+{
+  "name": "fajny-design-system",
+  "version": "0.1.0",
+  "description": "A small design system built so that AI agents can build interfaces from it without guessing.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "style-dictionary build --config style-dictionary.config.js"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.7.0"
+  }
+}

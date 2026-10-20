@@ -22,6 +22,25 @@ Fixing the result fixed the look, not the code. This system is the experiment to
 
 The full reasoning behind every choice is in [DECISIONS.md](DECISIONS.md).
 
+## Use the tokens
+
+Link the built CSS, then use the semantic variables:
+
+```html
+<link rel="stylesheet" href="tokens/css/tokens.css" />
+```
+
+```css
+.note { color: var(--fds-color-text-muted); border-radius: var(--fds-radius-md); }
+```
+
+To change a token, edit `tokens/src/**/*.tokens.json`, then rebuild:
+
+```sh
+npm install
+npm run build
+```
+
 ## License
 
 MIT

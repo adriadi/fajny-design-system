@@ -1,0 +1,33 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "4px grid. Gaps and padding use only these steps.",
+    "1":  { "$value": "4px" },
+    "2":  { "$value": "8px" },
+    "3":  { "$value": "12px" },
+    "4":  { "$value": "16px" },
+    "5":  { "$value": "20px" },
+    "6":  { "$value": "24px" },
+    "8":  { "$value": "32px" },
+    "10": { "$value": "40px" },
+    "12": { "$value": "48px" },
+    "14": { "$value": "56px" },
+    "16": { "$value": "64px" },
+    "20": { "$value": "80px" },
+    "24": { "$value": "96px", "$description": "Section padding on desktop." }
+  },
+  "radius": {
+    "$type": "dimension",
+    "sm":    { "$value": "4px",   "$description": "Small inline blocks (pull quotes, metric grids). Never buttons." },
+    "md":    { "$value": "8px",   "$description": "Alerts, success messages, small panels." },
+    "lg":    { "$value": "16px",  "$description": "Text cards (articles, recommendations)." },
+    "xl":    { "$value": "20px",  "$description": "Image cards (case studies) and modals." },
+    "pill":  { "$value": "999px", "$description": "Every button and tag." },
+    "round": { "$value": "50%",   "$description": "Avatars, dots, icon buttons." }
+  },
+  "focus": {
+    "$type": "dimension",
+    "ring-width":  { "$value": "2px" },
+    "ring-offset": { "$value": "3px" }
+  }
+}
