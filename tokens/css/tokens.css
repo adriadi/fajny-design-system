@@ -47,29 +47,47 @@
   --fds-duration-base: 0.25s; /** Hover lifts, arrows. */
   --fds-duration-slow: 0.65s; /** Scroll reveal. */
   --fds-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --fds-font-family-display: Syne, sans-serif; /** Headings, card titles, the wordmark. */
-  --fds-font-family-body: Inter, system-ui, sans-serif; /** Everything else. */
-  --fds-font-weight-light: 300; /** Long-form muted copy. */
-  --fds-font-weight-regular: 400;
-  --fds-font-weight-medium: 500; /** Headings, buttons, nav. */
-  --fds-font-weight-semibold: 600; /** Eyebrows and tags. */
-  --fds-font-size-xs: 11px; /** Eyebrows, form labels, tags (uppercase). */
-  --fds-font-size-sm: 13px; /** Meta text, captions, field errors, nav. */
-  --fds-font-size-md: 15px; /** Body text, inputs, buttons. */
-  --fds-font-size-lg: 18px; /** Lead paragraphs. */
-  --fds-font-size-xl: 22px; /** Card titles. */
-  --fds-font-size-heading-sm: clamp(22px, 2.5vw, 30px); /** Sub-section headings, e.g. form headings. */
-  --fds-font-size-heading-md: clamp(32px, 4vw, 52px); /** Section titles. */
-  --fds-font-size-display: clamp(52px, 7vw, 96px); /** One per page: the hero heading. */
-  --fds-font-line-height-tight: 1.1; /** Headings. */
-  --fds-font-line-height-snug: 1.3; /** Card titles. */
-  --fds-font-line-height-normal: 1.65; /** Body text. */
-  --fds-font-letter-spacing-tight: -0.025em; /** Headings. */
-  --fds-font-letter-spacing-wide: 0.06em; /** Uppercase buttons and nav. */
-  --fds-font-letter-spacing-wider: 0.12em; /** Uppercase eyebrows and labels. */
+  --fds-font-family-display: Syne, sans-serif; /** display, title, heading, subheading and card-title. */
+  --fds-font-family-body: Inter, system-ui, sans-serif; /** lead, body, small and overline. */
+  --fds-font-size-display: clamp(2.5rem, 0.9663rem + 6.292vw, 6rem); /** 40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28). */
+  --fds-font-size-title: clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem); /** 36px to 72px. The page title of a case study: the page's single h1. Gold italic allowed (decision 28). */
+  --fds-font-size-heading: clamp(2rem, 1.4522rem + 2.247vw, 3.25rem); /** 32px to 52px. Section titles (h2). Gold italic allowed (decision 28). */
+  --fds-font-size-subheading: clamp(1.375rem, 1.1559rem + 0.899vw, 1.875rem); /** 22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28). */
+  --fds-font-size-card-title: clamp(1.125rem, 1.0154rem + 0.449vw, 1.375rem); /** 18px to 22px. Titles inside cards. Never gold (decision 28). */
+  --fds-font-size-lead: clamp(0.9375rem, 0.8553rem + 0.337vw, 1.125rem); /** 15px to 18px. The intro paragraph under a page or section title. */
+  --fds-font-size-body: clamp(0.9375rem, 0.9101rem + 0.112vw, 1rem); /** 15px to 16px. Body text. */
+  --fds-font-size-small: clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem); /** 13px to 14px. Secondary text: captions, meta, card descriptions. */
+  --fds-font-size-overline: clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem); /** 11px to 12px. Uppercase labels above a title (eyebrows). Always set in uppercase. */
+  --fds-font-line-height-display: 1.05;
+  --fds-font-line-height-title: 1.1;
+  --fds-font-line-height-heading: 1.1;
+  --fds-font-line-height-subheading: 1.2;
+  --fds-font-line-height-card-title: 1.3;
+  --fds-font-line-height-lead: 1.65;
+  --fds-font-line-height-body: 1.7;
+  --fds-font-line-height-small: 1.5;
+  --fds-font-line-height-overline: 1.3;
+  --fds-font-weight-display: 500;
+  --fds-font-weight-title: 500;
+  --fds-font-weight-heading: 500;
+  --fds-font-weight-subheading: 500;
+  --fds-font-weight-card-title: 500;
+  --fds-font-weight-lead: 300; /** Light: the weight is what sets lead apart from body text. */
+  --fds-font-weight-body: 400;
+  --fds-font-weight-small: 400;
+  --fds-font-weight-overline: 600;
+  --fds-font-letter-spacing-display: -0.03em;
+  --fds-font-letter-spacing-title: -0.025em;
+  --fds-font-letter-spacing-heading: -0.025em;
+  --fds-font-letter-spacing-subheading: 0;
+  --fds-font-letter-spacing-card-title: 0;
+  --fds-font-letter-spacing-lead: 0;
+  --fds-font-letter-spacing-body: 0;
+  --fds-font-letter-spacing-small: 0;
+  --fds-font-letter-spacing-overline: 0.12em;
   --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark. */
   --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark. */
-  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark. */
+  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark. */
   --fds-color-text-on-action: var(--fds-sand-50); /** Text on color-action and color-action-hover. On a dark surface, where the action turns gold, it becomes color-text-on-accent. */
   --fds-color-text-on-accent: var(--fds-navy-900); /** Text on gold fills (color-accent, color-action-on-dark). Always navy, on every surface: sand on gold is 1.6:1. */
   --fds-color-text-on-dark: var(--fds-sand-50); /** Value of color-text inside a dark surface. Not referenced by components. 10.01:1 on color-surface-dark. */

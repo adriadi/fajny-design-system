@@ -12,6 +12,7 @@ Accessibility and WCAG AA compliance come first (decision 33).
 
 - **Surfaces switch the text roles automatically**, as in Material 3. Put dark content inside `.fds-surface-dark` and every base role inside it (`--fds-color-text`, `-text-muted`, `-text-emphasis`, `-border`, `-border-rule`, `-focus`, `-action`) takes its dark-surface value. Components only ever use the base roles; the `-on-dark` tokens are values, never referenced directly.
 - **Every allowed pair passes WCAG**: 4.5:1 for text, 3:1 for large text (24px+) and for borders and focus rings. `npm run build` checks every pair and fails if one drops below its minimum.
+- **Text zooms to 200%** (WCAG 1.4.4). Every font size is `clamp()` in rem, from a 390px screen to a 1280px screen, and its max is at most 2.5× its min. `npm run build` fails otherwise.
 - **Forms and status messages appear on light surfaces only.** `--fds-color-error`, `-success`, `-text-placeholder`, `-border-input` and `-border-strong` have no dark-surface value, and the build fails if one is given one.
 
 ## Why
@@ -48,7 +49,7 @@ The same class works on a dark surface without changes:
 <footer class="fds-surface-dark"><p class="note">Muted text, light on navy</p></footer>
 ```
 
-To change a token, edit `tokens/*.tokens.json`, then rebuild. The build also runs the contrast check (`npm run check` runs it alone):
+To change a token, edit `tokens/*.tokens.json`, then rebuild. The build runs the contrast and zoom checks first and writes `tokens.css` only if both pass (`npm run check` runs them alone):
 
 ```sh
 npm install

@@ -1,39 +1,58 @@
 {
   "font": {
+    "$description": "Nine text roles. Each role has a size, line-height, weight and letter-spacing token with the role's name. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). Never use a size outside these roles.",
     "family": {
       "$type": "fontFamily",
-      "display": { "$value": ["Syne", "sans-serif"], "$description": "Headings, card titles, the wordmark." },
-      "body":    { "$value": ["Inter", "system-ui", "sans-serif"], "$description": "Everything else." }
-    },
-    "weight": {
-      "$type": "fontWeight",
-      "light":    { "$value": 300, "$description": "Long-form muted copy." },
-      "regular":  { "$value": 400 },
-      "medium":   { "$value": 500, "$description": "Headings, buttons, nav." },
-      "semibold": { "$value": 600, "$description": "Eyebrows and tags." }
+      "display": { "$value": ["Syne", "sans-serif"], "$description": "display, title, heading, subheading and card-title." },
+      "body":    { "$value": ["Inter", "system-ui", "sans-serif"], "$description": "lead, body, small and overline." }
     },
     "size": {
       "$type": "dimension",
-      "xs":         { "$value": "11px", "$description": "Eyebrows, form labels, tags (uppercase)." },
-      "sm":         { "$value": "13px", "$description": "Meta text, captions, field errors, nav." },
-      "md":         { "$value": "15px", "$description": "Body text, inputs, buttons." },
-      "lg":         { "$value": "18px", "$description": "Lead paragraphs." },
-      "xl":         { "$value": "22px", "$description": "Card titles." },
-      "heading-sm": { "$value": "clamp(22px, 2.5vw, 30px)", "$description": "Sub-section headings, e.g. form headings." },
-      "heading-md": { "$value": "clamp(32px, 4vw, 52px)",   "$description": "Section titles." },
-      "display":    { "$value": "clamp(52px, 7vw, 96px)",   "$description": "One per page: the hero heading." }
+      "display":    { "$value": "clamp(2.5rem, 0.9663rem + 6.292vw, 6rem)",          "$description": "40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28)." },
+      "title":      { "$value": "clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem)",        "$description": "36px to 72px. The page title of a case study: the page's single h1. Gold italic allowed (decision 28)." },
+      "heading":    { "$value": "clamp(2rem, 1.4522rem + 2.247vw, 3.25rem)",         "$description": "32px to 52px. Section titles (h2). Gold italic allowed (decision 28)." },
+      "subheading": { "$value": "clamp(1.375rem, 1.1559rem + 0.899vw, 1.875rem)",    "$description": "22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28)." },
+      "card-title": { "$value": "clamp(1.125rem, 1.0154rem + 0.449vw, 1.375rem)",    "$description": "18px to 22px. Titles inside cards. Never gold (decision 28)." },
+      "lead":       { "$value": "clamp(0.9375rem, 0.8553rem + 0.337vw, 1.125rem)",   "$description": "15px to 18px. The intro paragraph under a page or section title." },
+      "body":       { "$value": "clamp(0.9375rem, 0.9101rem + 0.112vw, 1rem)",       "$description": "15px to 16px. Body text." },
+      "small":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Secondary text: captions, meta, card descriptions." },
+      "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Always set in uppercase." }
     },
     "line-height": {
       "$type": "number",
-      "tight":  { "$value": 1.1,  "$description": "Headings." },
-      "snug":   { "$value": 1.3,  "$description": "Card titles." },
-      "normal": { "$value": 1.65, "$description": "Body text." }
+      "display":    { "$value": 1.05 },
+      "title":      { "$value": 1.1 },
+      "heading":    { "$value": 1.1 },
+      "subheading": { "$value": 1.2 },
+      "card-title": { "$value": 1.3 },
+      "lead":       { "$value": 1.65 },
+      "body":       { "$value": 1.7 },
+      "small":      { "$value": 1.5 },
+      "overline":   { "$value": 1.3 }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "display":    { "$value": 500 },
+      "title":      { "$value": 500 },
+      "heading":    { "$value": 500 },
+      "subheading": { "$value": 500 },
+      "card-title": { "$value": 500 },
+      "lead":       { "$value": 300, "$description": "Light: the weight is what sets lead apart from body text." },
+      "body":       { "$value": 400 },
+      "small":      { "$value": 400 },
+      "overline":   { "$value": 600 }
     },
     "letter-spacing": {
       "$type": "dimension",
-      "tight": { "$value": "-0.025em", "$description": "Headings." },
-      "wide":  { "$value": "0.06em",   "$description": "Uppercase buttons and nav." },
-      "wider": { "$value": "0.12em",   "$description": "Uppercase eyebrows and labels." }
+      "display":    { "$value": "-0.03em" },
+      "title":      { "$value": "-0.025em" },
+      "heading":    { "$value": "-0.025em" },
+      "subheading": { "$value": "0" },
+      "card-title": { "$value": "0" },
+      "lead":       { "$value": "0" },
+      "body":       { "$value": "0" },
+      "small":      { "$value": "0" },
+      "overline":   { "$value": "0.12em" }
     }
   }
 }
