@@ -1,33 +1,34 @@
 {
   "space": {
     "$type": "dimension",
-    "$description": "4px grid. Gaps and padding use only these steps.",
-    "1":  { "$value": "4px" },
-    "2":  { "$value": "8px" },
-    "3":  { "$value": "12px" },
-    "4":  { "$value": "16px" },
-    "5":  { "$value": "20px" },
-    "6":  { "$value": "24px" },
-    "8":  { "$value": "32px" },
-    "10": { "$value": "40px" },
-    "12": { "$value": "48px" },
-    "14": { "$value": "56px" },
-    "16": { "$value": "64px" },
-    "20": { "$value": "80px" },
-    "24": { "$value": "96px", "$description": "Section padding on desktop." }
+    "$description": "4px grid in px. Padding, margin and gap use only these steps; a value between two steps rounds up, so controls never get smaller. Browser zoom scales px, so spacing needs no rem.",
+    "1":  { "$value": "4px",   "$description": "Icon to text, tag padding." },
+    "2":  { "$value": "8px",   "$description": "Small gaps." },
+    "3":  { "$value": "12px",  "$description": "Label to title, list gaps." },
+    "4":  { "$value": "16px",  "$description": "Paragraph and element spacing." },
+    "5":  { "$value": "20px",  "$description": "Paragraph spacing in case studies, grid gaps." },
+    "6":  { "$value": "24px",  "$description": "Card padding, grid gaps." },
+    "8":  { "$value": "32px",  "$description": "Block padding." },
+    "10": { "$value": "40px",  "$description": "Larger block spacing." },
+    "12": { "$value": "48px",  "$description": "Large block padding." },
+    "14": { "$value": "56px",  "$description": "Section title to its content." },
+    "16": { "$value": "64px",  "$description": "Large blocks, e.g. the next-project block." },
+    "20": { "$value": "80px",  "$description": "Hero and contact blocks." },
+    "30": { "$value": "120px", "$description": "Hero top padding. The largest fixed step." },
+    "gutter":  { "$value": "clamp(16px, 1.9775px + 3.596vw, 48px)",  "$description": "Page side padding: 16px on a 390px screen to 48px at 1280px. Never below 16px, so content still reflows at 320px (WCAG 1.4.10)." },
+    "section": { "$value": "clamp(64px, 39.4607px + 6.292vw, 120px)", "$description": "Vertical padding of page sections: 64px on a 390px screen to 120px at 1280px." }
   },
   "radius": {
     "$type": "dimension",
-    "sm":    { "$value": "4px",   "$description": "Small inline blocks (pull quotes, metric grids). Never buttons." },
-    "md":    { "$value": "8px",   "$description": "Alerts, success messages, small panels." },
-    "lg":    { "$value": "16px",  "$description": "Text cards (articles, recommendations)." },
-    "xl":    { "$value": "20px",  "$description": "Image cards (case studies) and modals." },
-    "pill":  { "$value": "999px", "$description": "Every button and tag." },
-    "round": { "$value": "50%",   "$description": "Avatars, dots, icon buttons." }
+    "sm":    { "$value": "4px",   "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons." },
+    "md":    { "$value": "8px",   "$description": "Panels, chips, tables, success messages." },
+    "lg":    { "$value": "16px",  "$description": "Every card (text and image), images, banners and modals." },
+    "pill":  { "$value": "999px", "$description": "Every button, tag and chip. No square buttons." },
+    "round": { "$value": "50%",   "$description": "Circles: dots, avatars, round icon buttons." }
   },
   "focus": {
     "$type": "dimension",
-    "ring-width":  { "$value": "2px" },
-    "ring-offset": { "$value": "3px" }
+    "ring-width":  { "$value": "2px", "$description": "Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow." },
+    "ring-offset": { "$value": "3px", "$description": "Gap between an element and its focus ring." }
   }
 }

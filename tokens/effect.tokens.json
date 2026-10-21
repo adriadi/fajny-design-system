@@ -1,27 +1,33 @@
 {
   "shadow": {
     "$type": "shadow",
+    "$description": "Elevation, tinted with navy-900 (#1B3A6B). Shadows show on hover, except on elements that float above the page. Never use a shadow as a focus ring or an error state.",
     "sm": {
       "$value": { "color": "#1B3A6B12", "offsetX": "0px", "offsetY": "4px",  "blur": "20px", "spread": "0px" },
-      "$description": "Hover on text cards."
+      "$description": "Hover on small text cards. navy-900 at 7%."
     },
     "md": {
-      "$value": { "color": "#1B3A6B33", "offsetX": "0px", "offsetY": "4px",  "blur": "24px", "spread": "0px" },
-      "$description": "Primary button at rest."
+      "$value": { "color": "#1B3A6B1A", "offsetX": "0px", "offsetY": "12px", "blur": "40px", "spread": "0px" },
+      "$description": "Hover on text cards; floating banners. navy-900 at 10%."
     },
     "lg": {
       "$value": { "color": "#1B3A6B4D", "offsetX": "0px", "offsetY": "20px", "blur": "60px", "spread": "0px" },
-      "$description": "Hover on image cards."
+      "$description": "Hover on image cards. navy-900 at 30%."
+    },
+    "overlay": {
+      "$value": { "color": "#1B3A6B4D", "offsetX": "0px", "offsetY": "32px", "blur": "80px", "spread": "0px" },
+      "$description": "Modals: the one element above everything else. navy-900 at 30%."
     }
   },
   "duration": {
     "$type": "duration",
-    "fast": { "$value": "150ms", "$description": "Colour and border changes." },
-    "base": { "$value": "250ms", "$description": "Hover lifts, arrows." },
-    "slow": { "$value": "650ms", "$description": "Scroll reveal." }
+    "$description": "With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes. An animation that starts on its own stops within 5 seconds (WCAG 2.2.2).",
+    "fast": { "$value": "200ms", "$description": "Colour, background and border changes; presses." },
+    "base": { "$value": "300ms", "$description": "Hover lifts with shadow, menus, toggles." },
+    "slow": { "$value": "700ms", "$description": "Content fading in as it appears." }
   },
   "easing": {
     "$type": "cubicBezier",
-    "standard": { "$value": [0.4, 0, 0.2, 1] }
+    "standard": { "$value": [0.4, 0, 0.2, 1], "$description": "The one easing for every transition and animation." }
   }
 }

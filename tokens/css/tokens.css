@@ -19,34 +19,36 @@
   --fds-white: #ffffff;
   --fds-red-700: #b32228; /** Error. oklch(50% 0.18 25), from the portfolio's contact form. */
   --fds-green-700: #176700; /** Success. oklch(45% 0.15 140), from the portfolio's CV modal. */
-  --fds-space-1: 4px;
-  --fds-space-2: 8px;
-  --fds-space-3: 12px;
-  --fds-space-4: 16px;
-  --fds-space-5: 20px;
-  --fds-space-6: 24px;
-  --fds-space-8: 32px;
-  --fds-space-10: 40px;
-  --fds-space-12: 48px;
-  --fds-space-14: 56px;
-  --fds-space-16: 64px;
-  --fds-space-20: 80px;
-  --fds-space-24: 96px; /** Section padding on desktop. */
-  --fds-radius-sm: 4px; /** Small inline blocks (pull quotes, metric grids). Never buttons. */
-  --fds-radius-md: 8px; /** Alerts, success messages, small panels. */
-  --fds-radius-lg: 16px; /** Text cards (articles, recommendations). */
-  --fds-radius-xl: 20px; /** Image cards (case studies) and modals. */
-  --fds-radius-pill: 999px; /** Every button and tag. */
-  --fds-radius-round: 50%; /** Avatars, dots, icon buttons. */
-  --fds-focus-ring-width: 2px;
-  --fds-focus-ring-offset: 3px;
-  --fds-shadow-sm: 0px 4px 20px 0px #1B3A6B12; /** Hover on text cards. */
-  --fds-shadow-md: 0px 4px 24px 0px #1B3A6B33; /** Primary button at rest. */
-  --fds-shadow-lg: 0px 20px 60px 0px #1B3A6B4D; /** Hover on image cards. */
-  --fds-duration-fast: 0.15s; /** Colour and border changes. */
-  --fds-duration-base: 0.25s; /** Hover lifts, arrows. */
-  --fds-duration-slow: 0.65s; /** Scroll reveal. */
-  --fds-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --fds-space-1: 4px; /** Icon to text, tag padding. */
+  --fds-space-2: 8px; /** Small gaps. */
+  --fds-space-3: 12px; /** Label to title, list gaps. */
+  --fds-space-4: 16px; /** Paragraph and element spacing. */
+  --fds-space-5: 20px; /** Paragraph spacing in case studies, grid gaps. */
+  --fds-space-6: 24px; /** Card padding, grid gaps. */
+  --fds-space-8: 32px; /** Block padding. */
+  --fds-space-10: 40px; /** Larger block spacing. */
+  --fds-space-12: 48px; /** Large block padding. */
+  --fds-space-14: 56px; /** Section title to its content. */
+  --fds-space-16: 64px; /** Large blocks, e.g. the next-project block. */
+  --fds-space-20: 80px; /** Hero and contact blocks. */
+  --fds-space-30: 120px; /** Hero top padding. The largest fixed step. */
+  --fds-space-gutter: clamp(16px, 1.9775px + 3.596vw, 48px); /** Page side padding: 16px on a 390px screen to 48px at 1280px. Never below 16px, so content still reflows at 320px (WCAG 1.4.10). */
+  --fds-space-section: clamp(64px, 39.4607px + 6.292vw, 120px); /** Vertical padding of page sections: 64px on a 390px screen to 120px at 1280px. */
+  --fds-radius-sm: 4px; /** Small inline blocks: pull quotes, metrics, pain points. Never buttons. */
+  --fds-radius-md: 8px; /** Panels, chips, tables, success messages. */
+  --fds-radius-lg: 16px; /** Every card (text and image), images, banners and modals. */
+  --fds-radius-pill: 999px; /** Every button, tag and chip. No square buttons. */
+  --fds-radius-round: 50%; /** Circles: dots, avatars, round icon buttons. */
+  --fds-focus-ring-width: 2px; /** Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow. */
+  --fds-focus-ring-offset: 3px; /** Gap between an element and its focus ring. */
+  --fds-shadow-sm: 0px 4px 20px 0px #1B3A6B12; /** Hover on small text cards. navy-900 at 7%. */
+  --fds-shadow-md: 0px 12px 40px 0px #1B3A6B1A; /** Hover on text cards; floating banners. navy-900 at 10%. */
+  --fds-shadow-lg: 0px 20px 60px 0px #1B3A6B4D; /** Hover on image cards. navy-900 at 30%. */
+  --fds-shadow-overlay: 0px 32px 80px 0px #1B3A6B4D; /** Modals: the one element above everything else. navy-900 at 30%. */
+  --fds-duration-fast: 0.2s; /** Colour, background and border changes; presses. */
+  --fds-duration-base: 0.3s; /** Hover lifts with shadow, menus, toggles. */
+  --fds-duration-slow: 0.7s; /** Content fading in as it appears. */
+  --fds-easing-standard: cubic-bezier(0.4, 0, 0.2, 1); /** The one easing for every transition and animation. */
   --fds-font-family-display: Syne, sans-serif; /** display, title, heading, subheading and card-title. */
   --fds-font-family-body: Inter, system-ui, sans-serif; /** lead, body, small and overline. */
   --fds-font-size-display: clamp(2.5rem, 0.9663rem + 6.292vw, 6rem); /** 40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28). */
