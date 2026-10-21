@@ -6,7 +6,7 @@
     "text":                  { "$value": "{navy.900}",       "$description": "All text: headings, body, labels, links. The only text colour (decision 20)." },
     "text-muted":            { "$value": "{stone.600}",      "$description": "Secondary text: captions, meta, hints. 4.85:1 or better on every light background." },
     "text-placeholder":      { "$value": "{color.text-muted}", "$description": "Input placeholders (decision 19)." },
-    "text-emphasis":         { "$value": "{gold.800}",       "$description": "Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–4.3:1 it passes AA only as large text. Project themes change it." },
+    "text-emphasis":         { "$value": "{gold.800}",       "$description": "Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. Project themes change it." },
     "text-on-dark":          { "$value": "{sand.50}",        "$description": "Text on color-surface-dark." },
     "text-emphasis-on-dark": { "$value": "{gold.500}",       "$description": "Italic words in headings on color-surface-dark. 6.1:1." },
     "text-on-action":        { "$value": "{sand.50}",        "$description": "Text on color-action and color-action-hover." },

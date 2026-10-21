@@ -72,7 +72,7 @@
   --fds-font-letter-spacing-wider: 0.12em; /** Uppercase eyebrows and labels. */
   --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links. The only text colour (decision 20). */
   --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. */
-  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–4.3:1 it passes AA only as large text. Project themes change it. */
+  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. Project themes change it. */
   --fds-color-text-on-dark: var(--fds-sand-50); /** Text on color-surface-dark. */
   --fds-color-text-emphasis-on-dark: var(--fds-gold-500); /** Italic words in headings on color-surface-dark. 6.1:1. */
   --fds-color-text-on-action: var(--fds-sand-50); /** Text on color-action and color-action-hover. */
