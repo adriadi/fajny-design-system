@@ -35,7 +35,7 @@
   --fds-space-gutter: clamp(16px, 1.9775px + 3.596vw, 48px); /** Page side padding: 16px on a 390px screen to 48px at 1280px. Never below 16px, so content still reflows at 320px (WCAG 1.4.10). */
   --fds-space-section: clamp(64px, 39.4607px + 6.292vw, 120px); /** Vertical padding of page sections: 64px on a 390px screen to 120px at 1280px. */
   --fds-radius-sm: 4px; /** Small inline blocks: pull quotes, metrics, pain points. Never buttons. */
-  --fds-radius-md: 8px; /** Panels, chips, tables, success messages. */
+  --fds-radius-md: 8px; /** Panels, tables, success messages. */
   --fds-radius-lg: 16px; /** Every card (text and image), images, banners and modals. */
   --fds-radius-pill: 999px; /** Every button, tag and chip. No square buttons. */
   --fds-radius-round: 50%; /** Circles: dots, avatars, round icon buttons. */

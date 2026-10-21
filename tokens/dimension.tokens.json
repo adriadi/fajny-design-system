@@ -21,7 +21,7 @@
   "radius": {
     "$type": "dimension",
     "sm":    { "$value": "4px",   "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons." },
-    "md":    { "$value": "8px",   "$description": "Panels, chips, tables, success messages." },
+    "md":    { "$value": "8px",   "$description": "Panels, tables, success messages." },
     "lg":    { "$value": "16px",  "$description": "Every card (text and image), images, banners and modals." },
     "pill":  { "$value": "999px", "$description": "Every button, tag and chip. No square buttons." },
     "round": { "$value": "50%",   "$description": "Circles: dots, avatars, round icon buttons." }
