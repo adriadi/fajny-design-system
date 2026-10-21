@@ -1,50 +1,52 @@
-# Decisions
+# Decision log · Fajny design system
 
-Why the system is the way it is. Newest first within each section. Each entry says what was decided, why, and what it replaced in the portfolio.
+Every decision I made while building this system: what I chose, why, and what I rejected. Updated as the project goes.
 
-## Format
+## Decisions
 
-### Components are CSS classes + HTML (20 Oct 2026)
+| # | Date | Decision | Why | Rejected | Status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 2026-10-19 | The design system lives in its own public repo (MIT). The portfolio repo stays private. | The portfolio holds case study passwords and work I can't show publicly. The system should be free for others to use. | Making the portfolio repo public. | Decided |
+| 2 | 2026-10-19 | The "before" test runs in the real portfolio repo, frozen with the tag `before-system`. | In real companies an agent almost never starts from zero. It walks into a codebase full of scattered styles. | An empty folder with a text description only: it would measure guessing, not choosing between conflicting styles. | Decided |
+| 3 | 2026-10-19 | Test screen: a new "Work with me" page (case study card + inquiry form). It's a test fixture only and never ships. | The contact form already exists. The agent could copy it and the "before" result would look better than reality. | Rebuilding the existing contact form. Also considered: a newsletter signup, a "request access" form. | Decided |
+| 4 | 2026-10-19 | The second screen for the "after" test is picked now: a project list filtered by tags. | The system will be slightly tailored to the first screen. Picking the second one upfront protects against "you chose it to get a good result". | | Decided |
+| 5 | 2026-10-19 | Revised 2026-10-20: components are CSS classes + HTML (prefix `fds-`), one stylesheet, copy-paste HTML in the docs. A thin React layer can come later. The first version (React components) was wrong: my case studies are static HTML and couldn't use React components without a build step. Tokens live as JSON and CSS variables, so the system can plug into Tailwind (today's most popular CSS framework, ~75% of State of CSS 2024 respondents) through a preset later. | Works everywhere on my site: static case studies, the React home page and the test page, with no build step. All the visual logic sits in CSS, which I know best. Trade-off: classes don't limit options the way React props do, so the agent docs have to do that job. | Web components (shadow DOM + form fields is a project of its own). Tailwind as the base for now: the "before" test measured hex and px values in CSS, so Tailwind classes would break the comparison; the portfolio isn't on Tailwind; and a better result couldn't be told apart from Tailwind's own conventions. | Decided |
+| 6 | 2026-10-19 | Scope: 5 components: Button, Input, Card (two variants: text-only like the article card, and with an image), Tag, Navigation. Every component fully done: all states, contrast checked, docs, Figma and code. Depth over breadth. | Each component comes from a failure in the "before" test: square button, form fields, hybrid card (twice), tags. Navigation matters too: the test prompt asks to link the page from the main nav, and the agent edited the nav in both runs. My site has no toast. | Toast. | Decided |
+| 7 | 2026-10-19 | Two places to work: a Claude chat plans, reviews and writes briefs. Claude Code on my machine builds, tests and connects to Figma. I approve every commit. | The reviewer shouldn't be the author. Figma runs locally anyway. I keep control over every decision. | The chat agent building on a branch and opening pull requests. | Decided |
+| 8 | 2026-10-19 | Everything public is in English: decision log, README, component docs, the article. | The repo is public and the case study is aimed at international teams. | | Decided |
+| 9 | 2026-10-19 | Portfolio case study first. Then a Medium article based on it. | Hiring managers read the portfolio, other designers read Medium. | | Decided |
+| 10 | 2026-10-19 | The test checklist has 17 checks in four groups: A visual consistency, B states, C accessibility, D design intent (scored separately). Prompt and checklist frozen until the "after" test. | An agent can't know intent that isn't written down anywhere. Mixing D into the main score would make the "before" result look rigged. | | Decided |
+| 11 | 2026-10-19 | Accessibility is a highlight of the case study, not a footnote. | It's what teams forget most often. My own site fails it: labels not linked to inputs, placeholder contrast 1.24:1, error text 3.13:1. | | Decided |
+| 12 | 2026-10-19 | Keep measuring "new CSS classes". It goes into the case study only if the "after" test shows a clear difference. | With a system, the agent should reuse component classes instead of inventing new ones, so a drop would be easy to read. | Dropping the metric. | Decided |
+| 13 | 2026-10-20 | In the run 1 corrections I don't ask the agent to fix the error colour. We watch what it does on its own. | Checks 2 (no new colours) and 13 (contrast 4.5:1) can't both pass in the current code: the site's only red, #e05252, fails contrast (3.13:1). Without a system there is no right answer. That's the case for a color-error token. | Telling the agent to reuse #e05252 (breaks accessibility) or to keep its new red (breaks consistency). | Decided |
+| 14 | 2026-10-20 | Run 1 corrections stop at 3 of 5 messages. The card stays a fail. | The card I have in mind (article card with a thumbnail) doesn't exist anywhere in the code, so the agent had nothing to copy. More messages would test my art direction, not the agent. It's the case for a card variant with an image in the system. | A 4th message describing the card layout. | Decided |
+| 15 | 2026-10-20 | Run a second "before" test, same prompt and conditions. | One run is one sample. Two runs give a range, which is harder to dismiss as luck. | Skipping it to save an hour. | Decided |
+| 16 | 2026-10-20 | Hawk and Curaay colours are intentional. In the system they become project themes, not a new meaning of the accent colour. | Today one variable (--accent) means gold, navy or dark blue depending on the page. An agent can't tell a rule from an exception. | Dropping project colours for one shared palette. | Decided |
+| 17 | 2026-10-20 | Type scale: h1 (once per page), h2 (section titles), h3 (subsection titles), body 15px, small 13px, overline 11px (uppercase subtitle). More only when needed. | The site uses 36 font sizes, six of them between 10 and 15px. Fewer, named sizes are easier for people and agents to pick from. | Keeping all six small sizes. | Decided |
+| 18 | 2026-10-20 | Gold italic in headings becomes #9a7420 (3.5–3.8:1 on the beige backgrounds). | Visible and still a nice gold. The current #c99a2e is 2.1–2.3:1 and fails even the 3:1 for large text. | Keeping #c99a2e. #8a6a1e (4.1–4.5:1): readable at any size, but much darker. | Decided |
+| 19 | 2026-10-20 | Placeholder in the muted text colour, typed text in navy, shorter hints ("e.g. Jane Doe"). | The old placeholder (1.24:1) was unreadable. The readable one (4.85:1) looks almost like typed text, so the hint wording carries the difference. | Keeping the light placeholder. | Decided |
+| 20 | 2026-10-20 | One main text colour for the whole system: navy #1B3A6B. The muted secondary colour (#6B6359) stays for captions, labels and placeholders. | Two main text colours (navy on the home page, near-black in case studies) were an accident, an unnoticed change. Navy is the site's character and has 10:1 contrast. | Near-black #1A1714. | Decided |
+| 21 | 2026-10-20 | Deadline: 14 working days, ending Thursday 5 November. Time goes into depth, not more components. | I'd rather show a great research project than a weaker one made under time pressure. A deadline still keeps the scope from growing, and I'm job hunting in parallel. | The original 10 days. No deadline at all. | Decided |
+| 22 | 2026-10-20 | Highlight becomes the 6th component, with two variants: dark (the "tension" block, fixed) and light (the pullquote). | The dark block's heading is navy on near-black (1.58:1): a global heading rule overrides the block's own colour. Colours are named by hue, not by role, so nothing tells text to change when the background turns dark. The test page doesn't cover this; my case studies do, and so will this project's own case study. | Leaving text blocks out of the system. | Decided |
+| 23 | 2026-10-20 | The system is called Fajny design system ("fajny" is Polish for "cool"). The repo is public from day 2. | A name with personality instead of a generic one. Public from the start, so the commit history shows how the system was built, step by step. | agent-ready-ds, adriadi-design-system. Going public only at the end. | Decided |
+| 24 | 2026-10-20 | Tokens are written once in W3C JSON and built into CSS variables with Style Dictionary. | It's the standard tool teams use for this, so I learn what I'd meet at work and can name it in interviews. The same JSON can later produce other formats, including the Tailwind preset. | A small custom Node script (Claude Code's recommendation): simpler, no dependency, but known only to me. | Decided |
+| 25 | 2026-10-20 | The token JSON in the repo is the source of truth. Figma variables are a copy, imported with Tokens Studio (free version). | Agents read the repo, not Figma. A change made only in Figma would be invisible to them, and two sources drift apart, like my two cards did. | Figma as the source. Copying variables into Figma by hand. | Decided |
+| 26 | 2026-10-20 | Dark mode is out of scope for version 1. Semantic tokens named by role keep the door open. | My site has no dark mode today, so it would be new design work, not cleanup. Modes in Figma would also need the paid Tokens Studio. | Full light and dark modes in version 1. | Decided |
+| 27 | 2026-10-20 | Status and border colours: color-error #B32228, color-success #176700, color-border-input #8C8274 (form fields), color-border #D9D1C5 stays for decorative dividers only. | Error 5.4–6.6:1 and success 5.8–7.1:1 pass AA on every background. #B32228 is the red the agent picked on its own in the "before" test: the system makes a good guess official. Input borders are the only sign where a field is, so they need 3:1 (WCAG 1.4.11); the old border was 1.34:1. Dividers are decoration and can stay light. | #E05252 for errors (3.4:1, fails). One border colour for everything. | Decided |
+| 28 | 2026-10-20 | Gold italic only in h1 and h2. The small heading stays at 22px. | #9a7420 passes only as large text (24px+). A usage rule keeps the type scale and gives agents a clear do/don't. | The agent's own fix: enlarging the small heading to 24px so gold passes everywhere. It changed the type scale to solve a usage problem. | Decided |
 
-One stylesheet with `.fds-*` classes, and copy-paste HTML in `docs/`. The portfolio mixes static HTML pages with a React page compiled in the browser, and plain classes work in both without a build step. React components would give stronger guardrails (props limit the options), but would leave the static pages out.
+## Parking lot
 
-### Tokens use the W3C format, built with Style Dictionary (20 Oct 2026)
+- **Redesign the project cards** to make them a better fit for the portfolio's look and feel, based on the design system. Added 2026-10-19.
+- **Tailwind preset** that maps my tokens to Tailwind classes (Tailwind v4 reads its theme from CSS variables). Added 2026-10-20.
+- **Thin React layer** (`<Button variant="primary">`) on top of the `fds-` classes. Added 2026-10-20.
+- **Move the portfolio to React** (Next.js was the earlier plan). The `fds-` classes make the move easier, because the system doesn't depend on a framework. Added 2026-10-20.
+- **Dark mode**, built on the semantic tokens. Added 2026-10-20.
 
-Sources are `tokens/src/**/*.tokens.json` in the [W3C Design Tokens format](https://www.designtokens.org/tr/drafts/format/). `npm run build` turns them into `tokens/css/tokens.css`. The built CSS is committed, so a site can link it without installing anything.
+## Graveyard
 
-- **Prefix `--fds-`** so the variables never collide with a site's own.
-- **Two layers.** Primitives (`color.navy.900`) are the raw palette. Semantic tokens (`color.text.default`) say what a value is for and point at a primitive. Components only use semantic tokens. In the CSS, semantic variables are written as `var(--fds-color-navy-900)`, so the link stays visible.
-- **Sizes stay in px**, as in the portfolio. The config leaves out Style Dictionary's `size/rem` transform. It can't parse the `clamp()` heading sizes and printed a warning on every build.
-
-## Values
-
-All values come from an audit of the portfolio's CSS on 20 Oct 2026: `styles.css`, `index.html`, `password.html`, `work-with-me.html` and the three case studies.
-
-### One error red: `#B32228` (20 Oct 2026)
-
-The portfolio had 5 reds for errors: `#E05252` (password page), `oklch(50% 0.18 25)` (contact form), `oklch(55% 0.2 25)` (CV modal), and two more added on the Work with me page. `#E05252` is only 3.4:1 on the page background, below the 4.5:1 that WCAG AA requires for text. `oklch(50% 0.18 25)` = `#B32228` is 5.9:1, so that one stays.
-
-### One success green: `#176700` (20 Oct 2026)
-
-From the CV modal's success icon (`oklch(45% 0.15 140)`), 6.3:1 on the page background. The pulsing "available" dot (`#22C55E`) isn't a status colour and is left to the component that owns it.
-
-### Radius scale: 4 / 8 / 16 / 20 / pill / round (20 Oct 2026)
-
-The portfolio used 10 values: 2, 4, 5.5, 6, 7, 8, 10, 12, 14, 16 and 20px, plus `100px` and `999px` for pills. The scale keeps the ones with a clear job and gives each one a rule:
-
-- **Every button and tag is `pill`.** The portfolio's form submit button was the one square (4px) button on a site of pill buttons, and an agent copied it.
-- Text cards are `lg` (16px), image cards and modals `xl` (20px).
-- `sm` (4px) is for small inline blocks only, never buttons.
-
-### Type scale: 11 / 13 / 15 / 18 / 22 + three fluid heading sizes (20 Oct 2026)
-
-The portfolio used 10, 11, 12, 13, 14, 15, 16, 18, 20, 22 and 24px, plus 14 different `clamp()` values. The scale keeps the five most-used fixed sizes and three headings: `heading-sm`, `heading-md` (section titles) and `display` (hero). **Moving the portfolio onto the system will shift 10, 12, 14 and 16px text** to the nearest step. That's intended.
-
-### Space scale: 4px grid, up to 96px (20 Oct 2026)
-
-The portfolio's 100px section padding becomes 96px (`space.24`).
-
-## Open questions
-
-- **Gold text fails contrast.** `color.text.accent` (`#C99A2E`) is the italic gold in headings. It's 2.3:1 on the page background, which fails even the 3:1 for large text. The portfolio also uses it for 11px eyebrows ("SELECTED WORK"). For now the token is marked decorative only. Options: darken it (which changes the brand), or keep gold for large headings and use navy for small eyebrows.
-- **Input underlines are hard to see.** `color.border.default` (`#D9D1C5`) is 1.3:1 on the page background. Input borders should be at least 3:1 (WCAG 1.4.11). This will be decided when the Input component is built.
+| Date | What didn't work | What it taught me |
+| --- | --- | --- |
+| 2026-10-19 | The first measurement commands. `git diff` skipped new, untracked files, and pasting them lost the `*` characters. The agent caught it and counted correctly. | Measure with a tested script (`measure.sh`), never hand-pasted commands. Even the measuring tool needs a test. |
+| 2026-10-19 | Screen-recording the agent while it builds. The live preview showed nothing, because the new page didn't exist yet. | The build itself isn't the story. A 2-minute walkthrough of the finished page (empty, errors, sending, success, Tab, mobile) shows more. |
+| 2026-10-20 | Choosing React components as the base (decision #5, first version). Claude Code pointed out that my case studies are static HTML and couldn't use them. | Check where the system will actually be used before picking the technology. The popular choice and the right choice for this codebase weren't the same. |
