@@ -3,8 +3,9 @@
   "navy": {
     "$type": "color",
     "900": { "$value": "#1B3A6B", "$description": "Brand navy. The one text colour (decision 20)." },
+    "800": { "$value": "#324E7A", "$description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened)." },
     "700": { "$value": "#254D8F", "$description": "Hover on navy fills." },
-    "300": { "$value": "#7FA8D4", "$description": "Case-study pull-quote border." },
+    "300": { "$value": "#7FA8D4", "$description": "Light Highlight rule." },
     "100": { "$value": "#E4EAF4", "$description": "Case-study pull-quote background." }
   },
   "gold": {
@@ -16,7 +17,8 @@
     "$type": "color",
     "50":  { "$value": "#F5F1EB", "$description": "Page background." },
     "100": { "$value": "#EDE8E0" },
-    "300": { "$value": "#D9D1C5" }
+    "300": { "$value": "#D9D1C5" },
+    "400": { "$value": "#C8C0B4", "$description": "Muted text on dark surfaces." }
   },
   "stone": {
     "$type": "color",
@@ -31,20 +33,5 @@
   "green": {
     "$type": "color",
     "700": { "$value": "#176700", "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal." }
-  },
-  "indigo": {
-    "$type": "color",
-    "$description": "Hawk project theme.",
-    "900": { "$value": "#000078" },
-    "300": { "$value": "#8890CC" },
-    "100": { "$value": "#E8E9F4" }
-  },
-  "blue": {
-    "$type": "color",
-    "600": { "$value": "#2532E5", "$description": "Hawk project theme: italic headings." }
-  },
-  "violet": {
-    "$type": "color",
-    "600": { "$value": "#714EC4", "$description": "Curaay project theme: italic headings." }
   }
 }

@@ -4,24 +4,21 @@
 
 :root {
   --fds-navy-100: #e4eaf4; /** Case-study pull-quote background. */
-  --fds-navy-300: #7fa8d4; /** Case-study pull-quote border. */
+  --fds-navy-300: #7fa8d4; /** Light Highlight rule. */
   --fds-navy-700: #254d8f; /** Hover on navy fills. */
+  --fds-navy-800: #324e7a; /** Decorative dividers on dark surfaces (white at 10% on navy-900, flattened). */
   --fds-navy-900: #1b3a6b; /** Brand navy. The one text colour (decision 20). */
   --fds-gold-500: #e8b84b; /** Brand gold. Fills and accents on light backgrounds; text only on navy. */
   --fds-gold-800: #9a7420; /** Italic headings on light backgrounds (decision 18). */
   --fds-sand-50: #f5f1eb; /** Page background. */
   --fds-sand-100: #ede8e0;
   --fds-sand-300: #d9d1c5;
+  --fds-sand-400: #c8c0b4; /** Muted text on dark surfaces. */
   --fds-stone-400: #8c8274; /** Input underlines. */
   --fds-stone-600: #6b6359; /** Muted text. */
   --fds-white: #ffffff;
   --fds-red-700: #b32228; /** Error. oklch(50% 0.18 25), from the portfolio's contact form. */
   --fds-green-700: #176700; /** Success. oklch(45% 0.15 140), from the portfolio's CV modal. */
-  --fds-indigo-100: #e8e9f4;
-  --fds-indigo-300: #8890cc;
-  --fds-indigo-900: #000078;
-  --fds-blue-600: #2532e5; /** Hawk project theme: italic headings. */
-  --fds-violet-600: #714ec4; /** Curaay project theme: italic headings. */
   --fds-space-1: 4px;
   --fds-space-2: 8px;
   --fds-space-3: 12px;
@@ -70,38 +67,48 @@
   --fds-font-letter-spacing-tight: -0.025em; /** Headings. */
   --fds-font-letter-spacing-wide: 0.06em; /** Uppercase buttons and nav. */
   --fds-font-letter-spacing-wider: 0.12em; /** Uppercase eyebrows and labels. */
-  --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links. The only text colour (decision 20). */
-  --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. */
-  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. Project themes change it. */
-  --fds-color-text-on-dark: var(--fds-sand-50); /** Text on color-surface-dark. */
-  --fds-color-text-emphasis-on-dark: var(--fds-gold-500); /** Italic words in headings on color-surface-dark. 6.1:1. */
-  --fds-color-text-on-action: var(--fds-sand-50); /** Text on color-action and color-action-hover. */
+  --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark. */
+  --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark. */
+  --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in h1 and h2. Never in smaller headings (h3 and below), card titles or body text: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark. */
+  --fds-color-text-on-action: var(--fds-sand-50); /** Text on color-action and color-action-hover. On a dark surface, where the action turns gold, it becomes color-text-on-accent. */
+  --fds-color-text-on-accent: var(--fds-navy-900); /** Text on gold fills (color-accent, color-action-on-dark). Always navy, on every surface: sand on gold is 1.6:1. */
+  --fds-color-text-on-dark: var(--fds-sand-50); /** Value of color-text inside a dark surface. Not referenced by components. 10.01:1 on color-surface-dark. */
+  --fds-color-text-muted-on-dark: var(--fds-sand-400); /** Value of color-text-muted inside a dark surface. Not referenced by components. 6.25:1 on color-surface-dark. */
+  --fds-color-text-emphasis-on-dark: var(--fds-gold-500); /** Value of color-text-emphasis inside a dark surface. Not referenced by components. 6.11:1 on color-surface-dark. */
   --fds-color-background: var(--fds-sand-50); /** Page background. */
   --fds-color-surface: var(--fds-white); /** Cards and raised panels. */
   --fds-color-surface-subtle: var(--fds-sand-100); /** Alternate sections, e.g. the contact section. */
-  --fds-color-surface-dark: var(--fds-navy-900); /** Dark sections and the footer. */
-  --fds-color-border: var(--fds-sand-300); /** Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs. */
-  --fds-color-border-input: var(--fds-stone-400); /** Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). */
-  --fds-color-border-strong: var(--fds-navy-900); /** Focused or active input underline. */
-  --fds-color-focus: var(--fds-navy-900); /** Keyboard focus ring. */
-  --fds-color-action: var(--fds-navy-900); /** Primary button background. */
-  --fds-color-action-hover: var(--fds-navy-700);
-  --fds-color-error: var(--fds-red-700); /** The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. */
-  --fds-color-success: var(--fds-green-700); /** The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. */
-  --fds-color-accent: var(--fds-gold-500); /** Brand gold fill: accent button background, secondary-link underline. Not a text colour on light backgrounds. */
-  --fds-color-theme: var(--fds-navy-900); /** Project theme colour in case studies: eyebrow rules, links, metric numbers. Project themes change it (decision 16). */
-  --fds-color-theme-subtle: var(--fds-navy-100); /** Theme-tinted background, e.g. pull quotes. */
-  --fds-color-theme-muted: var(--fds-navy-300); /** Theme-tinted decorative border, e.g. the pull-quote rule. */
-  --fds-color-text-placeholder: var(--fds-color-text-muted); /** Input placeholders (decision 19). */
+  --fds-color-surface-highlight: var(--fds-navy-100); /** Background of the light Highlight (pull quotes, insight callouts). Also marks a highlighted area, e.g. a chart quadrant. Text on it: color-text 9.32:1, color-text-muted 4.89:1. */
+  --fds-color-surface-dark: var(--fds-navy-900); /** Every dark background: dark sections, the footer and the dark Highlight block (decision 30). Apply it with the .fds-surface-dark class, which also switches the text, decorative border, rule, focus and action roles inside it. */
+  --fds-color-border: var(--fds-sand-300); /** Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs. On a dark surface it becomes color-border-on-dark. */
+  --fds-color-border-input: var(--fds-stone-400); /** Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces. */
+  --fds-color-border-strong: var(--fds-navy-900); /** Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces. */
+  --fds-color-border-rule: var(--fds-navy-900); /** Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark. */
+  --fds-color-border-highlight: var(--fds-navy-300); /** The light Highlight's left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight. */
+  --fds-color-border-on-dark: var(--fds-navy-800); /** Value of color-border inside a dark surface. Decorative only: 1.34:1 on color-surface-dark. Not referenced by components. */
+  --fds-color-border-rule-on-dark: var(--fds-gold-500); /** Value of color-border-rule inside a dark surface. Not referenced by components. 6.11:1 on color-surface-dark. */
+  --fds-color-focus: var(--fds-navy-900); /** Keyboard focus ring. On a dark surface it becomes color-focus-on-dark. */
+  --fds-color-focus-on-dark: var(--fds-gold-500); /** Value of color-focus inside a dark surface (decision 29). Not referenced by components. 6.11:1 on color-surface-dark. */
+  --fds-color-action: var(--fds-navy-900); /** Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears. */
+  --fds-color-action-hover: var(--fds-navy-700); /** Primary button hover. On a dark surface it becomes color-action-hover-on-dark. */
+  --fds-color-action-on-dark: var(--fds-gold-500); /** Value of color-action inside a dark surface: the gold button. Not referenced by components. Text on it: color-text-on-accent, 6.11:1. */
+  --fds-color-action-hover-on-dark: var(--fds-gold-500); /** Value of color-action-hover inside a dark surface. The gold button keeps its colour on hover and lifts with a shadow instead. Not referenced by components. */
+  --fds-color-accent: var(--fds-gold-500); /** Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds. */
+  --fds-color-error: var(--fds-red-700); /** The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. Light surfaces only: 1.70:1 on color-surface-dark. */
+  --fds-color-success: var(--fds-green-700); /** The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark. */
+  --fds-color-text-placeholder: var(--fds-color-text-muted); /** Input placeholders (decision 19). Forms appear only on light surfaces. */
 }
 
-[data-fds-theme="hawk"] {
-  --fds-color-text-emphasis: var(--fds-blue-600);
-  --fds-color-theme: var(--fds-indigo-900);
-  --fds-color-theme-subtle: var(--fds-indigo-100);
-  --fds-color-theme-muted: var(--fds-indigo-300);
-}
-
-[data-fds-theme="curaay"] {
-  --fds-color-text-emphasis: var(--fds-violet-600);
+.fds-surface-dark {
+  background-color: var(--fds-color-surface-dark);
+  color: var(--fds-color-text);
+  --fds-color-text: var(--fds-color-text-on-dark);
+  --fds-color-text-muted: var(--fds-color-text-muted-on-dark);
+  --fds-color-text-emphasis: var(--fds-color-text-emphasis-on-dark);
+  --fds-color-border: var(--fds-color-border-on-dark);
+  --fds-color-border-rule: var(--fds-color-border-rule-on-dark);
+  --fds-color-focus: var(--fds-color-focus-on-dark);
+  --fds-color-action: var(--fds-color-action-on-dark);
+  --fds-color-action-hover: var(--fds-color-action-hover-on-dark);
+  --fds-color-text-on-action: var(--fds-color-text-on-accent);
 }

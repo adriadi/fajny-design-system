@@ -1,42 +1,29 @@
 // Builds tokens/*.tokens.json (W3C format) into one file, tokens/css/tokens.css.
 // Variables are prefixed --fds- and semantic tokens point at primitives with var().
-// Tokens under theme.<name>.* become [data-fds-theme="<name>"] blocks that override
-// the same variable names, so a theme never introduces a new token.
+// After :root comes the .fds-surface-dark block, which redefines the base roles with their
+// -on-dark values (decision 33), so components only ever use the base roles.
 import { formattedVariables, fileHeader } from 'style-dictionary/utils';
+import { DARK_SURFACE } from './scripts/surfaces.js';
 
-// Theme tokens keep unique names inside Style Dictionary (fds-theme-hawk-color-theme) and are
-// renamed only on output (fds-color-theme), so the build has no name collisions to warn about.
-const themeName = (token) => ({ ...token, name: token.name.replace(`fds-theme-${token.path[1]}-`, 'fds-') });
+// Every switched role is redeclared on the surface itself: a custom property that points at
+// another one is resolved where it is declared, so an alias set on :root would not follow.
+const darkSurfaceBlock = () =>
+  '.fds-surface-dark {\n' +
+  '  background-color: var(--fds-color-surface-dark);\n' +
+  '  color: var(--fds-color-text);\n' +
+  Object.entries(DARK_SURFACE).map(([role, token]) => `  --fds-${role}: var(--fds-${token});`).join('\n') +
+  '\n}\n';
 
 export default {
   source: ['tokens/*.json'],
   hooks: {
     formats: {
-      'css/fds-themed': async ({ dictionary, file, options }) => {
-        const block = (selector, allTokens) =>
-          `${selector} {\n` +
-          formattedVariables({
-            format: 'css',
-            dictionary: { ...dictionary, allTokens },
-            outputReferences: options.outputReferences,
-            usesDtcg: options.usesDtcg,
-          }) +
-          '\n}\n';
-
-        const base = dictionary.allTokens.filter((t) => t.path[0] !== 'theme');
-        const themes = [...new Set(dictionary.allTokens.filter((t) => t.path[0] === 'theme').map((t) => t.path[1]))];
-
-        return (
-          (await fileHeader({ file })) +
-          block(':root', base) +
-          themes
-            .map((name) => '\n' + block(
-              `[data-fds-theme="${name}"]`,
-              dictionary.allTokens.filter((t) => t.path[0] === 'theme' && t.path[1] === name).map(themeName),
-            ))
-            .join('')
-        );
-      },
+      'css/fds-surfaces': async ({ dictionary, file, options }) =>
+        (await fileHeader({ file })) +
+        ':root {\n' +
+        formattedVariables({ format: 'css', dictionary, outputReferences: options.outputReferences, usesDtcg: options.usesDtcg }) +
+        '\n}\n\n' +
+        darkSurfaceBlock(),
     },
   },
   platforms: {
@@ -54,7 +41,7 @@ export default {
       files: [
         {
           destination: 'tokens.css',
-          format: 'css/fds-themed',
+          format: 'css/fds-surfaces',
           options: { outputReferences: true },
         },
       ],

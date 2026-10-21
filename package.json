@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "style-dictionary build --config style-dictionary.config.js"
+    "build": "style-dictionary build --config style-dictionary.config.js && node scripts/check-contrast.js",
+    "check": "node scripts/check-contrast.js"
   },
   "devDependencies": {
     "style-dictionary": "^5.7.0"
