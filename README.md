@@ -4,7 +4,7 @@
 
 A small design system built so that AI agents (Claude Code and others) can build interfaces from it without guessing names, values or states.
 
-**Status: work in progress.** Started 19 October 2026, first version planned for 5 November 2026.
+**Status: work in progress.** Started 19 October 2026, first version planned for Thursday 12 November 2026.
 
 ## Core principle: accessibility first
 
