@@ -16,6 +16,8 @@ const isToken = (node) => node && typeof node === 'object' && '$value' in node;
 
 // Copies a group, writing $type on every token (inherited from its groups in the source) and
 // dropping group descriptions. `keep(name, token)` decides which tokens go in.
+// Descriptions get typographic apostrophes (’): Tokens Studio writes a straight one into Figma
+// as &#39;.
 function copyGroup(group, keep = () => true, inheritedType) {
   const type = group.$type ?? inheritedType;
   const out = {};
@@ -24,7 +26,7 @@ function copyGroup(group, keep = () => true, inheritedType) {
     if (isToken(node)) {
       if (!keep(name, node)) continue;
       out[name] = { $value: node.$value, $type: node.$type ?? type };
-      if (node.$description) out[name].$description = node.$description;
+      if (node.$description) out[name].$description = node.$description.replaceAll("'", '’');
     } else {
       out[name] = copyGroup(node, keep, type);
     }
@@ -79,18 +81,26 @@ const SCOPES = {
   focus: (name) => ({ 'ring-width': ['STROKE_FLOAT'], 'ring-offset': ['NONE'] })[name],
 };
 
+// Variables hidden from publishing: they stay out of the published library. Tokens Studio reads
+// the flat $extensions key "com.figma.hiddenFromPublishing" and applies it on every import.
+const HIDDEN = {
+  primitives: () => true,
+  focus: (name) => name === 'ring-offset',
+};
+
 // A token with no scope rule fails the build, so a new token can't reach Figma unscoped.
 const unscoped = [];
-const addScopes = (node, scopesFor, prefix) => {
+const addScopes = (node, set, scopesFor, prefix) => {
   for (const [name, child] of Object.entries(node)) {
     const path = prefix ? `${prefix}.${name}` : name;
-    if (!isToken(child)) { addScopes(child, scopesFor, path); continue; }
+    if (!isToken(child)) { addScopes(child, set, scopesFor, path); continue; }
     const scopes = scopesFor(name);
     if (scopes) child.$extensions = { 'com.figma.scopes': scopes };
     else unscoped.push(path);
+    if (HIDDEN[set]?.(name)) child.$extensions = { ...child.$extensions, 'com.figma.hiddenFromPublishing': true };
   }
 };
-for (const [set, scopesFor] of Object.entries(SCOPES)) addScopes(sets[set], scopesFor, '');
+for (const [set, scopesFor] of Object.entries(SCOPES)) addScopes(sets[set], set, scopesFor, '');
 
 if (unscoped.length) {
   console.error(`Figma build failed: ${unscoped.length} token(s) have no Figma scope:\n` + unscoped.map((u) => `  ✗ ${u}`).join('\n'));
