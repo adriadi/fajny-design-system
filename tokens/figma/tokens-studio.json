@@ -301,46 +301,50 @@
     "shadow": {
       "sm": {
         "$value": {
-          "color": "#1B3A6B12",
-          "offsetX": "0px",
-          "offsetY": "4px",
+          "x": "0px",
+          "y": "4px",
           "blur": "20px",
-          "spread": "0px"
+          "spread": "0px",
+          "color": "#1B3A6B12",
+          "type": "dropShadow"
         },
-        "$type": "shadow",
+        "$type": "boxShadow",
         "$description": "Hover on small text cards. navy-900 at 7%."
       },
       "md": {
         "$value": {
-          "color": "#1B3A6B1A",
-          "offsetX": "0px",
-          "offsetY": "12px",
+          "x": "0px",
+          "y": "12px",
           "blur": "40px",
-          "spread": "0px"
+          "spread": "0px",
+          "color": "#1B3A6B1A",
+          "type": "dropShadow"
         },
-        "$type": "shadow",
+        "$type": "boxShadow",
         "$description": "Hover on text cards; floating banners. navy-900 at 10%."
       },
       "lg": {
         "$value": {
-          "color": "#1B3A6B4D",
-          "offsetX": "0px",
-          "offsetY": "20px",
+          "x": "0px",
+          "y": "20px",
           "blur": "60px",
-          "spread": "0px"
+          "spread": "0px",
+          "color": "#1B3A6B4D",
+          "type": "dropShadow"
         },
-        "$type": "shadow",
+        "$type": "boxShadow",
         "$description": "Hover on image cards. navy-900 at 30%."
       },
       "overlay": {
         "$value": {
-          "color": "#1B3A6B4D",
-          "offsetX": "0px",
-          "offsetY": "32px",
+          "x": "0px",
+          "y": "32px",
           "blur": "80px",
-          "spread": "0px"
+          "spread": "0px",
+          "color": "#1B3A6B4D",
+          "type": "dropShadow"
         },
-        "$type": "shadow",
+        "$type": "boxShadow",
         "$description": "Modals: the one element above everything else. navy-900 at 30%."
       }
     }

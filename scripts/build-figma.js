@@ -31,6 +31,17 @@ function copyGroup(group, keep = () => true, inheritedType) {
   return out;
 }
 
+// Tokens Studio doesn't read the W3C shadow format: its effect styles come out empty.
+// It needs its own boxShadow type, with x and y instead of offsetX and offsetY.
+function toBoxShadow(group) {
+  for (const token of Object.values(group)) {
+    const { color, offsetX, offsetY, blur, spread } = token.$value;
+    token.$value = { x: offsetX, y: offsetY, blur, spread, color, type: 'dropShadow' };
+    token.$type = 'boxShadow';
+  }
+  return group;
+}
+
 const primitives = read('color-primitives.tokens.json');
 const semantic = read('color-semantic.tokens.json');
 const dimension = read('dimension.tokens.json');
@@ -44,7 +55,7 @@ const sets = {
   // Percentages stay in code: a Figma variable can't hold 50%. In Figma a circle is
   // radius-pill on an element with equal width and height.
   radius: { radius: copyGroup(dimension.radius, (_, t) => !String(t.$value).endsWith('%')) },
-  shadow: { shadow: copyGroup(effect.shadow) },
+  shadow: { shadow: toBoxShadow(copyGroup(effect.shadow)) },
   focus: { focus: copyGroup(dimension.focus) },
 };
 
