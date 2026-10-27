@@ -39,3 +39,12 @@ Tokens: W3C JSON in `tokens/*.json`, built with Style Dictionary into
 - A topic is finished only after the owner checks it on the design system page.
   Then the branch merges into main (decision 32).
 - The owner approves every commit and merge (decision 7). Don't rewrite history.
+
+## Handoff
+
+Briefs and reports go through the `handoff` branch, not through the owner.
+When the owner says "brief": read `git show origin/handoff:BRIEF.md` (after
+`git fetch origin handoff`), do only what it asks, write `REPORT.md` with the
+same ID on the `handoff` branch, push, and stop. The protocol is in `README.md`
+on that branch. A brief contains only what the owner has approved; anything
+else is a question in the report.
