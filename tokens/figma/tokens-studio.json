@@ -4,89 +4,169 @@
       "100": {
         "$value": "#E4EAF4",
         "$type": "color",
-        "$description": "Case-study pull-quote background."
+        "$description": "Case-study pull-quote background.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "300": {
         "$value": "#7FA8D4",
         "$type": "color",
-        "$description": "Light Highlight rule."
+        "$description": "Light Highlight rule.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "700": {
         "$value": "#254D8F",
         "$type": "color",
-        "$description": "Hover on navy fills."
+        "$description": "Hover on navy fills.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "800": {
         "$value": "#324E7A",
         "$type": "color",
-        "$description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened)."
+        "$description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "900": {
         "$value": "#1B3A6B",
         "$type": "color",
-        "$description": "Brand navy. The one text colour (decision 20)."
+        "$description": "Brand navy. The one text colour (decision 20).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     },
     "gold": {
       "500": {
         "$value": "#E8B84B",
         "$type": "color",
-        "$description": "Brand gold. Fills and accents on light backgrounds; text only on navy."
+        "$description": "Brand gold. Fills and accents on light backgrounds; text only on navy.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "800": {
         "$value": "#9A7420",
         "$type": "color",
-        "$description": "Italic headings on light backgrounds (decision 18)."
+        "$description": "Italic headings on light backgrounds (decision 18).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     },
     "sand": {
       "50": {
         "$value": "#F5F1EB",
         "$type": "color",
-        "$description": "Page background."
+        "$description": "Page background.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "100": {
         "$value": "#EDE8E0",
-        "$type": "color"
+        "$type": "color",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "300": {
         "$value": "#D9D1C5",
-        "$type": "color"
+        "$type": "color",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "400": {
         "$value": "#C8C0B4",
         "$type": "color",
-        "$description": "Muted text on dark surfaces."
+        "$description": "Muted text on dark surfaces.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     },
     "stone": {
       "400": {
         "$value": "#8C8274",
         "$type": "color",
-        "$description": "Input underlines."
+        "$description": "Input underlines.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       },
       "600": {
         "$value": "#6B6359",
         "$type": "color",
-        "$description": "Muted text."
+        "$description": "Muted text.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     },
     "white": {
       "$value": "#FFFFFF",
-      "$type": "color"
+      "$type": "color",
+      "$extensions": {
+        "com.figma.scopes": [
+          "NONE"
+        ]
+      }
     },
     "red": {
       "700": {
         "$value": "#B32228",
         "$type": "color",
-        "$description": "Error. oklch(50% 0.18 25), from the portfolio's contact form."
+        "$description": "Error. oklch(50% 0.18 25), from the portfolio's contact form.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     },
     "green": {
       "700": {
         "$value": "#176700",
         "$type": "color",
-        "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal."
+        "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     }
   },
@@ -95,112 +175,232 @@
       "text": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark."
+        "$description": "All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "text-muted": {
         "$value": "{stone.600}",
         "$type": "color",
-        "$description": "Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark."
+        "$description": "Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "text-placeholder": {
         "$value": "{color.text-muted}",
         "$type": "color",
-        "$description": "Input placeholders (decision 19). Forms appear only on light surfaces."
+        "$description": "Input placeholders (decision 19). Forms appear only on light surfaces.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "text-emphasis": {
         "$value": "{gold.800}",
         "$type": "color",
-        "$description": "Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark."
+        "$description": "Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "text-on-action": {
         "$value": "{sand.50}",
         "$type": "color",
-        "$description": "Text on color-action and color-action-hover. On a dark surface, where the action turns gold, it becomes color-text-on-accent."
+        "$description": "Text on color-action and color-action-hover. On a dark surface, where the action turns gold, it becomes color-text-on-accent.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "text-on-accent": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Text on gold fills (color-accent, color-action-on-dark). Always navy, on every surface: sand on gold is 1.6:1."
+        "$description": "Text on gold fills (color-accent, color-action-on-dark). Always navy, on every surface: sand on gold is 1.6:1.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL"
+          ]
+        }
       },
       "background": {
         "$value": "{sand.50}",
         "$type": "color",
-        "$description": "Page background."
+        "$description": "Page background.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "surface": {
         "$value": "{white}",
         "$type": "color",
-        "$description": "Cards and raised panels."
+        "$description": "Cards and raised panels.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "surface-subtle": {
         "$value": "{sand.100}",
         "$type": "color",
-        "$description": "Alternate sections, e.g. the contact section."
+        "$description": "Alternate sections, e.g. the contact section.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "surface-highlight": {
         "$value": "{navy.100}",
         "$type": "color",
-        "$description": "Background of the light Highlight (pull quotes, insight callouts). Also marks a highlighted area, e.g. a chart quadrant. Text on it: color-text 9.32:1, color-text-muted 4.89:1."
+        "$description": "Background of the light Highlight (pull quotes, insight callouts). Also marks a highlighted area, e.g. a chart quadrant. Text on it: color-text 9.32:1, color-text-muted 4.89:1.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "surface-dark": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Every dark background: dark sections, the footer and the dark Highlight block (decision 30). Apply it with the .fds-surface-dark class, which also switches the text, decorative border, rule, focus and action roles inside it."
+        "$description": "Every dark background: dark sections, the footer and the dark Highlight block (decision 30). Apply it with the .fds-surface-dark class, which also switches the text, decorative border, rule, focus and action roles inside it.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "border": {
         "$value": "{sand.300}",
         "$type": "color",
-        "$description": "Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs. On a dark surface it becomes color-border-on-dark."
+        "$description": "Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs. On a dark surface it becomes color-border-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "border-input": {
         "$value": "{stone.400}",
         "$type": "color",
-        "$description": "Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces."
+        "$description": "Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "border-strong": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces."
+        "$description": "Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "border-rule": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark."
+        "$description": "Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "border-highlight": {
         "$value": "{navy.300}",
         "$type": "color",
-        "$description": "The light Highlight's left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight."
+        "$description": "The light Highlight's left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "focus": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Keyboard focus ring. On a dark surface it becomes color-focus-on-dark."
+        "$description": "Keyboard focus ring. On a dark surface it becomes color-focus-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_COLOR"
+          ]
+        }
       },
       "action": {
         "$value": "{navy.900}",
         "$type": "color",
-        "$description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
+        "$description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "action-hover": {
         "$value": "{navy.700}",
         "$type": "color",
-        "$description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark."
+        "$description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "accent": {
         "$value": "{gold.500}",
         "$type": "color",
-        "$description": "Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds."
+        "$description": "Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ]
+        }
       },
       "error": {
         "$value": "{red.700}",
         "$type": "color",
-        "$description": "The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. Light surfaces only: 1.70:1 on color-surface-dark."
+        "$description": "The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. Light surfaces only: 1.70:1 on color-surface-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "STROKE_COLOR"
+          ]
+        }
       },
       "success": {
         "$value": "{green.700}",
         "$type": "color",
-        "$description": "The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark."
+        "$description": "The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "TEXT_FILL",
+            "STROKE_COLOR"
+          ]
+        }
       }
     }
   },
@@ -209,67 +409,132 @@
       "1": {
         "$value": "4px",
         "$type": "dimension",
-        "$description": "Icon to text, tag padding."
+        "$description": "Icon to text, tag padding.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "2": {
         "$value": "8px",
         "$type": "dimension",
-        "$description": "Small gaps."
+        "$description": "Small gaps.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "3": {
         "$value": "12px",
         "$type": "dimension",
-        "$description": "Label to title, list gaps."
+        "$description": "Label to title, list gaps.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "4": {
         "$value": "16px",
         "$type": "dimension",
-        "$description": "Paragraph and element spacing."
+        "$description": "Paragraph and element spacing.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "5": {
         "$value": "20px",
         "$type": "dimension",
-        "$description": "Paragraph spacing in case studies, grid gaps."
+        "$description": "Paragraph spacing in case studies, grid gaps.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "6": {
         "$value": "24px",
         "$type": "dimension",
-        "$description": "Card padding, grid gaps."
+        "$description": "Card padding, grid gaps.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "8": {
         "$value": "32px",
         "$type": "dimension",
-        "$description": "Block padding."
+        "$description": "Block padding.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "10": {
         "$value": "40px",
         "$type": "dimension",
-        "$description": "Larger block spacing."
+        "$description": "Larger block spacing.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "12": {
         "$value": "48px",
         "$type": "dimension",
-        "$description": "Large block padding."
+        "$description": "Large block padding.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "14": {
         "$value": "56px",
         "$type": "dimension",
-        "$description": "Section title to its content."
+        "$description": "Section title to its content.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "16": {
         "$value": "64px",
         "$type": "dimension",
-        "$description": "Large blocks, e.g. the next-project block."
+        "$description": "Large blocks, e.g. the next-project block.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "20": {
         "$value": "80px",
         "$type": "dimension",
-        "$description": "Hero and contact blocks."
+        "$description": "Hero and contact blocks.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       },
       "30": {
         "$value": "120px",
         "$type": "dimension",
-        "$description": "Hero top padding. The largest fixed step."
+        "$description": "Hero top padding. The largest fixed step.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "GAP"
+          ]
+        }
       }
     }
   },
@@ -278,22 +543,42 @@
       "sm": {
         "$value": "4px",
         "$type": "dimension",
-        "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons."
+        "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ]
+        }
       },
       "md": {
         "$value": "8px",
         "$type": "dimension",
-        "$description": "Panels, tables, success messages."
+        "$description": "Panels, tables, success messages.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ]
+        }
       },
       "lg": {
         "$value": "16px",
         "$type": "dimension",
-        "$description": "Every card (text and image), images, banners and modals."
+        "$description": "Every card (text and image), images, banners and modals.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ]
+        }
       },
       "pill": {
         "$value": "999px",
         "$type": "dimension",
-        "$description": "Every button, tag and chip. No square buttons."
+        "$description": "Every button, tag and chip. No square buttons.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "CORNER_RADIUS"
+          ]
+        }
       }
     }
   },
@@ -354,12 +639,22 @@
       "ring-width": {
         "$value": "2px",
         "$type": "dimension",
-        "$description": "Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow."
+        "$description": "Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_FLOAT"
+          ]
+        }
       },
       "ring-offset": {
         "$value": "3px",
         "$type": "dimension",
-        "$description": "Gap between an element and its focus ring."
+        "$description": "Gap between an element and its focus ring.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ]
+        }
       }
     }
   }

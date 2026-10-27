@@ -59,6 +59,43 @@ const sets = {
   focus: { focus: copyGroup(dimension.focus) },
 };
 
+// Figma variable scopes: which pickers in Figma offer each variable. Tokens Studio reads them from
+// the flat $extensions key "com.figma.scopes" and applies them on every import, so they never
+// have to be set by hand (decision 44). "NONE" hides a variable from every picker.
+// Shadows become effect styles, not variables, so they have no scopes.
+const SCOPES = {
+  primitives: () => ['NONE'],
+  color: (name) => {
+    if (name === 'text' || name.startsWith('text-')) return ['TEXT_FILL'];
+    if (name === 'error' || name === 'success') return ['TEXT_FILL', 'STROKE_COLOR'];
+    if (name.startsWith('border') || name === 'focus') return ['STROKE_COLOR'];
+    if (['background', 'action', 'action-hover', 'accent'].includes(name) || name.startsWith('surface')) {
+      return ['FRAME_FILL', 'SHAPE_FILL'];
+    }
+  },
+  spacing: () => ['GAP'],
+  radius: () => ['CORNER_RADIUS'],
+  focus: (name) => ({ 'ring-width': ['STROKE_FLOAT'], 'ring-offset': ['NONE'] })[name],
+};
+
+// A token with no scope rule fails the build, so a new token can't reach Figma unscoped.
+const unscoped = [];
+const addScopes = (node, scopesFor, prefix) => {
+  for (const [name, child] of Object.entries(node)) {
+    const path = prefix ? `${prefix}.${name}` : name;
+    if (!isToken(child)) { addScopes(child, scopesFor, path); continue; }
+    const scopes = scopesFor(name);
+    if (scopes) child.$extensions = { 'com.figma.scopes': scopes };
+    else unscoped.push(path);
+  }
+};
+for (const [set, scopesFor] of Object.entries(SCOPES)) addScopes(sets[set], scopesFor, '');
+
+if (unscoped.length) {
+  console.error(`Figma build failed: ${unscoped.length} token(s) have no Figma scope:\n` + unscoped.map((u) => `  ✗ ${u}`).join('\n'));
+  process.exit(1);
+}
+
 // Every alias must point at a token in the file, or Tokens Studio imports a broken link.
 const paths = new Set();
 const collect = (node, prefix) => {
