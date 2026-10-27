@@ -2,10 +2,11 @@
 // and styles. The repo JSON stays the source of truth (decision 25): this file is generated from
 // tokens/*.tokens.json and never edited by hand.
 //
-// One top-level key per token set, in W3C format. Semantic colours keep their {aliases}, so in
-// Figma the roles stay linked to the primitives. Only light-surface values go in: typography and
-// the -on-dark roles come later as Figma modes, and motion stays in code (decision 43). Fluid
-// spacing is left out because a Figma variable holds one value, not a clamp().
+// One top-level key per token set, in W3C format. The colour roles are not in it: the "color"
+// collection has a light and a dark surface mode, and scripts/build-figma-color.js writes it
+// through Figma MCP. Tokens Studio finds a mode by its name, so importing the roles here would add
+// a second light mode. Typography comes later as Figma modes, and motion stays in code
+// (decision 43). Fluid spacing is left out because a Figma variable holds one value, not a clamp().
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const OUT_DIR = 'tokens/figma/';
@@ -46,13 +47,11 @@ function toBoxShadow(group) {
 }
 
 const primitives = read('color-primitives.tokens.json');
-const semantic = read('color-semantic.tokens.json');
 const dimension = read('dimension.tokens.json');
 const effect = read('effect.tokens.json');
 
 const sets = {
   primitives: copyGroup(primitives),
-  color: { color: copyGroup(semantic.color, (name) => !name.endsWith('-on-dark')) },
   // Fixed steps only: fluid values are clamp(), which a Figma variable can't hold.
   spacing: { space: copyGroup(dimension.space, (_, t) => !String(t.$value).startsWith('clamp(')) },
   // Percentages stay in code: a Figma variable can't hold 50%. In Figma a circle is
@@ -68,14 +67,6 @@ const sets = {
 // Shadows become effect styles, not variables, so they have no scopes.
 const SCOPES = {
   primitives: () => ['NONE'],
-  color: (name) => {
-    if (name === 'text' || name.startsWith('text-')) return ['TEXT_FILL'];
-    if (name === 'error' || name === 'success') return ['TEXT_FILL', 'STROKE_COLOR'];
-    if (name.startsWith('border') || name === 'focus') return ['STROKE_COLOR'];
-    if (['background', 'action', 'action-hover', 'accent'].includes(name) || name.startsWith('surface')) {
-      return ['FRAME_FILL', 'SHAPE_FILL'];
-    }
-  },
   spacing: () => ['GAP'],
   radius: () => ['CORNER_RADIUS'],
   focus: (name) => ({ 'ring-width': ['STROKE_FLOAT'], 'ring-offset': ['NONE'] })[name],
