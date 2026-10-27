@@ -1,0 +1,362 @@
+{
+  "primitives": {
+    "navy": {
+      "100": {
+        "$value": "#E4EAF4",
+        "$type": "color",
+        "$description": "Case-study pull-quote background."
+      },
+      "300": {
+        "$value": "#7FA8D4",
+        "$type": "color",
+        "$description": "Light Highlight rule."
+      },
+      "700": {
+        "$value": "#254D8F",
+        "$type": "color",
+        "$description": "Hover on navy fills."
+      },
+      "800": {
+        "$value": "#324E7A",
+        "$type": "color",
+        "$description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened)."
+      },
+      "900": {
+        "$value": "#1B3A6B",
+        "$type": "color",
+        "$description": "Brand navy. The one text colour (decision 20)."
+      }
+    },
+    "gold": {
+      "500": {
+        "$value": "#E8B84B",
+        "$type": "color",
+        "$description": "Brand gold. Fills and accents on light backgrounds; text only on navy."
+      },
+      "800": {
+        "$value": "#9A7420",
+        "$type": "color",
+        "$description": "Italic headings on light backgrounds (decision 18)."
+      }
+    },
+    "sand": {
+      "50": {
+        "$value": "#F5F1EB",
+        "$type": "color",
+        "$description": "Page background."
+      },
+      "100": {
+        "$value": "#EDE8E0",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#D9D1C5",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#C8C0B4",
+        "$type": "color",
+        "$description": "Muted text on dark surfaces."
+      }
+    },
+    "stone": {
+      "400": {
+        "$value": "#8C8274",
+        "$type": "color",
+        "$description": "Input underlines."
+      },
+      "600": {
+        "$value": "#6B6359",
+        "$type": "color",
+        "$description": "Muted text."
+      }
+    },
+    "white": {
+      "$value": "#FFFFFF",
+      "$type": "color"
+    },
+    "red": {
+      "700": {
+        "$value": "#B32228",
+        "$type": "color",
+        "$description": "Error. oklch(50% 0.18 25), from the portfolio's contact form."
+      }
+    },
+    "green": {
+      "700": {
+        "$value": "#176700",
+        "$type": "color",
+        "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal."
+      }
+    }
+  },
+  "color": {
+    "color": {
+      "text": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark."
+      },
+      "text-muted": {
+        "$value": "{stone.600}",
+        "$type": "color",
+        "$description": "Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark."
+      },
+      "text-placeholder": {
+        "$value": "{color.text-muted}",
+        "$type": "color",
+        "$description": "Input placeholders (decision 19). Forms appear only on light surfaces."
+      },
+      "text-emphasis": {
+        "$value": "{gold.800}",
+        "$type": "color",
+        "$description": "Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark."
+      },
+      "text-on-action": {
+        "$value": "{sand.50}",
+        "$type": "color",
+        "$description": "Text on color-action and color-action-hover. On a dark surface, where the action turns gold, it becomes color-text-on-accent."
+      },
+      "text-on-accent": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Text on gold fills (color-accent, color-action-on-dark). Always navy, on every surface: sand on gold is 1.6:1."
+      },
+      "background": {
+        "$value": "{sand.50}",
+        "$type": "color",
+        "$description": "Page background."
+      },
+      "surface": {
+        "$value": "{white}",
+        "$type": "color",
+        "$description": "Cards and raised panels."
+      },
+      "surface-subtle": {
+        "$value": "{sand.100}",
+        "$type": "color",
+        "$description": "Alternate sections, e.g. the contact section."
+      },
+      "surface-highlight": {
+        "$value": "{navy.100}",
+        "$type": "color",
+        "$description": "Background of the light Highlight (pull quotes, insight callouts). Also marks a highlighted area, e.g. a chart quadrant. Text on it: color-text 9.32:1, color-text-muted 4.89:1."
+      },
+      "surface-dark": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Every dark background: dark sections, the footer and the dark Highlight block (decision 30). Apply it with the .fds-surface-dark class, which also switches the text, decorative border, rule, focus and action roles inside it."
+      },
+      "border": {
+        "$value": "{sand.300}",
+        "$type": "color",
+        "$description": "Decorative dividers only. 1.3:1, too faint for anything a user must see: use color-border-input for inputs. On a dark surface it becomes color-border-on-dark."
+      },
+      "border-input": {
+        "$value": "{stone.400}",
+        "$type": "color",
+        "$description": "Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces."
+      },
+      "border-strong": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces."
+      },
+      "border-rule": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark."
+      },
+      "border-highlight": {
+        "$value": "{navy.300}",
+        "$type": "color",
+        "$description": "The light Highlight's left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight."
+      },
+      "focus": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Keyboard focus ring. On a dark surface it becomes color-focus-on-dark."
+      },
+      "action": {
+        "$value": "{navy.900}",
+        "$type": "color",
+        "$description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
+      },
+      "action-hover": {
+        "$value": "{navy.700}",
+        "$type": "color",
+        "$description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark."
+      },
+      "accent": {
+        "$value": "{gold.500}",
+        "$type": "color",
+        "$description": "Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds."
+      },
+      "error": {
+        "$value": "{red.700}",
+        "$type": "color",
+        "$description": "The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. Light surfaces only: 1.70:1 on color-surface-dark."
+      },
+      "success": {
+        "$value": "{green.700}",
+        "$type": "color",
+        "$description": "The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark."
+      }
+    }
+  },
+  "spacing": {
+    "space": {
+      "1": {
+        "$value": "4px",
+        "$type": "dimension",
+        "$description": "Icon to text, tag padding."
+      },
+      "2": {
+        "$value": "8px",
+        "$type": "dimension",
+        "$description": "Small gaps."
+      },
+      "3": {
+        "$value": "12px",
+        "$type": "dimension",
+        "$description": "Label to title, list gaps."
+      },
+      "4": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Paragraph and element spacing."
+      },
+      "5": {
+        "$value": "20px",
+        "$type": "dimension",
+        "$description": "Paragraph spacing in case studies, grid gaps."
+      },
+      "6": {
+        "$value": "24px",
+        "$type": "dimension",
+        "$description": "Card padding, grid gaps."
+      },
+      "8": {
+        "$value": "32px",
+        "$type": "dimension",
+        "$description": "Block padding."
+      },
+      "10": {
+        "$value": "40px",
+        "$type": "dimension",
+        "$description": "Larger block spacing."
+      },
+      "12": {
+        "$value": "48px",
+        "$type": "dimension",
+        "$description": "Large block padding."
+      },
+      "14": {
+        "$value": "56px",
+        "$type": "dimension",
+        "$description": "Section title to its content."
+      },
+      "16": {
+        "$value": "64px",
+        "$type": "dimension",
+        "$description": "Large blocks, e.g. the next-project block."
+      },
+      "20": {
+        "$value": "80px",
+        "$type": "dimension",
+        "$description": "Hero and contact blocks."
+      },
+      "30": {
+        "$value": "120px",
+        "$type": "dimension",
+        "$description": "Hero top padding. The largest fixed step."
+      }
+    }
+  },
+  "radius": {
+    "radius": {
+      "sm": {
+        "$value": "4px",
+        "$type": "dimension",
+        "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons."
+      },
+      "md": {
+        "$value": "8px",
+        "$type": "dimension",
+        "$description": "Panels, tables, success messages."
+      },
+      "lg": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Every card (text and image), images, banners and modals."
+      },
+      "pill": {
+        "$value": "999px",
+        "$type": "dimension",
+        "$description": "Every button, tag and chip. No square buttons."
+      }
+    }
+  },
+  "shadow": {
+    "shadow": {
+      "sm": {
+        "$value": {
+          "color": "#1B3A6B12",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "20px",
+          "spread": "0px"
+        },
+        "$type": "shadow",
+        "$description": "Hover on small text cards. navy-900 at 7%."
+      },
+      "md": {
+        "$value": {
+          "color": "#1B3A6B1A",
+          "offsetX": "0px",
+          "offsetY": "12px",
+          "blur": "40px",
+          "spread": "0px"
+        },
+        "$type": "shadow",
+        "$description": "Hover on text cards; floating banners. navy-900 at 10%."
+      },
+      "lg": {
+        "$value": {
+          "color": "#1B3A6B4D",
+          "offsetX": "0px",
+          "offsetY": "20px",
+          "blur": "60px",
+          "spread": "0px"
+        },
+        "$type": "shadow",
+        "$description": "Hover on image cards. navy-900 at 30%."
+      },
+      "overlay": {
+        "$value": {
+          "color": "#1B3A6B4D",
+          "offsetX": "0px",
+          "offsetY": "32px",
+          "blur": "80px",
+          "spread": "0px"
+        },
+        "$type": "shadow",
+        "$description": "Modals: the one element above everything else. navy-900 at 30%."
+      }
+    }
+  },
+  "focus": {
+    "focus": {
+      "ring-width": {
+        "$value": "2px",
+        "$type": "dimension",
+        "$description": "Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow."
+      },
+      "ring-offset": {
+        "$value": "3px",
+        "$type": "dimension",
+        "$description": "Gap between an element and its focus ring."
+      }
+    }
+  }
+}
