@@ -71,7 +71,7 @@ After any token change:
 
 1. Run `npm run build`.
 2. In Figma, import `tokens/figma/tokens-studio.json` with Tokens Studio (Tools → Load from file). The file has no `color` set, so Tokens Studio leaves that collection alone.
-3. Run `tokens/figma/color-collection.js` on the Figma file with the Figma MCP `use_figma` tool, e.g. ask Claude Code to "run tokens/figma/color-collection.js with use_figma on the Figma file". It renames the first mode to `Light surface`, adds `Dark surface` if it's missing, and sets every role's aliases, scopes and description. Running it again is safe.
+3. Run `tokens/figma/color-collection.js` on the Figma file with the Figma MCP `use_figma` tool, e.g. ask Claude Code to "run tokens/figma/color-collection.js with use_figma on the Figma file". It renames the first mode to `Light surface`, adds `Dark surface` if it's missing, and sets every role's aliases, scopes and description. Last, it deletes collections with no variables, such as the empty `shadow` collection Tokens Studio creates (shadows are effect styles). Running it again is safe.
 
 In `Dark surface`, the roles that `.fds-surface-dark` switches take their `-on-dark` value, and every other role keeps its light value. Forms and status roles say "Light surfaces only." in their Figma description. Colour roles are aliases of the primitives, so they stay linked in Figma. Typography (mobile and desktop) comes later as Figma modes, and motion stays in code (decision 43). Fluid spacing is left out: a Figma variable holds one value, not a `clamp()`.
 

@@ -122,12 +122,20 @@ for (const role of PLAN.roles) {
 const known = new Set(PLAN.roles.map((r) => r.name));
 const extra = variables.filter((v) => v.variableCollectionId === collection.id && !known.has(v.name)).map((v) => v.name);
 
+// Last step: delete collections with no variables. Tokens Studio creates one for every set it
+// imports, including "shadow", whose tokens become effect styles, not variables.
+const removedEmptyCollections = [];
+for (const c of await figma.variables.getLocalVariableCollectionsAsync()) {
+  if (c.variableIds.length === 0) { removedEmptyCollections.push(c.name); c.remove(); }
+}
+
 return {
   collectionId: collection.id,
   modes: collection.modes.map((m) => m.name),
   roles: PLAN.roles.length,
   createdVariables: created,
   notInTokens: extra,
+  removedEmptyCollections,
 };
 `;
 
