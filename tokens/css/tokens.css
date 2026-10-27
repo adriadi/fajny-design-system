@@ -49,8 +49,8 @@
   --fds-duration-base: 0.3s; /** Hover lifts with shadow, menus, toggles. */
   --fds-duration-slow: 0.7s; /** Content fading in as it appears. */
   --fds-easing-standard: cubic-bezier(0.4, 0, 0.2, 1); /** The one easing for every transition and animation. */
-  --fds-font-family-display: Syne, sans-serif; /** display, title, heading, subheading and card-title. */
-  --fds-font-family-body: Inter, system-ui, sans-serif; /** lead, body, small and overline. */
+  --fds-font-typeface-syne: Syne, sans-serif; /** Display typeface. Roles use it through font.family.<role>, never directly. */
+  --fds-font-typeface-inter: Inter, system-ui, sans-serif; /** Text typeface. Roles use it through font.family.<role>, never directly. */
   --fds-font-size-display: clamp(2.5rem, 0.9663rem + 6.292vw, 6rem); /** 40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28). */
   --fds-font-size-title: clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem); /** 36px to 72px. The page title of a case study: the page's single h1. Gold italic allowed (decision 28). */
   --fds-font-size-heading: clamp(2rem, 1.4522rem + 2.247vw, 3.25rem); /** 32px to 52px. Section titles (h2). Gold italic allowed (decision 28). */
@@ -59,7 +59,7 @@
   --fds-font-size-lead: clamp(0.9375rem, 0.8553rem + 0.337vw, 1.125rem); /** 15px to 18px. The intro paragraph under a page or section title. */
   --fds-font-size-body: clamp(0.9375rem, 0.9101rem + 0.112vw, 1rem); /** 15px to 16px. Body text. */
   --fds-font-size-small: clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem); /** 13px to 14px. Secondary text: captions, meta, card descriptions. */
-  --fds-font-size-overline: clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem); /** 11px to 12px. Uppercase labels above a title (eyebrows). Always set in uppercase. */
+  --fds-font-size-overline: clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem); /** 11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline. */
   --fds-font-line-height-display: 1.05;
   --fds-font-line-height-title: 1.1;
   --fds-font-line-height-heading: 1.1;
@@ -87,6 +87,7 @@
   --fds-font-letter-spacing-body: 0;
   --fds-font-letter-spacing-small: 0;
   --fds-font-letter-spacing-overline: 0.12em;
+  --fds-font-text-transform-overline: uppercase; /** Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out. */
   --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark. */
   --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark. */
   --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark. */
@@ -116,6 +117,15 @@
   --fds-color-accent: var(--fds-gold-500); /** Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds. */
   --fds-color-error: var(--fds-red-700); /** The only error colour: field errors, invalid underlines, error messages. 5.88:1 on background, 6.61 on surface, 5.42 on surface-subtle. Light surfaces only: 1.70:1 on color-surface-dark. */
   --fds-color-success: var(--fds-green-700); /** The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark. */
+  --fds-font-family-display: var(--fds-font-typeface-syne);
+  --fds-font-family-title: var(--fds-font-typeface-syne);
+  --fds-font-family-heading: var(--fds-font-typeface-syne);
+  --fds-font-family-subheading: var(--fds-font-typeface-syne);
+  --fds-font-family-card-title: var(--fds-font-typeface-syne);
+  --fds-font-family-lead: var(--fds-font-typeface-inter);
+  --fds-font-family-body: var(--fds-font-typeface-inter);
+  --fds-font-family-small: var(--fds-font-typeface-inter);
+  --fds-font-family-overline: var(--fds-font-typeface-inter);
   --fds-color-text-placeholder: var(--fds-color-text-muted); /** Input placeholders (decision 19). Forms appear only on light surfaces. */
 }
 

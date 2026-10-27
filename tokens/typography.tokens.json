@@ -1,10 +1,22 @@
 {
   "font": {
-    "$description": "Nine text roles. Each role has a size, line-height, weight and letter-spacing token with the role's name. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). Never use a size outside these roles.",
+    "$description": "Nine text roles. Each role has a size, line-height, weight, letter-spacing and family token with the role's name; overline also has a text-transform token. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). Never use a size outside these roles.",
+    "typeface": {
+      "$type": "fontFamily",
+      "syne":  { "$value": ["Syne", "sans-serif"],              "$description": "Display typeface. Roles use it through font.family.<role>, never directly." },
+      "inter": { "$value": ["Inter", "system-ui", "sans-serif"], "$description": "Text typeface. Roles use it through font.family.<role>, never directly." }
+    },
     "family": {
       "$type": "fontFamily",
-      "display": { "$value": ["Syne", "sans-serif"], "$description": "display, title, heading, subheading and card-title." },
-      "body":    { "$value": ["Inter", "system-ui", "sans-serif"], "$description": "lead, body, small and overline." }
+      "display":    { "$value": "{font.typeface.syne}" },
+      "title":      { "$value": "{font.typeface.syne}" },
+      "heading":    { "$value": "{font.typeface.syne}" },
+      "subheading": { "$value": "{font.typeface.syne}" },
+      "card-title": { "$value": "{font.typeface.syne}" },
+      "lead":       { "$value": "{font.typeface.inter}" },
+      "body":       { "$value": "{font.typeface.inter}" },
+      "small":      { "$value": "{font.typeface.inter}" },
+      "overline":   { "$value": "{font.typeface.inter}" }
     },
     "size": {
       "$type": "dimension",
@@ -16,7 +28,7 @@
       "lead":       { "$value": "clamp(0.9375rem, 0.8553rem + 0.337vw, 1.125rem)",   "$description": "15px to 18px. The intro paragraph under a page or section title." },
       "body":       { "$value": "clamp(0.9375rem, 0.9101rem + 0.112vw, 1rem)",       "$description": "15px to 16px. Body text." },
       "small":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Secondary text: captions, meta, card descriptions." },
-      "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Always set in uppercase." }
+      "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline." }
     },
     "line-height": {
       "$type": "number",
@@ -53,6 +65,9 @@
       "body":       { "$value": "0" },
       "small":      { "$value": "0" },
       "overline":   { "$value": "0.12em" }
+    },
+    "text-transform": {
+      "overline": { "$value": "uppercase", "$description": "Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out." }
     }
   }
 }
