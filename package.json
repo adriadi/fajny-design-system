@@ -5,8 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "node scripts/check-contrast.js && node scripts/check-zoom.js && style-dictionary build --config style-dictionary.config.js && node scripts/build-figma.js && node scripts/build-figma-color.js",
-    "check": "node scripts/check-contrast.js && node scripts/check-zoom.js"
+    "build": "node scripts/check-contrast.js && node scripts/check-zoom.js && node scripts/check-type.js && style-dictionary build --config style-dictionary.config.js && node scripts/build-figma.js && node scripts/build-figma-color.js && node scripts/build-figma-type.js",
+    "check": "node scripts/check-contrast.js && node scripts/check-zoom.js && node scripts/check-type.js"
   },
   "devDependencies": {
     "style-dictionary": "^5.7.0"
