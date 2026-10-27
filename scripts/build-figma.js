@@ -3,8 +3,9 @@
 // tokens/*.tokens.json and never edited by hand.
 //
 // One top-level key per token set, in W3C format. Semantic colours keep their {aliases}, so in
-// Figma the roles stay linked to the primitives. Only light-surface values go in: typography,
-// the -on-dark roles, fluid spacing and motion are left out.
+// Figma the roles stay linked to the primitives. Only light-surface values go in: typography and
+// the -on-dark roles come later as Figma modes, and motion stays in code (decision 43). Fluid
+// spacing is left out because a Figma variable holds one value, not a clamp().
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 const OUT_DIR = 'tokens/figma/';
