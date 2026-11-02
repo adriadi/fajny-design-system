@@ -1,22 +1,40 @@
-# B-008 · Report
+# B-009 · Report
 
-## A. Portfolio, branch `design-system/tokens`
+## Commits
 
-`87dba22`, pushed, **not merged, not deployed**.
+| Repo · branch | Commit | What |
+| --- | --- | --- |
+| portfolio · `design-system/tokens` | `5cff467` | Pause control fixed in the screen corner, shown while the hero is on screen, above the cookie banner |
+| system · `components/button` | `eba6f0d` | Button Figma script updates the set in place; typographic quotes in the Tokens Studio file |
 
-1. **Pause control:** built as proposed in B-007.
-   - **The control:** a 32px round button at the bottom right of the blob area, white fill, 1.5px `color-border-input` border, navy pause and play icons, the constant name "Pause background animation" with `aria-pressed`, a 48px hit area, the system's focus ring and no hover colour.
-   - **Blobs:** they drift continuously again (`infinite`).
-   - **Under reduced motion:** the control starts pressed and the blobs paused. The reduced-motion block leaves the blobs out (`*:not(.hero-blob)`), so pressing play runs them; every other animation stays off.
-   - **Below 900px:** the blobs and the control are hidden.
-   - **Tested in Chrome:** the toggle switches `animation-play-state` and `aria-pressed`; the hit area is 48px; with reduced motion emulated it starts paused, play starts the drift, and the "available" dot's pulse stays off.
-2. **Two colours:** the ghost section number is `color-surface-subtle`; the "available" dot is `color-success`, with its pulse glow kept as decoration.
-3. **`tokens.css` not re-synced.** Part B changes tokens the portfolio could use (`border-width.control`, the cream dark hover), but it's on `components/button`, not merged. A sync names a commit, so I'd sync after the merge. Until then the pause control's 1.5px border is a literal marked `No token yet`.
-4. **Screenshots:** `~/fajny-screenshots/after/home-1440.png` and `home-390.png` replaced, local only. The control is hidden at 390px, with the blobs.
+Both pushed, **not merged, not deployed**.
 
-### Files to upload after the merge
+## A. Pause control (portfolio)
 
-Relative to the site root:
+- **Position:** `position: fixed`, `right` and `bottom` at `space-6`, `z-index` below the nav and the cookie banner.
+- **Visibility:** an `IntersectionObserver` on the hero sets the `hidden` attribute when the hero leaves the screen, which takes the control out of the tab order and the accessibility tree. The pressed state lives in React state, so it survives.
+- **Cookie banner:** while the banner is visible, a small observer sets `--cookie-banner-lift` to the banner's height plus its offset, and the control moves up above it. When the banner closes, the lift goes back to 0.
+- **Below 900px:** hidden, as before.
+- **Reduced motion:** the control doesn't slide; it jumps above the banner.
+
+### A2 · Tests in Chrome (1440px, fresh browser context, so the cookie banner shows)
+
+| Test | Result |
+| --- | --- |
+| Hero in view, banner showing | control visible at 678–710px; banner top at 734px; lift 166px, so the control sits above the banner |
+| Press, scroll the hero out | `hidden`, `display: none`, not reachable with Tab |
+| Scroll back | visible again, still pressed (`aria-pressed="true"`) |
+| Tab order, hero in view | "Get in touch" → pause control (navy focus ring, name "Pause background animation, pressed") → first project card |
+| Tab order, hero out of view | "Get in touch" → first project card; the control is skipped |
+| Dismiss the banner | banner removed, lift 0, control back at 24px from the bottom |
+| Reduced motion | starts pressed, blobs paused, no `bottom` transition |
+| 390px | `display: none` |
+
+### Screenshots
+
+`~/fajny-screenshots/after/home-1440.png` and `home-390.png` replaced. Local only.
+
+### Upload list (unchanged)
 
 ```
 index.html
@@ -29,65 +47,41 @@ usecases/curaay-case-study.html
 usecases/scouting-notes-case-study.html
 ```
 
-`scripts/sync-tokens.sh` is for your machine only; it doesn't go on the server.
+## B. Figma after the Tokens Studio import (read only)
 
-## B. Button, branch `components/button` (from `main`)
+I compared all 38 variables from the Tokens Studio file (primitives, spacing, radius, focus, border-width, opacity) with the Figma file, checking value, scopes and hide from publishing. Result:
+- **Differences:** none.
+- **Extra variables in those collections:** none.
+- **The three variables I made by hand:**
 
-Pushed, **not merged**.
+| Variable | Collection · mode | Value | Scopes | Hidden | ID |
+| --- | --- | --- | --- | --- | --- |
+| `navy/200` | primitives · primitives | `#B3C8E6` | none (no picker) | yes | `38:2` (unchanged) |
+| `border-width/control` | border-width · border-width | 1.5 | `STROKE_FLOAT` | no | `38:4` (unchanged) |
+| `opacity/disabled` | opacity · opacity | 60 | `OPACITY` | no | `38:6` (unchanged) |
 
-| Commit | What |
-| --- | --- |
-| `8e0ae79` | Tokens: `label` role, `color-secondary`, `color-secondary-hover`, `color-text-on-secondary`, primitive navy-200, `color-action-hover-on-dark` → sand-50, `border-width.control` 1.5px, `opacity.disabled` 0.6; new contrast pairs |
-| `d3afb98` | `components/button.css`, `docs/button.md`, `docs/button-preview.html` (generated), `scripts/check-components.js` |
-| `85f8877` | Figma: `scripts/build-figma-button.js` → `tokens/figma/button-component.js`; Tokens Studio file gains `border-width` and `opacity`; README |
+The IDs show the import updated them in place rather than making copies. Nothing else changed: color 25 roles (both modes), typography 10, effect styles 4, text styles 10, pages as before.
 
-### Check results (`npm run build`)
+Two things the import brought:
+- **Escaped quotes:** the `opacity/disabled` description shows `aria-disabled=&quot;true&quot;`, the same escaping Tokens Studio did to apostrophes. Fixed in `eba6f0d`: the generated file now writes `“true”`, so the next import corrects it.
+- **Empty `shadow` collection:** it's back, as after every import. The colour script removes it on its next run (README step 3).
 
-- **Contrast:** 46 pairs pass, two more than before: the secondary label on its fill (9.32:1) and on its hover (6.61:1). The dark primary label on its new hover is 10.01:1. A new guard fails if `color-secondary`, `color-secondary-hover` or `color-text-on-secondary` ever gets a dark-surface value.
-- **Zoom:** 10 sizes pass (label 13→14px, 1.08×).
-- **Type:** 10 roles complete.
-- **Components** (new): `components/*.css` may use only `--fds-*` tokens. Tested with a broken file: it caught a hex colour, a px value, a duration and a non-system variable.
-- **Figma Button:** the build fails if the Figma button and `button.css` use different colour roles. Tested with one role swapped: it named both sides.
-- **Figma files:** Tokens Studio file 42 tokens in 7 sets; colour script 25 roles; typography script 10 roles; Button script 22 variants.
+## C. System repo
 
-### The component
+1. **Design system page** (version 25): under Components, "None is built yet" became "Six components: Button is built (primary, secondary and link, with a navigation size; see Button in Components). Input, Card (text-only and with an image), Tag, Navigation and Highlight (dark and light) are planned. Until they are built, compose them from the tokens above and follow the rules on this page." Nothing else changed.
+2. **Button script, in place:**
+   - Variants are found by name, and every property is set again: fills, strokes, paddings, radius, opacity, text and style. Missing variants are created, none are deleted, and unknown variants stay where they are.
+   - The README's fifth Figma step says so.
+   - **ID check:**
 
-- **Classes:** `fds-button` with `--primary`, `--secondary` and `--link`; `--nav` for the navigation size (32px high, `::after` hit area to 48px).
-- **States:** from the element itself: `:hover`, `:active`, `:focus-visible`, `aria-disabled="true"` (or `:disabled`) and `data-loading`. Loading keeps the default look.
-- **Dark surfaces:** the colour roles switch the button inside `.fds-surface-dark`.
-- **Motion:** colour transitions only, nothing moves, so reduced motion needs no exception.
+| | Variants | Component set | Created |
+| --- | --- | --- | --- |
+| Before | 22 IDs `41:2 … 41:65` | `41:68` | |
+| Run 1 | the same 22 IDs | `41:68` | 0 (22 updated) |
+| Run 2 | the same 22 IDs | `41:68` | 0 (22 updated) |
 
-### Design system page
-
-https://claude.ai/artifact/Edn3F15g33yNgdEDZNNR63, version 24: `components/Button/preview.html` (every variant and state on light and dark, built from the repo) and `components/Button/README.md` (the guidelines from `docs/button.md`), plus the `lastChange` note. Editing stays off (decision 50).
-
-**The generated token card is still stale:** `project/api/tokens.md` and `project/tokens.css` still show the pre-colour-stage values, so publishing doesn't regenerate them (question 3).
-
-### Figma
-
-- **Colour script:** run. The three new roles were created; `color/action-hover` in "Dark surface" is now `sand/50`.
-- **Typography script:** run. It added `font/size/label` and the `label` text style (Inter Medium, 120%, 6%, uppercase) and rebuilt "Type check" with the label row.
-- **Button script:** run.
-  - The "Button" page has the component set (Variant × Size × State, 22 variants). Every fill, stroke, padding, height, gap, radius and opacity is bound to a variable, and the text to `label`.
-  - The focus state is a wrapper with a stroke bound to `color/focus` and `focus/ring-width`, set off by `focus/ring-offset`; the link's ring is square, as in CSS.
-  - The "Button check" page shows every variant and state in a light and a dark frame: [`button-check.png`](button-check.png).
-- **Three variables made by hand, once:** `navy/200`, `border-width/control` and `opacity/disabled`. Tokens Studio writes these collections, but it wasn't available here. I created them exactly as its import would: the same collection, mode and variable names, scopes and hide-from-publishing, and opacity 60 because Figma reads opacity variables as 0–100 (I tested this). Your next Tokens Studio import of `tokens-studio.json` matches them by name and takes them over.
-
-### What to check, and where
-
-1. **Design system page → Components → Button:** the preview, then hover and tab through the live buttons in it.
-2. **Figma → "Button check":** every variant and state, light and dark. On the "Button" page, select a variant to see its bindings.
-3. **Repo:** open `docs/button-preview.html` locally; read `docs/button.md`.
+The "Button check" page is still rebuilt on every run; it holds only check instances.
 
 ## Questions
 
-1. **Import `tokens-studio.json` with Tokens Studio** (7 sets) once, so Tokens Studio owns `navy/200`, `border-width/control` and `opacity/disabled` again (decision 45). Nothing should change visually. Do this before the next token change?
-2. **The Button script replaces the component set on every run.** That's fine while nothing uses it. Once Figma designs use Button instances, replacing the set breaks their link.
-   - A: change the script to update the set in place before the first design uses it.
-   - B: keep replacing until then.
-   - **Recommendation: A**, as part of the next component, so Card can use Button safely.
-3. **The page's generated token card is stale** and the brand book still says "None is built yet" under Components.
-   - A: you open the page and save it once (regenerates the card), and I correct that one sentence.
-   - B: leave both.
-   - **Recommendation: A**: agents read `api/tokens.md` first.
-4. **Portfolio, second update** (decision 52): after `components/button` merges, re-sync `tokens.css`, then move the site's buttons onto `fds-button`, with the pause control's border on `border-width.control`. Brief it after the merges?
+1. **Next Tokens Studio import:** re-import `tokens-studio.json` once from `components/button` (or after it merges), so the `opacity/disabled` description loses its `&quot;`. Then run the colour script to remove the empty `shadow` collection again. No visual change.
