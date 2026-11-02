@@ -1,159 +1,93 @@
-# B-007 · Report
+# B-008 · Report
 
 ## A. Portfolio, branch `design-system/tokens`
 
-`1cc8a8c`, pushed, **not merged, not deployed**.
+`87dba22`, pushed, **not merged, not deployed**.
 
-| Task | Done |
+1. **Pause control:** built as proposed in B-007.
+   - **The control:** a 32px round button at the bottom right of the blob area, white fill, 1.5px `color-border-input` border, navy pause and play icons, the constant name "Pause background animation" with `aria-pressed`, a 48px hit area, the system's focus ring and no hover colour.
+   - **Blobs:** they drift continuously again (`infinite`).
+   - **Under reduced motion:** the control starts pressed and the blobs paused. The reduced-motion block leaves the blobs out (`*:not(.hero-blob)`), so pressing play runs them; every other animation stays off.
+   - **Below 900px:** the blobs and the control are hidden.
+   - **Tested in Chrome:** the toggle switches `animation-play-state` and `aria-pressed`; the hit area is 48px; with reduced motion emulated it starts paused, play starts the drift, and the "available" dot's pulse stays off.
+2. **Two colours:** the ghost section number is `color-surface-subtle`; the "available" dot is `color-success`, with its pulse glow kept as decoration.
+3. **`tokens.css` not re-synced.** Part B changes tokens the portfolio could use (`border-width.control`, the cream dark hover), but it's on `components/button`, not merged. A sync names a commit, so I'd sync after the merge. Until then the pause control's 1.5px border is a literal marked `No token yet`.
+4. **Screenshots:** `~/fajny-screenshots/after/home-1440.png` and `home-390.png` replaced, local only. The control is hidden at 390px, with the blobs.
+
+### Files to upload after the merge
+
+Relative to the site root:
+
+```
+index.html
+styles.css
+tokens.css            (new)
+password.html
+js/loader.js
+usecases/hawk-case-study.html
+usecases/curaay-case-study.html
+usecases/scouting-notes-case-study.html
+```
+
+`scripts/sync-tokens.sh` is for your machine only; it doesn't go on the server.
+
+## B. Button, branch `components/button` (from `main`)
+
+Pushed, **not merged**.
+
+| Commit | What |
 | --- | --- |
-| A1 hero blobs | Left as they are on the branch. Pause control proposed below. |
-| A2 allowed decoration | 15 literals marked `Decoration, not a token`: glows, blobs, translucent nav and menu backgrounds, two scrims, five tints and one glow on dark, the photo gradient and texture. An "Allowed literals" note at the top of `styles.css` (the portfolio has no README). Everything a user reads or uses keeps `No token`. |
-| A3 two solid colours | Proposed below, not changed. |
-| A4 Curaay chart | Applied (see below). |
-| A5 password h1 | Uses `heading`: 32px on a 390px screen, 52px at 1440px (before: 28→38px). |
-| A6 | Questions 2, 6 and 7 left as they were. |
-| A7 screenshots | `~/fajny-screenshots/after/`: `curaay-1440.png`, `curaay-390-part1/2.png` (replaced), `password-1440.png`, `password-390.png` (new). Home changed only in comments, so no new home shot. Local only. |
+| `8e0ae79` | Tokens: `label` role, `color-secondary`, `color-secondary-hover`, `color-text-on-secondary`, primitive navy-200, `color-action-hover-on-dark` → sand-50, `border-width.control` 1.5px, `opacity.disabled` 0.6; new contrast pairs |
+| `d3afb98` | `components/button.css`, `docs/button.md`, `docs/button-preview.html` (generated), `scripts/check-components.js` |
+| `85f8877` | Figma: `scripts/build-figma-button.js` → `tokens/figma/button-component.js`; Tokens Studio file gains `border-width` and `opacity`; README |
 
-### A1 · Pause control, proposal (not built)
+### Check results (`npm run build`)
 
-- **What:** a round icon button, pause icon (two bars) while the blobs move, play icon (triangle) while paused. Inline SVG in `currentColor`.
-- **Where:** bottom-right corner of the blob area (`.hero-blob-wrap`), so it sits next to what it controls. The blobs are hidden below 900px, and the control hides with them, because nothing moves there.
-- **Name and state:** a constant accessible name, `aria-label="Pause background animation"`, with `aria-pressed="true"` while paused. Only the icon changes; screen readers hear "Pause background animation, toggle button, pressed / not pressed".
-- **Look:** 32px circle (`space-8`), `radius-round`, fill `color-surface`, 1.5px border `color-border-input` (3.36:1 on the background, so the control's edge meets WCAG 1.4.11), icon `color-text` (11.27:1 on white). The fill keeps it readable over the gold and navy blobs.
-- **Hit area:** 48px, through the same transparent pseudo-element as the navigation button (decision 53).
-- **Focus:** the system's focus ring (`color-focus`, `focus.ring-width`, `focus.ring-offset`).
-- **Hover:** the system has no hover role for an icon button; see question 1.
-- **Behaviour:**
-  - A class on the hero sets `animation-play-state: paused` on the blobs, so they freeze where they are rather than jumping back.
-  - With `prefers-reduced-motion: reduce` it starts paused (`aria-pressed="true"`), and pressing play is the visitor's explicit choice. The reduced-motion block in `styles.css` would need an exception for the blobs while play is on.
-  - The blobs go back to `infinite` when this is built (decision 55).
-- **Tokens used:** `space-8`, `space-12` (hit area), `radius-round`, `color-surface`, `color-border-input`, `color-text`, the focus tokens, `duration-fast`. Missing: an icon-button hover (question 1).
+- **Contrast:** 46 pairs pass, two more than before: the secondary label on its fill (9.32:1) and on its hover (6.61:1). The dark primary label on its new hover is 10.01:1. A new guard fails if `color-secondary`, `color-secondary-hover` or `color-text-on-secondary` ever gets a dark-surface value.
+- **Zoom:** 10 sizes pass (label 13→14px, 1.08×).
+- **Type:** 10 roles complete.
+- **Components** (new): `components/*.css` may use only `--fds-*` tokens. Tested with a broken file: it caught a hex colour, a px value, a duration and a non-system variable.
+- **Figma Button:** the build fails if the Figma button and `button.css` use different colour roles. Tested with one role swapped: it named both sides.
+- **Figma files:** Tokens Studio file 42 tokens in 7 sets; colour script 25 roles; typography script 10 roles; Button script 22 variants.
 
-### A3 · The two solid colours outside the palette, proposal (not changed)
+### The component
 
-| Element | Now | Nearest role | Contrast on its background | Visual difference |
-| --- | --- | --- | --- | --- |
-| Ghost section number (case studies) | `#E6E0D6`, 1.17:1 on the background | **A: `color-surface-subtle`** (sand-100 `#EDE8E0`) | 1.08:1 | a touch fainter, closest in value |
-| | | B: `color-border` (sand-300 `#D9D1C5`) | 1.34:1 | a touch stronger |
-| "Available" dot (home hero tag) | `#22c55e`, 2.15:1 on the tag | **`color-success`** (green-700 `#176700`) | 6.66:1 | bright green becomes a deep green; the pulse glow stays a decoration literal |
+- **Classes:** `fds-button` with `--primary`, `--secondary` and `--link`; `--nav` for the navigation size (32px high, `::after` hit area to 48px).
+- **States:** from the element itself: `:hover`, `:active`, `:focus-visible`, `aria-disabled="true"` (or `:disabled`) and `data-loading`. Loading keeps the default look.
+- **Dark surfaces:** the colour roles switch the button inside `.fds-surface-dark`.
+- **Motion:** colour transitions only, nothing moves, so reduced motion needs no exception.
 
-The ghost number is pure decoration, so its contrast is exempt; `color-surface-subtle` is the closest value (recommendation: A). The dot is the only green on the page, and `color-success` is the only green role. It passes 1.4.11 too, although the text next to it already says "Open to…".
+### Design system page
 
-### A4 · Curaay chart, applied
+https://claude.ai/artifact/Edn3F15g33yNgdEDZNNR63, version 24: `components/Button/preview.html` (every variant and state on light and dark, built from the repo) and `components/Button/README.md` (the guidelines from `docs/button.md`), plus the `lastChange` note. Editing stays off (decision 50).
 
-- **Competitors** (ChatGPT, Doctolib, Arzttermine, Jameda, Ada Health): fill `color-surface-subtle`, 1.5px outline `color-border-input`, label `color-text`. The outline is 3.36:1 on the background and 3.12:1 on the tinted quadrant (1.4.11 needs 3:1); the label is 9.24:1.
-- **Curaay:** fill `color-surface-dark`, label `color-text` through `.fds-surface-dark` (10.01:1).
+**The generated token card is still stale:** `project/api/tokens.md` and `project/tokens.css` still show the pre-colour-stage values, so publishing doesn't regenerate them (question 3).
 
-`color-border-input` is the only neutral role that gives a bubble a visible edge (3:1) on both the background and the tinted quadrant. A filled stone bubble would need white or navy text, which reach only 3.78:1 or 2.98:1.
+### Figma
 
-## B. Button, values (proposal only, nothing added)
+- **Colour script:** run. The three new roles were created; `color/action-hover` in "Dark surface" is now `sand/50`.
+- **Typography script:** run. It added `font/size/label` and the `label` text style (Inter Medium, 120%, 6%, uppercase) and rebuilt "Type check" with the label row.
+- **Button script:** run.
+  - The "Button" page has the component set (Variant × Size × State, 22 variants). Every fill, stroke, padding, height, gap, radius and opacity is bound to a variable, and the text to `label`.
+  - The focus state is a wrapper with a stroke bound to `color/focus` and `focus/ring-width`, set off by `focus/ring-offset`; the link's ring is square, as in CSS.
+  - The "Button check" page shows every variant and state in a light and a dark frame: [`button-check.png`](button-check.png).
+- **Three variables made by hand, once:** `navy/200`, `border-width/control` and `opacity/disabled`. Tokens Studio writes these collections, but it wasn't available here. I created them exactly as its import would: the same collection, mode and variable names, scopes and hide-from-publishing, and opacity 60 because Figma reads opacity variables as 0–100 (I tested this). Your next Tokens Studio import of `tokens-studio.json` matches them by name and takes them over.
 
-### Type role `label`
+### What to check, and where
 
-| Property | Value | Note |
-| --- | --- | --- |
-| `font.size.label` | `clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)`, 13px on a 390px screen to 14px at 1280px | max/min 1.08, well within 2.5× (WCAG 1.4.4) |
-| `font.line-height.label` | 1.2 | single-line controls; the height comes from `min-height` |
-| `font.weight.label` | 500 | decision 53 |
-| `font.letter-spacing.label` | 0.06em | decision 53 |
-| `font.text-transform.label` | uppercase | decision 53 |
-| `font.family.label` | `{font.typeface.inter}` | |
-
-The same size covers buttons and navigation links (question 2). Today nav links are 13px and buttons 13–15px; with this size, nav links keep their size and the hero button drops 1px on desktop.
-
-### New and changed colour roles
-
-| Role | Value | Contrast | Note |
-| --- | --- | --- | --- |
-| `color-secondary` (fill) | `{navy.100}` | | doesn't switch on dark (question 3) |
-| `color-text-on-secondary` | `{navy.900}` | 9.32:1 on `color-secondary`, on every surface | doesn't switch; decision 53 |
-| `color-secondary-hover` | `{navy.300}` | 4.54:1 for the navy label | question 5 |
-| `color-action-hover-on-dark` (exists, value changes) | `{sand.50}` instead of `{gold.500}` | 10.01:1 for the navy label; the hover differs from the gold rest at 1.64:1 | question 4 |
-| secondary border | `color-border-highlight` (navy-300), 1.5px | 2.21:1 on background, 2.48 on surface, 2.04 on surface-subtle, 4.54 on navy | confirmed as decided; width in question 6 |
-| `opacity.disabled` | 0.6 | exempt (WCAG 1.4.3); see below | question 7 |
-
-**Disabled at 0.6:**
-- **Light surface:** the navy primary becomes a greyed blue (`≈#72839E`), the secondary nearly white.
-- **Dark surface:** the gold primary becomes a muted olive (`≈#968658`).
-
-The label stays readable (about 3.1–3.4:1), but the button clearly reads as off. The site uses 0.6–0.65 today.
-
-### Sizes
-
-| | Main buttons (`primary`, `secondary`) | Navigation button | `link` |
-| --- | --- | --- | --- |
-| Visual height | `min-height: space-12` (48px) | `min-height: space-8` (32px) | `min-height: space-6` (24px) |
-| Padding | `0 space-8` (32px) | `0 space-6` (24px) | none |
-| Hit area | 48px | 48px: a transparent `::after` at `inset: calc(-1 * space-2) 0` | 24px (WCAG 2.5.8) |
-| Gap to an icon | `space-2` | `space-2` | `space-2` |
-| Radius | `radius-pill` | `radius-pill` | — |
-
-### States, light surface
-
-| State | `primary` | `secondary` | `link` |
-| --- | --- | --- | --- |
-| default | fill `color-action` (navy-900), label `color-text-on-action` (sand-50) · 10.01 | fill `color-secondary`, border `color-border-highlight`, label `color-text-on-secondary` · 9.32 | `color-text-muted` · 5.25 / 5.91 / 4.85 |
-| hover | fill `color-action-hover` (navy-700) · 7.36 | fill `color-secondary-hover` · 4.54 | `color-text` · 10.01 |
-| focus | ring `color-focus` (navy), 2px, offset 3px | same | same |
-| active | as hover | as hover | as hover |
-| disabled | `opacity.disabled`, `aria-disabled="true"`, no hover | same | — (a link can't be disabled) |
-| loading | default look, label → progress text, `aria-disabled="true"`, `role="status"` announces it | same | — |
-
-### States, dark surface (`.fds-surface-dark`)
-
-| State | `primary` (switches by itself) | `secondary` (doesn't switch) | `link` |
-| --- | --- | --- | --- |
-| default | fill `color-action` → gold-500, label → navy (`color-text-on-accent`) · 6.11 | as on light; fill vs navy section 9.32 | `color-text-muted` → sand-400 · 6.25 |
-| hover | fill `color-action-hover` → sand-50 · 10.01 | as on light · 4.54 | `color-text` → sand-50 · 10.01 |
-| focus | ring `color-focus` → gold, 6.11 on navy | same | same |
-| active | as hover | as hover | as hover |
-| disabled | `opacity.disabled` · gold becomes olive | same | — |
-| loading | as on light | same | — |
-
-Transitions: `duration-fast` with `easing-standard` for colour; no movement on hover.
+1. **Design system page → Components → Button:** the preview, then hover and tab through the live buttons in it.
+2. **Figma → "Button check":** every variant and state, light and dark. On the "Button" page, select a variant to see its bindings.
+3. **Repo:** open `docs/button-preview.html` locally; read `docs/button.md`.
 
 ## Questions
 
-1. **Hover for the pause control (an icon button):** no role fits.
-   - A: no hover change; the cursor and the focus ring are enough for a 32px control that's rarely used.
-   - B: fill `color-secondary-hover` (navy-300) on hover, borrowing the Button role.
-   - **Recommendation: A**: an icon button is a separate component; borrowing a Button role blurs it.
-
-2. **One `label` size for buttons and navigation links?**
-   - A: yes, 13→14px for both.
-   - B: buttons 14→15px, links 13→14px (two roles).
-   - **Recommendation: A**: decision 53 says one role for both, and nav links keep their current size.
-
-3. **Secondary fill: its own role or `color-surface-highlight`?** Same value (navy-100).
-   - A: a new role `color-secondary`.
-   - B: reuse `color-surface-highlight`.
-   - **Recommendation: A**: one name per purpose (like `border-rule` and `border-strong`). If the Highlight colour ever changes, the button doesn't change with it.
-
-4. **Dark-surface primary hover** (`color-action-hover-on-dark`):
-   - A: sand-50, an existing value: gold turns cream, label 10.01:1.
-   - B: a new lighter gold primitive (e.g. `#F2D38C`): label 7.76:1, stays gold.
-   - **Recommendation: A**: existing tokens first. On navy the cream is a clear change, and the label gains contrast.
-
-5. **Secondary hover** (`color-secondary-hover`):
-   - A: navy-300, an existing value: label 4.54:1, just over 4.5. The border merges into the fill on hover.
-   - B: a new navy-200 primitive (e.g. `#B3C8E6`): label 6.61:1, and the border stays visible.
-   - **Recommendation: B**: 4.54 leaves no margin, and a hover that hides the border looks like a different button. It's the only new value in this proposal.
-
-6. **Secondary border width:**
-   - A: 1.5px, the width of the site's other control borders, as a new token `border-width.control`.
-   - B: 1px literal.
-   - **Recommendation: A**: at 2.2:1 a 1px line nearly disappears on beige. A token, because the Input and the pause control use the same 1.5px.
-
-7. **Disabled opacity:**
-   - A: 0.6 (today's look).
-   - B: 0.5.
-   - **Recommendation: A**: it reads clearly as off on both surfaces and matches what visitors see today.
-
-8. **Loading look:**
-   - A: the default fill with the progress text ("Sending…").
-   - B: the disabled look.
-   - **Recommendation: A**: the button is busy, not off; dimming it makes the wait look like an error.
-
-9. **The two solid colours (A3):**
-   - Ghost number: `color-surface-subtle` (A) or `color-border` (B). Recommendation: A.
-   - Green dot: `color-success`. Recommendation: yes.
+1. **Import `tokens-studio.json` with Tokens Studio** (7 sets) once, so Tokens Studio owns `navy/200`, `border-width/control` and `opacity/disabled` again (decision 45). Nothing should change visually. Do this before the next token change?
+2. **The Button script replaces the component set on every run.** That's fine while nothing uses it. Once Figma designs use Button instances, replacing the set breaks their link.
+   - A: change the script to update the set in place before the first design uses it.
+   - B: keep replacing until then.
+   - **Recommendation: A**, as part of the next component, so Card can use Button safely.
+3. **The page's generated token card is stale** and the brand book still says "None is built yet" under Components.
+   - A: you open the page and save it once (regenerates the card), and I correct that one sentence.
+   - B: leave both.
+   - **Recommendation: A**: agents read `api/tokens.md` first.
+4. **Portfolio, second update** (decision 52): after `components/button` merges, re-sync `tokens.css`, then move the site's buttons onto `fds-button`, with the pause control's border on `border-width.control`. Brief it after the merges?
