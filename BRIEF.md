@@ -1,32 +1,34 @@
-# B-006 · Close Figma part 2, then migrate the portfolio to the tokens
+# B-007 · Finish the portfolio token update, then the Button values
 
-## Owner's answers
+## Owner's review of B-006
 
-- **Type check without gold:** approved. Figma part 2 is done.
-- **Decision 52** (in `DECISIONS.md` on `figma/modes`, `b8f99f8`): the portfolio starts using the system now, in two updates. This brief is the first: **tokens only**. Components (Button first) come in a second update. The portfolio gets a **copy** of the built `tokens.css`, synced by a script. You do the migration on a branch in the portfolio repo; the owner checks it locally and uploads it to the server herself.
-- **The Button questions from B-005 are still open.** Don't build the Button. Existing buttons only get token values (see task 3).
+The migrated site looks good. Every judgement call in question 5 stays. The other answers are decision 54 (`DECISIONS.md` on `main`, pulled into the system repo). Button details are decision 53.
 
 ## Tasks
 
-### A. Design system repo
+### A. Portfolio, branch `design-system/tokens`
 
-1. Merge `figma/modes` into `main`, push, delete the local branch with `git branch -d`.
+1. **Hero blobs:** each drifts once in about 4 seconds, then rests (decision 42). Off under reduced motion, as now.
+2. **Allowed decoration:** the see-through colours (glows, blobs, translucent nav and menu backgrounds, scrims, tints on dark) stay as literals. Mark them `Decoration, not a token` in the code instead of `No token`, and add a short "Allowed literals" note to the portfolio's README or the top of `styles.css`.
+3. **The two solid colours outside the palette:** the ghost section number `#E6E0D6` and the green "available" dot. Propose the nearest existing role for each in the report, with the contrast or the visual difference. Don't change them yet.
+4. **Curaay chart:** competitors in a neutral palette role, Curaay in navy. Propose which neutral role in the report, then apply it.
+5. **Password page h1:** `heading`.
+6. Leave everything else in questions 2, 6 and 7 as it is.
+7. Fresh "after" screenshots of the changed pages only, to `~/fajny-screenshots/after/`. Local only, as before.
+8. Commit and push the branch. **Don't merge, don't deploy.** After the owner's check, this branch is merged and uploaded.
 
-### B. Portfolio repo (`adriadi/portfolio`)
+### B. Button, values only (system repo, no code yet)
 
-2. **Before anything else, screenshots of the site as it is today**: home and the three case studies, 1440px and 390px, full page. Save them **outside every repo** (e.g. `~/fajny-screenshots/before/`). **Never push them anywhere:** two case studies are password-protected and must stay private. Don't put the password in any file or report.
-3. **Branch `design-system/tokens` from the portfolio's `main`.** Don't touch the tag `before-system` or the `test/*` branches.
-4. **Sync script:** a small script in the portfolio repo that copies `tokens/css/tokens.css` from a local clone of the design system into the portfolio, with a first-line comment naming the system's commit. The site links that file before `styles.css`.
-5. **Migrate every page** (home, the three case studies, the password page) to the tokens:
-   - Colours: every colour becomes a semantic role (`--fds-color-*`). Old variables and their aliases (`--accent`, `--bg`/`--beige`, `--ink`, …) go. Project colours for Hawk and Curaay go too (decision 16: one palette). Dark blocks, including the tension block, the footer and dark sections, use `.fds-surface-dark` (decisions 30, 33).
-   - Typography: every text uses one of the 9 roles, all five properties (`--fds-font-<property>-<role>`). Gold emphasis only in display, title and heading (decision 28).
-   - Spacing, radius, shadow, motion: tokens only (decisions 38–41). Pill radius for every button (decision 39); otherwise existing buttons keep their shape and just take token values.
-   - Accessibility from the audit: focus ring from the focus tokens on every interactive element, labels linked to inputs, placeholder and error colours from the roles, reduced motion everywhere (decision 41), and every looping animation stops within 5 seconds (decision 42).
-   - **Don't decide anything new.** If an element doesn't fit a role or token, leave it as it is and list it in the report as a question.
-6. **Measure** with the same `measure.sh` as the "before" test, on `before-system` and on the new branch: hardcoded values, `var()` uses, font sizes, colours. These numbers go into the case study.
-7. **Screenshots after**, same pages and widths, to `~/fajny-screenshots/after/`. Same rule: local only.
-8. Commit and push `design-system/tokens`. **Don't merge, don't deploy.**
+Decision 53 fixes the structure. Propose the values, from existing tokens where possible:
+
+- `label` type role: size (mobile and desktop, `clamp()` in rem, within the 2.5× rule), line height, weight 500, letter spacing 0.06em, uppercase; and whether navigation links use the same size as buttons.
+- Text role for `secondary` that stays navy on every surface: name and value, contrast on `surface-highlight` on both surfaces.
+- `secondary` border: confirm `color-border-highlight`, width (1px or 1.5px).
+- Two hover roles: dark-surface primary hover, and secondary hover. Names, values, and contrast of the text on each.
+- Disabled opacity: name and value; contrast is exempt, but say how it looks on both surfaces.
+- Navigation button: visual height and padding, and the 48px hit area.
+- The full state table for each variant on both surfaces, using only these tokens.
 
 ## Report
 
-`REPORT.md` with the ID `B-006`. Keep it public-safe: no password, no content from the protected case studies beyond element names. Include: commits, the sync script, what changed per page, the measurements before/after as a table, the elements that didn't fit (numbered questions with options and a recommendation), the path to the screenshots on the owner's machine, and how the owner runs the site locally to check it. Push to `handoff` and stop.
+`REPORT.md` with the ID `B-007`: commits for A, the proposals for A3 and A4, the Button values for B as tables, and numbered questions. Push to `handoff` and stop.
