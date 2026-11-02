@@ -1,75 +1,46 @@
-# B-003 · Report
+# B-004 · Report
 
-## Commits on `figma/modes` (pushed, not merged)
+## Commit on `figma/modes` (pushed, not merged)
 
-| Commit | What |
-| --- | --- |
-| `6fc8ecc` | Type tokens: `font.typeface.syne` / `font.typeface.inter`, `font.family.<role>` for all 9 roles, `font.text-transform.overline`, updated descriptions, `scripts/check-type.js` |
-| `0822644` | `scripts/build-figma-type.js` and the generated `tokens/figma/typography-collection.js`, `package.json` (type check and Figma step in the build), README (family rule, type check, Figma procedure and limitations) |
+`9844140` "Rebuild the Figma Type check page from the typography script": `scripts/build-figma-type.js`, the generated `tokens/figma/typography-collection.js`, and one sentence in the README procedure (step 4 now says it rebuilds the page).
 
-The `package.json` line that wires `check-type.js` into the build landed in the second commit, not the first, so `6fc8ecc` on its own has the script but doesn't run it. The branch tip is complete; I didn't rewrite history.
+## What changed
 
-## 1. Type tokens
+- **The page is part of the typography script** (decision 44). Each run of `typography-collection.js` writes the collection and the text styles as before, then clears the "Type check" page and builds it again. Run on the Figma file: 0 variables and 0 styles created (all existed), page rebuilt.
+- **Four frames:** `Mobile · Light surface` (390px) and `Desktop · Light surface` (1280px) on `color/background` in color mode "Light surface"; `Mobile · Dark surface` and `Desktop · Dark surface` on `color/surface-dark` in "Dark surface". Each frame also sets its typography mode.
+- **Each role:** its name in the `overline` style and `color/text-muted`, then the sample in the role's style and `color/text`. In display, title and heading, the gold words are `color/text-emphasis`, upright (decisions 28 and 47). All fills are bound to the colour roles, so they switch with the mode: on the dark frames the text is sand, the label sand-400, the gold gold-500.
+- **Build checks added:** the build fails if a role has no specimen text, if an emphasis word isn't in its text, or if emphasis is set on a role other than display, title and heading.
 
-- Added exactly as proposed in B-002. CSS: `--fds-font-typeface-syne`, `--fds-font-typeface-inter`, `--fds-font-family-<role>: var(--fds-font-typeface-…)` for all 9 roles, `--fds-font-text-transform-overline: uppercase`. `--fds-font-family-display` and `--fds-font-family-body` keep their names and resolve to the same values as before.
-- **The token without `$type`:** Style Dictionary builds it with no warning or error, and the contrast and zoom checks pass. No type was added.
-- **Build results:** contrast 44 pairs pass; zoom 9 sizes pass; type 9 roles pass; tokens.css, tokens-studio.json (39 tokens, 5 sets), color-collection.js (22 roles), typography-collection.js (9 roles) all written.
-- **Check tested by breaking it:** with `font.family.small` removed and `font.family.overline` set to a raw list, the build stopped:
-  ```
-  Type check failed (2):
-    ✗ small has no font.family.small token
-    ✗ font.family.overline is ["Inter","sans-serif"]: it must be an alias of a font.typeface.* token
-  ```
-  `tokens.css` was left untouched. Tokens restored, build passes.
+Read back from Figma: every sample wraps to at least two lines in both Mobile frames (display 3, title 3, heading 2, subheading 3, card-title 2, lead 4, body 4, small 3, overline 2), and every fill is bound to the expected role.
 
-## 2. Design system page
+## Screenshot
 
-https://claude.ai/artifact/Edn3F15g33yNgdEDZNNR63, version 20. Changed only the typography parts:
-- Each type style's note ends with "Family: fds-font-family-<role> (Syne|Inter)."; overline's note says "Uppercase through fds-font-text-transform-overline."
-- The brand book's Typography section: two typefaces named by their tokens, "five tokens with its name" including `fds-font-family-<role>`, overline's `fds-font-text-transform-overline`, and a Family column in the role table.
-- `lastChange` note updated. Nothing else changed (the other token families are byte-identical).
+[`type-check.png`](type-check.png) on this branch (from `get_screenshot`, 1528 × 2400). Top row: light surface, Mobile and Desktop. Bottom row: dark surface.
 
-## 3. Figma typography
+## Where each sample text came from
 
-Generated script run on the Figma file through MCP. Binding font size to a variable on text styles **works** in `use_figma`: all 9 styles report `boundVariables.fontSize` = their `font/size/<role>` variable. Nothing failed to bind.
+All from `adriadi/portfolio`, branch `main` (`f143a85`), read with `git show`; the local working tree (on `test/before-2`) wasn't touched.
 
-Read back from Figma (collection `typography`, modes `Mobile` and `Desktop`, 9 variables, scope `FONT_SIZE`):
+| Role | Text | Source |
+| --- | --- | --- |
+| display | Hi, I am **Adrianna.** I am empowering Design with **AI.** | `index.html`, home hero h1 (gold words as on the site) |
+| title | Hundreds of criminal patterns. None had a **paper trail.** | `usecases/hawk-case-study.html`, page title h1 |
+| heading | Let's make something **good.** | `index.html`, contact section h2 (gold word as on the site) |
+| subheading | The system had 247 patterns. Not one knew where it came from. | `usecases/hawk-case-study.html`, h3 |
+| card-title | Can I ask this video a question? Yes, you can. | `index.html`, article card title |
+| lead | Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics. | `usecases/curaay-case-study.html`, overview paragraph |
+| body | The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own. | `usecases/hawk-case-study.html`, overview paragraph |
+| small | Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away. | `usecases/hawk-case-study.html`, image caption |
+| overline | Typologies in the library - each one now traceable to its exact institutional origin | `usecases/hawk-case-study.html`, metric label |
 
-| Role | Family | Mobile | Desktop | Line height | Letter spacing | Text case |
-| --- | --- | --- | --- | --- | --- | --- |
-| display | Syne Medium | 40 | 96 | 105% | −3% | original |
-| title | Syne Medium | 36 | 72 | 110% | −2.5% | original |
-| heading | Syne Medium | 32 | 52 | 110% | −2.5% | original |
-| subheading | Syne Medium | 22 | 30 | 120% | 0% | original |
-| card-title | Syne Medium | 18 | 22 | 130% | 0% | original |
-| lead | Inter Light | 15 | 18 | 165% | 0% | original |
-| body | Inter Regular | 15 | 16 | 170% | 0% | original |
-| small | Inter Regular | 13 | 14 | 150% | 0% | original |
-| overline | Inter Semi Bold | 11 | 12 | 130% | 12% | UPPER |
-
-Figma stores line heights as floats (e.g. 104.99999523%); it shows them as 105%.
-
-**What can't be bound:** nothing in this plan. Line height and letter spacing are percentages by decision 47, not bindings. Family, weight and text case are set on the style from the tokens.
-
-Other collections unchanged: primitives 16, spacing 13, radius 4, focus 2, color 22 (Light surface | Dark surface). New: typography 9 (Mobile | Desktop).
-
-**"Type check" page:** two frames side by side, `Mobile (390px)` with the typography mode set to Mobile and `Desktop (1280px)` set to Desktop, each with the 9 text styles showing their role name. Read back: the Mobile frame resolves 40, 36, 32, 22, 18, 15, 15, 13, 11 and the Desktop frame 96, 72, 52, 30, 22, 18, 16, 14, 12. The page was made with a one-off `use_figma` call, not by the generated script, so it isn't rebuilt after a token change; its text styles update on their own.
-
-## 4. README procedure
-
-Step 4 added: run `tokens/figma/typography-collection.js` after the color script. The writer table lists the typography collection and text styles. A short "known limitations" list: sizes only at 390 and 1280px, gold emphasis upright (no Syne italic), px at a 16px root and no fallback fonts in Figma.
+Two notes on the choices:
+- **title:** on the site the gold part is "a paper trail." (three words). The brief allows one or two, so only "paper trail." is gold.
+- **overline:** the site's real eyebrows ("Overview", "The core gap") are too short to wrap on Mobile, so the sample is the Hawk metric label, which uses the same label style on the site.
 
 ## What to check, and where
 
-1. **Figma, page "Type check":** the two frames. Each role's size, line height and tracking; overline in uppercase; Syne for the first five, Inter for the rest.
-2. **Figma, Local variables → `typography`:** 9 `font/size/<role>` variables with Mobile and Desktop values as in the table.
-3. **Figma, text styles panel:** 9 styles named by role; click one to see its size bound to the variable.
-4. **Design system page, Typography:** the family per role in the notes and the brand book table.
-5. **Repo:** `tokens/typography.tokens.json` and the built `tokens/css/tokens.css` on `figma/modes`.
+Figma, page **"Type check"**: line height per role (body at 170% against display at 105%), gold only in the first three roles, and the dark frames switching every colour.
 
 ## Questions
 
-1. **The page's generated token card is out of date.** `project/api/tokens.md` and `project/tokens.css` on the design system page still show values from before the colour stage (e.g. `heading-md`, `radius-xl`, `shadow-md` "Primary button at rest"), while `project/tokens.json` is current. The type regenerates them "on every save and build"; publishing data files from here doesn't. Agents reading the system are told to read `api/tokens.md`, so they get old values.
-   - A: you open the page and save it once, which should regenerate both files. Then I read them back and confirm.
-   - B: leave it until the page is next saved.
-   - **Recommendation: A.** It's one click and stops agents reading stale values; I didn't touch these files because B-003 allowed nothing else on the page.
+1. **Still open from B-003:** the design system page's generated token card (`project/api/tokens.md`, `project/tokens.css`) shows values from before the colour stage. Saving the page once should regenerate it; I recommend doing that before Figma part 2 is merged, and I'll read it back.
