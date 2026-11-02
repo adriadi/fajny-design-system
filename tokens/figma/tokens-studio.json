@@ -471,7 +471,7 @@
       "disabled": {
         "$value": 0.6,
         "$type": "opacity",
-        "$description": "A disabled control, with aria-disabled=\"true\" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3).",
+        "$description": "A disabled control, with aria-disabled=“true” so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3).",
         "$extensions": {
           "com.figma.scopes": [
             "OPACITY"

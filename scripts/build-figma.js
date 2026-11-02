@@ -17,8 +17,8 @@ const isToken = (node) => node && typeof node === 'object' && '$value' in node;
 
 // Copies a group, writing $type on every token (inherited from its groups in the source) and
 // dropping group descriptions. `keep(name, token)` decides which tokens go in.
-// Descriptions get typographic apostrophes (’): Tokens Studio writes a straight one into Figma
-// as &#39;.
+// Descriptions get typographic apostrophes (’) and quotes (“ ”): Tokens Studio writes straight
+// ones into Figma as &#39; and &quot;.
 function copyGroup(group, keep = () => true, inheritedType) {
   const type = group.$type ?? inheritedType;
   const out = {};
@@ -27,7 +27,7 @@ function copyGroup(group, keep = () => true, inheritedType) {
     if (isToken(node)) {
       if (!keep(name, node)) continue;
       out[name] = { $value: node.$value, $type: node.$type ?? type };
-      if (node.$description) out[name].$description = node.$description.replaceAll("'", '’');
+      if (node.$description) out[name].$description = node.$description.replaceAll("'", '’').replace(/"([^"]*)"/g, '“$1”');
     } else {
       out[name] = copyGroup(node, keep, type);
     }
