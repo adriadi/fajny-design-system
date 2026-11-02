@@ -1,34 +1,28 @@
-# B-007 · Finish the portfolio token update, then the Button values
+# B-008 · Finish the portfolio, then build the Button
 
-## Owner's review of B-006
+## Owner's answers to B-007
 
-The migrated site looks good. Every judgement call in question 5 stays. The other answers are decision 54 (`DECISIONS.md` on `main`, pulled into the system repo). Button details are decision 53.
+The pause control proposal is approved as written. Questions 1–9: all as you recommended. Recorded as decision 56 in `DECISIONS.md` on `main` (`git pull` first).
 
-## Tasks
+## A. Portfolio, branch `design-system/tokens` (do this first)
 
-### A. Portfolio, branch `design-system/tokens`
+1. **Pause control:** build it exactly as proposed in B-007 A1, and put the blobs back to continuous motion (decision 55). Under reduced motion they start paused; pressing play is the visitor's choice, so the reduced-motion block needs the exception you described.
+2. **Two colours:** ghost section number → `color-surface-subtle`; "available" dot → `color-success` (the pulse glow stays a decoration literal).
+3. Re-sync `tokens.css` only if part B changed tokens the portfolio uses, and say so.
+4. Screenshots of the home page (1440 and 390), local only, as before.
+5. Commit and push. **Don't merge, don't deploy.** In the report, list the files the owner has to upload to the server after the merge (she uploads by hand), relative to the site root.
 
-1. **Hero blobs:** the owner keeps the continuous drift, with a pause control in the hero (WCAG 2.2.2, decision 55). **Don't build it yet.** Leave the blobs as they are on the branch, and propose the pause control in the report: position, icon or text, its accessible name and `aria-pressed` state, focus, how it looks on the hero, which existing tokens it uses (or which are missing), and that it also starts paused when `prefers-reduced-motion: reduce` is set.
-2. **Allowed decoration:** the see-through colours (glows, blobs, translucent nav and menu backgrounds, scrims, tints on dark) stay as literals. Mark them `Decoration, not a token` in the code instead of `No token`, and add a short "Allowed literals" note to the portfolio's README or the top of `styles.css`.
-3. **The two solid colours outside the palette:** the ghost section number `#E6E0D6` and the green "available" dot. Propose the nearest existing role for each in the report, with the contrast or the visual difference. Don't change them yet.
-4. **Curaay chart:** competitors in a neutral palette role, Curaay in navy. Propose which neutral role in the report, then apply it.
-5. **Password page h1:** `heading`.
-6. Leave everything else in questions 2, 6 and 7 as it is.
-7. Fresh "after" screenshots of the changed pages only, to `~/fajny-screenshots/after/`. Local only, as before.
-8. Commit and push the branch. **Don't merge, don't deploy.** After the owner's check, this branch is merged and uploaded.
+## B. Button (system repo, new branch `components/button` from `main`)
 
-### B. Button, values only (system repo, no code yet)
+Everything per decisions 51, 53 and 56.
 
-Decision 53 fixes the structure. Propose the values, from existing tokens where possible:
-
-- `label` type role: size (mobile and desktop, `clamp()` in rem, within the 2.5× rule), line height, weight 500, letter spacing 0.06em, uppercase; and whether navigation links use the same size as buttons.
-- Text role for `secondary` that stays navy on every surface: name and value, contrast on `surface-highlight` on both surfaces.
-- `secondary` border: confirm `color-border-highlight`, width (1px or 1.5px).
-- Two hover roles: dark-surface primary hover, and secondary hover. Names, values, and contrast of the text on each.
-- Disabled opacity: name and value; contrast is exempt, but say how it looks on both surfaces.
-- Navigation button: visual height and padding, and the 48px hit area.
-- The full state table for each variant on both surfaces, using only these tokens.
+1. **Tokens:** the `label` role (with its family and text transform), `color-secondary`, `color-text-on-secondary`, `color-secondary-hover`, the new primitive navy-200, the new value of `color-action-hover-on-dark`, `border-width.control`, `opacity.disabled`. Every check passes; add the new pairs to the contrast check (secondary label on secondary fill and on its hover, on both surfaces; dark primary label on its hover).
+2. **Component in code:** `fds-button` with `--primary`, `--secondary`, `--link`, all states from the B-007 tables on both surfaces, the navigation size, loading with `role="status"`, `aria-disabled`. Uses only tokens. Reduced motion respected.
+3. **Docs:** `docs/button.md`: when to use each variant and when not, `<a>` vs `<button>`, states, accessibility notes (focus, hit area, disabled, loading), do and don't, copy-paste HTML.
+4. **Design system page:** add the Button component with a live preview of all variants and states on light and dark, and its guidelines. Nothing else on the page. If the page's generated token card still shows old values afterwards, say so.
+5. **Figma (MCP):** a Button component set with variants for variant × state, bound to the variables and the `label` text style, so a frame's "Dark surface" mode switches it. Make it part of a repo script, like typography (decisions 44, 45). Add a "Button check" page with every variant and state, light and dark.
+6. Commit and push `components/button`. **Don't merge.**
 
 ## Report
 
-`REPORT.md` with the ID `B-007`: commits for A, the proposals for A3 and A4, the Button values for B as tables, and numbered questions. Push to `handoff` and stop.
+`REPORT.md` with the ID `B-008`: part A first (commits, upload list), then part B (commits, check results, what the owner should check and where: the preview page and the Figma "Button check" page, screenshot of that page on this branch as `button-check.png`). Numbered questions if any. Push to `handoff` and stop.
