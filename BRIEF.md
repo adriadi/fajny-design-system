@@ -8,7 +8,7 @@ The migrated site looks good. Every judgement call in question 5 stays. The othe
 
 ### A. Portfolio, branch `design-system/tokens`
 
-1. **Hero blobs:** each drifts once in about 4 seconds, then rests (decision 42). Off under reduced motion, as now.
+1. **Hero blobs:** the owner keeps the continuous drift, with a pause control in the hero (WCAG 2.2.2, decision 55). **Don't build it yet.** Leave the blobs as they are on the branch, and propose the pause control in the report: position, icon or text, its accessible name and `aria-pressed` state, focus, how it looks on the hero, which existing tokens it uses (or which are missing), and that it also starts paused when `prefers-reduced-motion: reduce` is set.
 2. **Allowed decoration:** the see-through colours (glows, blobs, translucent nav and menu backgrounds, scrims, tints on dark) stay as literals. Mark them `Decoration, not a token` in the code instead of `No token`, and add a short "Allowed literals" note to the portfolio's README or the top of `styles.css`.
 3. **The two solid colours outside the palette:** the ghost section number `#E6E0D6` and the green "available" dot. Propose the nearest existing role for each in the report, with the contrast or the visual difference. Don't change them yet.
 4. **Curaay chart:** competitors in a neutral palette role, Curaay in navy. Propose which neutral role in the report, then apply it.
