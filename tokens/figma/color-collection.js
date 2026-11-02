@@ -154,7 +154,7 @@ const PLAN = {
       "scopes": [
         "STROKE_COLOR"
       ],
-      "description": "The light Highlight’s left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight."
+      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
     },
     {
       "name": "color/focus",
@@ -178,12 +178,41 @@ const PLAN = {
     {
       "name": "color/action-hover",
       "light": "navy/700",
-      "dark": "gold/500",
+      "dark": "sand/50",
       "scopes": [
         "FRAME_FILL",
         "SHAPE_FILL"
       ],
       "description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark."
+    },
+    {
+      "name": "color/secondary",
+      "light": "navy/100",
+      "dark": "navy/100",
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "description": "Secondary button fill. The same on every surface: it doesn’t switch inside a dark surface, so its label stays navy. Border: color-border-highlight."
+    },
+    {
+      "name": "color/secondary-hover",
+      "light": "navy/200",
+      "dark": "navy/200",
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "description": "Secondary button fill on hover and while pressed. The same on every surface."
+    },
+    {
+      "name": "color/text-on-secondary",
+      "light": "navy/900",
+      "dark": "navy/900",
+      "scopes": [
+        "TEXT_FILL"
+      ],
+      "description": "Label of the secondary button, on color-secondary and color-secondary-hover. Always navy, on every surface: 9.32:1 and 6.61:1."
     },
     {
       "name": "color/accent",

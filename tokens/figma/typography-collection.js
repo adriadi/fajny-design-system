@@ -125,6 +125,19 @@ const PLAN = {
       "textCase": "UPPER",
       "description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline.",
       "sample": "Typologies in the library - each one now traceable to its exact institutional origin"
+    },
+    {
+      "role": "label",
+      "variable": "font/size/label",
+      "mobile": 13,
+      "desktop": 14,
+      "family": "Inter",
+      "style": "Medium",
+      "lineHeight": 120,
+      "letterSpacing": 6,
+      "textCase": "UPPER",
+      "description": "13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label.",
+      "sample": "View my work"
     }
   ],
   "page": {

@@ -24,8 +24,9 @@ const STYLE_NAMES = {
 // CSS text-transform -> Figma textCase.
 const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
 
-// Specimen text for the "Type check" page, from the portfolio (adriadi/portfolio, main). Each one
-// wraps to at least two lines in the Mobile frame and is set in its role's text colour only.
+// Specimen text for the "Type check" page, from the portfolio (adriadi/portfolio, main). Each text
+// role wraps to at least two lines in the Mobile frame; label stays on one line, like a button.
+// Every sample is set in its role's text colour only.
 const SAMPLES = {
   // index.html, home hero h1
   display: { text: 'Hi, I am Adrianna. I am empowering Design with AI.' },
@@ -45,6 +46,8 @@ const SAMPLES = {
   small: { text: 'Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away.' },
   // usecases/hawk-case-study.html, metric label
   overline: { text: 'Typologies in the library - each one now traceable to its exact institutional origin' },
+  // index.html, hero button. A label is one line, so it doesn't wrap.
+  label: { text: 'View my work' },
 };
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));

@@ -26,7 +26,7 @@ const scopesFor = (name) => {
   if (name === 'text' || name.startsWith('text-')) return ['TEXT_FILL'];
   if (name === 'error' || name === 'success') return ['TEXT_FILL', 'STROKE_COLOR'];
   if (name.startsWith('border') || name === 'focus') return ['STROKE_COLOR'];
-  if (['background', 'action', 'action-hover', 'accent'].includes(name) || name.startsWith('surface')) {
+  if (['background', 'action', 'action-hover', 'accent', 'secondary', 'secondary-hover'].includes(name) || name.startsWith('surface')) {
     return ['FRAME_FILL', 'SHAPE_FILL'];
   }
 };
