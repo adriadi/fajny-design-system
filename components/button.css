@@ -1,0 +1,107 @@
+/* Button (decisions 51, 53, 56). Uses only --fds-* tokens; link tokens.css first.
+ *
+ *   <a class="fds-button fds-button--primary" href="…">View my work</a>
+ *   <button class="fds-button fds-button--secondary" type="button">Download CV</button>
+ *   <a class="fds-button fds-button--link" href="…">Case studies</a>
+ *
+ * Variants: --primary, --secondary, --link. Size: --nav, the small navigation button.
+ * States come from the element, not from classes: :hover, :active, :focus-visible,
+ * aria-disabled="true" (or :disabled) and data-loading (loading also sets aria-disabled="true").
+ * Write the label in sentence case: the label role makes it uppercase.
+ * Inside .fds-surface-dark the primary button turns gold and the link light by themselves;
+ * the secondary button looks the same on every surface.
+ */
+
+.fds-button {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fds-space-2);
+  min-height: var(--fds-space-12);
+  padding: 0 var(--fds-space-8);
+  margin: 0;
+  border: var(--fds-border-width-control) solid transparent;
+  border-radius: var(--fds-radius-pill);
+  background: none;
+  font-family: var(--fds-font-family-label);
+  font-size: var(--fds-font-size-label);
+  line-height: var(--fds-font-line-height-label);
+  font-weight: var(--fds-font-weight-label);
+  letter-spacing: var(--fds-font-letter-spacing-label);
+  text-transform: var(--fds-font-text-transform-label);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    background-color var(--fds-duration-fast) var(--fds-easing-standard),
+    border-color var(--fds-duration-fast) var(--fds-easing-standard),
+    color var(--fds-duration-fast) var(--fds-easing-standard);
+}
+
+.fds-button:focus-visible {
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+}
+
+/* ── Variants ────────────────────────────────────────────── */
+
+.fds-button--primary {
+  background-color: var(--fds-color-action);
+  color: var(--fds-color-text-on-action);
+}
+
+.fds-button--secondary {
+  background-color: var(--fds-color-secondary);
+  border-color: var(--fds-color-border-highlight);
+  color: var(--fds-color-text-on-secondary);
+}
+
+.fds-button--link {
+  min-height: var(--fds-space-6);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--fds-color-text-muted);
+}
+
+/* ── Hover and pressed (not while disabled or loading) ───── */
+
+.fds-button--primary:not([aria-disabled="true"], :disabled):is(:hover, :active) {
+  background-color: var(--fds-color-action-hover);
+}
+.fds-button--secondary:not([aria-disabled="true"], :disabled):is(:hover, :active) {
+  background-color: var(--fds-color-secondary-hover);
+}
+.fds-button--link:not([aria-disabled="true"], :disabled):is(:hover, :active) {
+  color: var(--fds-color-text);
+}
+
+/* ── Navigation size: small to look at, 48px to hit (WCAG 2.5.5) ── */
+
+.fds-button--nav {
+  min-height: var(--fds-space-8);
+  padding: 0 var(--fds-space-6);
+}
+.fds-button--nav::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--fds-space-2)) 0;
+}
+
+/* ── Disabled and loading ────────────────────────────────── */
+
+/* Disabled: aria-disabled keeps the button focusable, so its reason can be read out. */
+.fds-button[aria-disabled="true"]:not([data-loading]),
+.fds-button:disabled:not([data-loading]) {
+  opacity: var(--fds-opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* Loading: the default look with a progress text as the label. A role="status" region next
+   to the button announces the same text. */
+.fds-button[data-loading] {
+  cursor: progress;
+}
