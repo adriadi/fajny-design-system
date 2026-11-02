@@ -1,148 +1,147 @@
-# B-005 · Report
+# B-006 · Report
 
-## 1. Type check page without gold: done
+## A. Design system repo
 
-- `figma/modes` pulled: `DECISIONS.md` ends with decision 51.
-- `59261c7` on `figma/modes` (pushed, not merged): the specimen samples no longer carry emphasis words; every sample is in `color/text`. The emphasis checks are gone with them; a role without specimen text still fails the build. Build passes.
-- Script run on the Figma file: 0 variables and 0 styles created, page rebuilt with the same four frames.
-- Screenshot: [`type-check.png`](type-check.png) (replaced on this branch). No gold anywhere on the page, light or dark.
+- `figma/modes` merged into `main`: `8879a9e` (a merge commit, because `main` had the README date change), pushed. Build passes (contrast 44 pairs, zoom, type, all Figma files). Local branch deleted with `git branch -d`.
 
-## 2. Button: measurements
+## B. Portfolio repo (`adriadi/portfolio`)
 
-Measured on `adriadi/portfolio` at `before-system` (`f143a85`): CSS read from `styles.css` and every `<style>` block, sizes measured in Chrome at 1280px and 390px. The case studies are password-gated, so the case-study button is computed from its CSS. Every button and nav link on the site uses Inter.
+Branch `design-system/tokens` from `main` (`f143a85`, the same commit as `before-system`), pushed, **not merged, not deployed**. `before-system` and the `test/*` branches are untouched.
 
-### Buttons and links in use
-
-| Element | Where | Tag | Height | Padding | Font | Letter spacing | Case | Radius | Colours |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `.btn-primary` "View my work" | home hero | `a` | 50 | 16 / 36 | 15 / 500 | 0.06em | upper | pill | navy fill, white text (inline style) |
-| `.btn-secondary` "Get in touch" | home hero | `a` | 21.5 | 0 0 2 | 15 / 500 | 0.06em | upper | none | navy text, 1.5px gold underline |
-| `.nav-cta` "Let's talk" | top nav | `a` | 33.5 | 9 / 22 | 13 / 500 | 0.06em | upper | pill | navy fill, sand text |
-| `.nav-cta-mobile` | mobile menu | `a` | 45 | 14 / 0 | 14 / 500 | 0.06em | upper | pill | navy fill, sand text, full width |
-| `.btn-outline-light` "Schedule a call" | experience (navy section) | `a` | 48 | 14 / 32 | 14 / 500 | 0.06em | upper | pill | 1.5px white 25% border, white text |
-| `.form-submit` "Send message →" | contact form | `button` | 45 | 14 / 32 | 14 / 500 | 0.04em | none | **4px** | navy fill, sand text |
-| `.submit-btn` | password page | `button` | 49 | 16 | 14 / 500 | 0.06em | upper | **10px** | navy fill, sand text, full width |
-| `.prototype-btn` "View prototype" | Hawk case study | `a` | ≈52 (computed) | 14 / 28 | 14 / 500 | 0.04em | none | **4px** | `--accent`: #000078 on Hawk |
-| `.nav-links a` | top nav | `a` | 15.5 | 0 (36px gaps) | 13 / 500 | 0.04em | upper | none | muted text |
-| `.mobile-nav a` | mobile menu | `a` | 50 | 16 / 0 | 14 / 500 | 0.05em | upper | none | muted text, divider below |
-| `.nav-back` "←" | case-study nav | `a` | text | 0 | 13 / 400 | 0 | none | none | muted text |
-
-Defined but not used on any page: `.btn-accent` (gold fill, gold glow on hover), `.cv-modal-submit` (same, plus disabled).
-
-### States
-
-| Element | Hover | Active | Focus | Disabled / loading | Transition |
-| --- | --- | --- | --- | --- | --- |
-| `.btn-primary` | lifts 2px, shadow 0 4 24 navy 20% → 0 8 32 navy 30%, arrow moves 3px | none | browser default | none | 0.2s |
-| `.btn-secondary` | gap between text and arrow 8 → 14px | none | browser default | none | 0.2s |
-| `.nav-cta` | navy-mid fill, lifts 1px | none | browser default | none | 0.2s bg, 0.15s transform |
-| `.btn-outline-light` | border to 60%, white 6% fill | none | browser default | none | 0.2s |
-| `.form-submit` | navy-mid fill, lifts 1px | none | browser default | while sending: `disabled`, opacity 0.65, text "Sending…" | 0.2s |
-| `.submit-btn` | navy-mid fill, lifts 1px | back to 0 | browser default | none | 0.2s, 0.15s |
-| `.prototype-btn` | opacity 0.85, moves 3px right | none | browser default | none | 0.2s |
-| `.nav-links a` | muted → navy | none | browser default | none | 0.2s colour |
-| `.btn-accent` (unused) | lifts 2px, **gold glow** 0 8 28 gold 40% | none | none | none | 0.2s |
-
-**Findings:**
-- No button or link has its own focus style. Every one shows Chrome's default blue ring (`auto 1px #005FCC`), on navy too.
-- Loading is never announced: "Sending…" replaces the label, with no live region.
-- Shadow at rest appears only on `.btn-primary` (the navy shadow). The gold glow is only on the two unused classes.
-- There are three button radii (pill, 4px, 10px); pill is the system's answer (decision 39).
-- `cursor: none` (the custom cursor) is set on `.form-submit`.
-
-## 2. Button: proposal
-
-Uses only existing tokens. Where none fits, the gap is named as a question.
-
-### Size
-
-- **One size for `primary` and `secondary`:** padding `space-4` (16px) top and bottom, `space-8` (32px) left and right, `min-height: space-12` (48px). That's close to what the site has (45–50px) and meets 44px (WCAG 2.5.5, AAA) with no visible change.
-- **The nav "Let's talk"** is today a small button (33.5px). See question 3.
-- **Type:** no type role fits button labels. See question 1.
-
-### Touch target
-
-| Target | Visual cost |
+| Commit | What |
 | --- | --- |
-| 24px (2.5.8, AA) | None for any button. The nav links (15.5px tall) pass only through the 36px spacing exception. |
-| 44px (2.5.5, AAA) | None for the main buttons (already 45–50px). The nav button grows from 33.5 to 44+ px in a 64px nav, unless its hit area is extended without growing visually (question 3). Links need padding to reach 44px. |
+| `06881dd` | `tokens.css` (copy of the system's built tokens at `8879a9e`) and `scripts/sync-tokens.sh` |
+| `ce2e91e` | every page moved onto the tokens |
 
-### States (all variants)
+The branch lives in a separate worktree, `~/portfolio-tokens`, so `~/portfolio` stays on `test/before-2` exactly as it was.
 
-| State | primary | secondary | link |
-| --- | --- | --- | --- |
-| default | `color-action` fill, `color-text-on-action` | `color-surface-highlight` fill, navy text (question 2) | `color-text-muted` |
-| hover | `color-action-hover` | missing role (question 4) | `color-text` |
-| focus | ring: `color-focus`, `focus.ring-width`, `focus.ring-offset` | same | same |
-| active | same as hover, no lift | same as hover | `color-text` |
-| disabled | question 5 | question 5 | not available: a link can't be disabled |
-| loading | question 6 | question 6 | not available |
+### Sync script
 
-- **Transitions:** `duration-fast` (200ms) for colour, `easing-standard`.
-- **No movement on hover:** the site's lifts (1–3px translate) have no token, and decision 41 drops them under reduced motion anyway.
+`scripts/sync-tokens.sh [path to a clone of fajny-design-system]` (default `../fajny-design-system`) copies `tokens/css/tokens.css` to the site's `tokens.css`. Its first line names the system's commit: `/* Fajny design system tokens, copied from adriadi/fajny-design-system at 8879a9e by scripts/sync-tokens.sh. Don't edit: … */`. It refuses to copy a `tokens.css` with uncommitted changes, so the commit it names is real. Every page links `tokens.css` before `styles.css`.
 
-### Shadow
+### What changed
 
-- **At rest:** none. Decision 40 says shadows appear on interaction, not at rest, so the navy rest shadow goes.
-- **On hover:** see question 4. On a dark surface a navy shadow is invisible, and the gold glow isn't a token.
+**All pages (`styles.css`)**
+- **Colours:** every colour is a role (`--fds-color-*`). The old variables and their aliases are gone (`--bg`/`--beige`, `--bg-alt`/`--beige-mid`, `--rule`/`--gray-warm`, `--ink`, `--ink-muted`/`--text-muted`, `--text-main`, `--navy*`, `--accent*`, `--highlight`, `--num-ghost`, `--serif`, `--sans`, `--pad`). Only layout widths remain (`--max`, `--wide`, `--cols`).
+- **Type:** the nine roles are assigned at the top of `styles.css`, one block per role listing its elements, each with all five properties. Elements without a fitting role are marked `No type role` (question 6).
+- **Spacing:** every padding, margin and gap is a `space-*` step, with values in between rounded up (decision 38). Page side padding is `space-gutter` and section padding `space-section`, as their descriptions say.
+- **Radius:** 4 → `sm`, 8 → `md`, 16 → `lg`; cards and modals 20 → `lg` and case-study images 12 → `lg` (decision 39); every button is `pill`, including the formerly square contact submit, password submit and "View prototype".
+- **Shadow:** card hovers `sm`/`md`/`lg`, cookie banner `md` (floating banner), modal `overlay`.
+- **Motion:** colour changes `fast`, hover lifts and menus `base`, content fading in `slow`, one easing everywhere; no overshoot (decision 41). Cursor and progress-bar timings stay outside the tokens, as decided.
+- **Focus:** one rule gives every interactive element the ring from the focus tokens; it turns gold on dark surfaces by itself. The `outline: none` on form fields is gone.
+- **Reduced motion:** a block at the end of `styles.css` stops every movement on every page (transforms, slides, fade-in travel, the shake, smooth scrolling, loops, hover lifts) and keeps colour and opacity changes.
+- **Loops:** the "available" dot pulses twice and stops; the scroll line runs twice and stops; each hero blob moves once and rests (question 1).
 
-### The `link` variant
+**Home (`index.html`)**
+- Experience section and footer: `.fds-surface-dark`. Their extra colour rules are gone; titles, labels, rules and the gold emphasis switch by themselves.
+- Inline colour styles removed (nav button, hero button, two section labels, article read time, error message); inline spacing moved into CSS.
+- Contact form: every label is linked to its field (`htmlFor` + `id`); placeholder `color-text-placeholder`, underline `color-border-input`, focus `color-border-strong`, error `color-error`.
+- Scripts: smooth scrolling and the recommendations parallax turn off under reduced motion.
 
-- **Style:** the navigation link style: 13px, weight 500, uppercase, `color-text-muted`, then `color-text` on hover, no underline.
-- **How it differs from a link in body copy:** a body-copy link sits inside a sentence, keeps the text's case and size, and needs an underline. In the case studies, body links today are colour-only with an underline on hover, which is a WCAG 1.4.1 risk to fix with the text-link rule, not here.
-- **Target:** `min-height: space-6` (24px) through padding, so it passes AA on its own rather than through spacing.
-- **Focus:** the same ring as the other variants.
+**Case studies (all three)**
+- Tension blocks and the process-table headers: `.fds-surface-dark` (the near-black tension block becomes navy, decision 30).
+- Project colours removed: Hawk's override block (blue accent and highlight) is gone; Curaay's purple highlight and blue tints are replaced by roles (question 5); the scroll script's hero-image scale stops under reduced motion.
+- Body copy follows decisions 17 and 20: `body` role (15→16px) in `color-text`; Syne headings at weight 500 (decision 37).
 
-### On a dark surface
+**Password page**
+- A visually hidden label "Password" linked to the field; error text and border `color-error`; the lock tile is a dark surface; the submit button is pill-shaped.
 
-| Variant | What happens | Contrast |
+### Measurements
+
+Measured with the patterns of `measure.sh`, over whole files at both states. Site files: `styles.css`, the five pages and the three scripts, without the system's `tokens.css` copy and without the home page's Tweaks panel (a dev-only overlay, left out in the "before" test too).
+
+| | `before-system` | `design-system/tokens` |
 | --- | --- | --- |
-| primary | switches by itself: gold fill, navy text | 6.11:1 |
-| secondary | if its text used `color-text`, it would turn sand on the light fill: **1.07:1, fails** | needs a text colour that doesn't switch: navy on `surface-highlight` 9.32:1, fill vs navy section 9.32:1 |
-| link | muted → `sand-400`, hover → `sand-50` | 6.25:1 / 10.01:1 |
+| Hardcoded colours | 180 | 83 |
+| Hardcoded sizes (px, rem, em) | 981 | 399 |
+| **Hardcoded values, total** | **1,161** | **482** |
+| `var(--…)` uses | 307 | 985 |
+| of which `var(--fds-…)` | 0 | 980 |
+| Distinct colour values | 109 | 67 |
+| Font-size values | 40 | 31 (22 literals, 9 role tokens) |
+| The site's own custom properties | 25 | 3 (layout widths only) |
 
-### HTML and class names
+`measure.sh` itself (lines added since `before-system`): 334 hardcoded values (210 without the `tokens.css` copy), 1,032 `var()` uses, 208 "new" classes, new custom properties only `--fds-*` (from the copy). It counts rewritten lines as new, so for a migration the whole-file table above is the meaningful one. Most of the 482 left are layout sizes (widths, heights, positions, 1px borders) that aren't tokens by design; the colours left are in question 3.
 
-- `<a>` when it goes somewhere: "View my work", "Let's talk", "View prototype", "Schedule a call".
-- `<button>` when it does something: submit, open a modal.
-- Classes: `fds-button` plus a variant modifier, `fds-button--primary`, `fds-button--secondary` or `fds-button--link`.
-- States through native state and ARIA, not classes: `:hover`, `:focus-visible`, `:active`, `:disabled` / `[aria-disabled="true"]`, and loading as in question 6.
-- Text stays in sentence case in the HTML; uppercase comes from CSS (decision 51).
+### Screenshots
+
+On the owner's machine only, never pushed:
+- `~/fajny-screenshots/before/` and `~/fajny-screenshots/after/`, 12 files each: home, Hawk, Curaay and Scouting at 1440px and 390px.
+- Pages taller than Chrome's 16,384px capture limit are saved in parts (`-part1`, `-part2`, …). For those parts the viewport-height hero was pinned to the real screen height, so it isn't stretched.
+- The protected case studies were opened locally with the site's own unlock flag; no password was used or written down.
+
+### How to check it locally
+
+1. The branch is checked out in `~/portfolio-tokens`. In Finder, open `~/portfolio-tokens/index.html` in Chrome (a `file://` page works: React and Babel load from the CDN).
+2. Case studies: open `~/portfolio-tokens/password.html` and use the password as on the live site.
+3. To test reduced motion: in Chrome DevTools, Rendering → "Emulate CSS media feature prefers-reduced-motion: reduce".
+4. To see the branch in `~/portfolio` instead, first remove the worktree (`git -C ~/portfolio worktree remove ~/portfolio-tokens`), then `git -C ~/portfolio switch design-system/tokens`.
 
 ## Questions
 
-1. **Button labels have no type role.** Buttons are 14–15px / 500 / 0.06em / uppercase, nav links 13px / 500 / 0.04em / uppercase. The 9 roles have no weight-500 Inter role, and none is uppercase except overline (11–12px / 600 / 0.12em).
-   - A: a tenth role, e.g. `label`, for button and link text, with its own size, weight 500, letter spacing 0.06em and `text-transform: uppercase` (values to be proposed in the next report).
-   - B: reuse `small` or `body` and override weight and case in the button CSS.
-   - **Recommendation: A.** B puts values outside the tokens, which the system forbids. Decision 51 already fixes 0.06em and uppercase; a role makes them tokens. The nav links' 0.04em would move to 0.06em, so there's one tracking for all controls.
+1. **The hero blobs still run longer than 5 seconds.** Each now moves once and rests, but one cycle lasts 9, 12 and 14s, so WCAG 2.2.2 (decision 42) still isn't met.
+   - A: shorten each cycle to 5s or less (a new value).
+   - B: no blob movement at all.
+   - C: leave as is.
+   - **Recommendation: A**, keeping the character with one short drift; the duration is a new value, so it's yours.
 
-2. **`secondary` needs a text colour that doesn't switch on a dark surface.**
-   - A: a new role for text on `color-surface-highlight`, always navy (like `color-text-on-accent` for gold).
-   - B: reuse `color-text-on-accent` (navy everywhere), although it's named for gold fills.
-   - **Recommendation: A.** One role per pair keeps names honest, and the contrast check can test it on both surfaces.
-   - A related point: the secondary fill is nearly invisible on the light backgrounds (1.01–1.21:1). The label carries it, so WCAG passes, but it reads more as a tinted label than a button. Should it get a border? If yes, which role?
+2. **Gold text on a dark surface, in the skill map** (chip hover and selected text, the "Clear" button, chip labels): no text role is gold on dark except `color-text-emphasis`, which is for large headings. Kept as `#E8B84B`.
+   - A: decide it with the Tag component (chips are tags).
+   - B: a text role now.
+   - **Recommendation: A**: these are chips and a button; their states belong to Tag and Button.
 
-3. **The nav button size.**
-   - A: one size everywhere: the nav button becomes 48px in the 64px nav.
-   - B: a small size: `min-height: space-8` (32px), padding `space-2` / `space-6`, meets AA only.
-   - C: small visually (32px), with the clickable area extended to 48px by a transparent pseudo-element, which meets AAA with no visual change.
-   - **Recommendation: C.** It keeps the nav as it looks today and still meets 44px.
+3. **Values with no token, kept as they were** (all marked `No token` in the code):
+   - **See-through colours:** hero glows and blobs, the translucent nav and mobile menu backgrounds, scrims, and hover and column tints on dark.
+   - **Solid colours:** the ghost section number `#E6E0D6`, the scouting hero backdrop `#080808`, the success icon fill, the green "available" dot, the recommendation card hover fill.
+   - **Radii:** 2, 6, 10, 14px, and the 20px top of the first case-study section.
+   - **Shadows:** the case-study section's upward shadow, and the button shadows and gold glow (Button stage).
 
-4. **Hover on a dark surface, and the secondary hover.**
-   - On dark, `color-action-hover-on-dark` is gold-500, the same as rest. Its description says the button lifts with a shadow, but a navy shadow is invisible on navy and the system has no lift token. So the dark primary has no visible hover.
-   - The secondary has no hover role at all.
-   - A: add hover roles: a lighter or darker gold for dark primary hover, and a hover fill for secondary (values to be proposed next).
-   - B: hover changes only the cursor and the arrow; no colour change.
-   - **Recommendation: A.** A visible hover on every surface is the expected behaviour, and two roles are what the site needs now.
+   Options:
+   - A: treat the see-through ones as decoration and list them in the README as allowed literals.
+   - B: tokens for each.
+   - C: remove them.
+   - **Recommendation: A for the see-through decoration**, and decide the solid ones one by one. `#E6E0D6` and the green dot are the only solid colours outside the palette.
 
-5. **Disabled.**
-   - The site uses opacity 0.6–0.65, which isn't a token. WCAG exempts disabled controls from contrast.
-   - A: an `opacity.disabled` token.
-   - B: disabled colour roles (fill and text).
-   - C: no disabled look: keep the button enabled and explain the problem in a message instead.
-   - **Recommendation: A**, with `aria-disabled` so it stays focusable and its reason can be read out. A single opacity value is the smallest new token, and it works on both surfaces.
+4. **Curaay's chart colours** (the purple competitor bubbles in the opportunity matrix): the system has no chart colours, and decision 16 removes project colours. Kept for now.
+   - A: palette roles (e.g. competitors in `color-border-input` stone, Curaay in navy, as it is now).
+   - B: chart roles in the system.
+   - C: keep.
+   - **Recommendation: A**: one highlighted item against neutral ones reads without a chart palette.
 
-6. **Loading.**
-   - A: the label changes to a progress text ("Sending…"), the button gets `aria-disabled="true"`, and a `role="status"` region next to it announces the same text. No spinner.
-   - B: a spinner icon plus the same ARIA.
-   - **Recommendation: A.** It's what the site does, plus the announcement it's missing. A spinner is a looping animation (decision 42, WCAG 2.2.2) and would need a reduced-motion version.
+5. **Mapped by judgement, please check on the screenshots:**
+   - **Eyebrows and labels** use `color-text` everywhere, as its description says ("labels, eyebrows"). The gold home labels are navy now; on dark surfaces the gold labels and dates are sand.
+   - **Experience dates** are `overline` (labels above a role title), so they're uppercase and wrap to two lines in their 140px column.
+   - **Card titles in Inter** (case-study pain, intent and step titles) become `card-title`, which is Syne. The cookie banner title is `card-title` too.
+   - **Curaay market cards:**
+     - the "gap" card is the light Highlight (`surface-highlight` + `border-highlight`)
+     - the "bridge" card has a `border-rule` border
+     - both badges are dark surfaces
+     - the digital tag is `surface-highlight` and the analog tag `surface-subtle`
+     - the green stat is `color-success`
+   - **Form labels** are `color-text` (previously muted).
+
+   Keep, or tell me which to revert.
+
+6. **Text with no type role** (marked `No type role`):
+   - **Waiting for components:** button, link and nav labels wait for the `label` role (B-005, question 1); tags, badges, form labels and fields wait for Tag and Input.
+   - **Still open:**
+     - metric numbers
+     - the two quotes (pull quote, platform insight)
+     - the brand name (loader, case-study nav, footer, contact name)
+     - the password page's h1 (28→38px, between `heading` and `title`)
+   - **Recommendation:**
+     - password h1 → `heading`
+     - quotes → decide with the Highlight component
+     - numbers and brand name → leave until a page needs a role
+
+7. **Leftovers in the home page code:**
+   - the Tweaks panel still sets `--accent` at runtime, which no longer does anything
+   - the project-card text overlay (shown only for a project without an image) keeps its photo colours
+   - a bundler thumbnail template has `oklch` colours
+
+   Remove them in a later cleanup? **Recommendation: yes**, separately from this migration.
+
+8. **Not changed, but worth knowing:**
+   - Links in case-study body copy are colour-only until hover (WCAG 1.4.1); the text-link rule comes with the components.
+   - The custom cursor hides the system cursor (`cursor: none`).
+   - The "sending" state of the contact button still uses an inline opacity of 0.65, waiting for `opacity.disabled` (B-005, question 5).
