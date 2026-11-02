@@ -1,27 +1,32 @@
-# B-005 · Type check without gold, then the Button proposal
+# B-006 · Close Figma part 2, then migrate the portfolio to the tokens
 
-## Owner's review of B-004
+## Owner's answers
 
-The rebuilt "Type check" page is good: real text, line height visible, four frames, dark surface switching. One change: **no gold words in the samples.** Every sample is in its role's text colour only, the same in all nine roles. This is about the specimen page only; gold emphasis stays in the system (decisions 18 and 28).
-
-Decisions 50 and 51 are in `DECISIONS.md` on `figma/modes` (`acb58a9`). Pull first.
-
-- **50:** the design system page is read-only. Editing is turned off on the page (no "Add" buttons). Don't turn it back on.
-- **51:** Button has three variants: `primary` (navy fill, light text; becomes the gold button on a dark surface by itself, decision 29), `secondary` (`color/surface-highlight` fill, navy text) and `link` (text only, like the navigation links). No accent variant. `primary` and `secondary` are uppercase with 0.06em letter spacing, set by CSS (`text-transform`), so the HTML text stays in sentence case. `link` follows the navigation link style. States for every variant: default, hover, focus, active, disabled; `primary` and `secondary` also loading.
+- **Type check without gold:** approved. Figma part 2 is done.
+- **Decision 52** (in `DECISIONS.md` on `figma/modes`, `b8f99f8`): the portfolio starts using the system now, in two updates. This brief is the first: **tokens only**. Components (Button first) come in a second update. The portfolio gets a **copy** of the built `tokens.css`, synced by a script. You do the migration on a branch in the portfolio repo; the owner checks it locally and uploads it to the server herself.
+- **The Button questions from B-005 are still open.** Don't build the Button. Existing buttons only get token values (see task 3).
 
 ## Tasks
 
-1. **Type check page (on `figma/modes`):** remove the gold emphasis from the specimen samples in the typography script, and drop or adjust the build checks that require emphasis words, so a specimen without emphasis passes. Run the script on the Figma file, commit, push. Add a new screenshot (`type-check.png`) on this branch. **Don't merge yet:** the owner checks the screenshot first.
-2. **Button, measure and propose only.** No code, no Figma, no new branch yet. From `adriadi/portfolio` (`before-system`, `f143a85`), measure every button and the navigation links: padding, height, font size and weight, letter spacing, radius, border, shadow at rest and on hover, hover/active/focus/disabled/loading styles, transitions. Then propose, for each of the three variants:
-   - size: padding and minimum height, in existing spacing and type tokens; whether one size is enough or the site needs a small size too,
-   - touch target: whether to aim for 24px (WCAG 2.5.8, AA) or 44px (2.5.5, AAA), with the visual cost of each,
-   - each state: what changes (colour role, shadow, transform), from existing tokens only; name any role or token that's missing instead of using a value,
-   - loading: what it looks like and how it's announced to screen readers,
-   - shadow: at rest and on hover, or none (the measurement showed a navy rest shadow and a gold hover glow),
-   - the `link` variant: how it differs from a plain text link in body copy, and its focus and hover,
-   - on a dark surface: what each variant becomes (primary switches by itself; check `secondary` and `link` contrast on navy),
-   - the HTML: `<button>` vs `<a>` for each variant, and the class names (`fds-button`, modifiers).
+### A. Design system repo
+
+1. Merge `figma/modes` into `main`, push, delete the local branch with `git branch -d`.
+
+### B. Portfolio repo (`adriadi/portfolio`)
+
+2. **Before anything else, screenshots of the site as it is today**: home and the three case studies, 1440px and 390px, full page. Save them **outside every repo** (e.g. `~/fajny-screenshots/before/`). **Never push them anywhere:** two case studies are password-protected and must stay private. Don't put the password in any file or report.
+3. **Branch `design-system/tokens` from the portfolio's `main`.** Don't touch the tag `before-system` or the `test/*` branches.
+4. **Sync script:** a small script in the portfolio repo that copies `tokens/css/tokens.css` from a local clone of the design system into the portfolio, with a first-line comment naming the system's commit. The site links that file before `styles.css`.
+5. **Migrate every page** (home, the three case studies, the password page) to the tokens:
+   - Colours: every colour becomes a semantic role (`--fds-color-*`). Old variables and their aliases (`--accent`, `--bg`/`--beige`, `--ink`, …) go. Project colours for Hawk and Curaay go too (decision 16: one palette). Dark blocks, including the tension block, the footer and dark sections, use `.fds-surface-dark` (decisions 30, 33).
+   - Typography: every text uses one of the 9 roles, all five properties (`--fds-font-<property>-<role>`). Gold emphasis only in display, title and heading (decision 28).
+   - Spacing, radius, shadow, motion: tokens only (decisions 38–41). Pill radius for every button (decision 39); otherwise existing buttons keep their shape and just take token values.
+   - Accessibility from the audit: focus ring from the focus tokens on every interactive element, labels linked to inputs, placeholder and error colours from the roles, reduced motion everywhere (decision 41), and every looping animation stops within 5 seconds (decision 42).
+   - **Don't decide anything new.** If an element doesn't fit a role or token, leave it as it is and list it in the report as a question.
+6. **Measure** with the same `measure.sh` as the "before" test, on `before-system` and on the new branch: hardcoded values, `var()` uses, font sizes, colours. These numbers go into the case study.
+7. **Screenshots after**, same pages and widths, to `~/fajny-screenshots/after/`. Same rule: local only.
+8. Commit and push `design-system/tokens`. **Don't merge, don't deploy.**
 
 ## Report
 
-`REPORT.md` with the ID `B-005`: commit and screenshot for task 1, then the measurements as tables and the proposal, with numbered questions (options, recommendation, reason). Push to `handoff` and stop.
+`REPORT.md` with the ID `B-006`. Keep it public-safe: no password, no content from the protected case studies beyond element names. Include: commits, the sync script, what changed per page, the measurements before/after as a table, the elements that didn't fit (numbered questions with options and a recommendation), the path to the screenshots on the owner's machine, and how the owner runs the site locally to check it. Push to `handoff` and stop.
