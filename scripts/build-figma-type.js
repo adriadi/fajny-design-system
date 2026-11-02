@@ -25,15 +25,14 @@ const STYLE_NAMES = {
 const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
 
 // Specimen text for the "Type check" page, from the portfolio (adriadi/portfolio, main). Each one
-// wraps to at least two lines in the Mobile frame. `emphasis` is set in color/text-emphasis, only in
-// display, title and heading (decision 28).
+// wraps to at least two lines in the Mobile frame and is set in its role's text colour only.
 const SAMPLES = {
   // index.html, home hero h1
-  display: { text: 'Hi, I am Adrianna. I am empowering Design with AI.', emphasis: ['Adrianna.', 'AI.'] },
+  display: { text: 'Hi, I am Adrianna. I am empowering Design with AI.' },
   // usecases/hawk-case-study.html, page title h1
-  title: { text: 'Hundreds of criminal patterns. None had a paper trail.', emphasis: ['paper trail.'] },
+  title: { text: 'Hundreds of criminal patterns. None had a paper trail.' },
   // index.html, contact section title h2
-  heading: { text: "Let's make something good.", emphasis: ['good.'] },
+  heading: { text: "Let's make something good." },
   // usecases/hawk-case-study.html, h3
   subheading: { text: 'The system had 247 patterns. Not one knew where it came from.' },
   // index.html, article card title
@@ -47,7 +46,6 @@ const SAMPLES = {
   // usecases/hawk-case-study.html, metric label
   overline: { text: 'Typologies in the library - each one now traceable to its exact institutional origin' },
 };
-const EMPHASIS_ROLES = ['display', 'title', 'heading'];
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));
 const names = (group) => Object.keys(group ?? {}).filter((k) => !k.startsWith('$'));
@@ -76,10 +74,6 @@ for (const role of names(font.size)) {
 
   const sample = SAMPLES[role];
   if (!sample) errors.push(`${role} has no specimen text for the Type check page`);
-  else for (const word of sample.emphasis ?? []) {
-    if (!EMPHASIS_ROLES.includes(role)) errors.push(`${role} can't have gold emphasis (decision 28)`);
-    if (!sample.text.includes(word)) errors.push(`${role}: emphasis "${word}" isn't in its specimen text`);
-  }
 
   const transform = font['text-transform']?.[role]?.$value ?? 'none';
   if (!TEXT_CASE[transform]) errors.push(`font.text-transform.${role}: no Figma text case for ${transform}`);
@@ -96,7 +90,6 @@ for (const role of names(font.size)) {
     textCase: TEXT_CASE[transform],
     description: (size.$description ?? '').replaceAll("'", '’'),
     sample: sample?.text,
-    emphasis: sample?.emphasis ?? [],
   });
 }
 
@@ -116,7 +109,6 @@ const plan = {
     surfaces: [['Light surface', 'color/background'], ['Dark surface', 'color/surface-dark']],
     label: { style: 'overline', color: 'color/text-muted' },
     text: 'color/text',
-    emphasis: 'color/text-emphasis',
   },
 };
 
@@ -217,10 +209,6 @@ for (const [colorMode, background] of P.surfaces) {
       await text.setTextStyleIdAsync(styleOf(r.role).id);
       text.characters = r.sample;
       text.fills = [paint(P.text)];
-      for (const word of r.emphasis) {
-        const start = r.sample.indexOf(word);
-        text.setRangeFills(start, start + word.length, [paint(P.emphasis)]);
-      }
       text.layoutSizingHorizontal = 'FILL';
       text.textAutoResize = 'HEIGHT';
     }

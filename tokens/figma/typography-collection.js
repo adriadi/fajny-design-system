@@ -20,11 +20,7 @@ const PLAN = {
       "letterSpacing": -3,
       "textCase": "ORIGINAL",
       "description": "40px to 96px. The home hero only: the page’s single h1. Gold italic allowed (decision 28).",
-      "sample": "Hi, I am Adrianna. I am empowering Design with AI.",
-      "emphasis": [
-        "Adrianna.",
-        "AI."
-      ]
+      "sample": "Hi, I am Adrianna. I am empowering Design with AI."
     },
     {
       "role": "title",
@@ -37,10 +33,7 @@ const PLAN = {
       "letterSpacing": -2.5,
       "textCase": "ORIGINAL",
       "description": "36px to 72px. The page title of a case study: the page’s single h1. Gold italic allowed (decision 28).",
-      "sample": "Hundreds of criminal patterns. None had a paper trail.",
-      "emphasis": [
-        "paper trail."
-      ]
+      "sample": "Hundreds of criminal patterns. None had a paper trail."
     },
     {
       "role": "heading",
@@ -53,10 +46,7 @@ const PLAN = {
       "letterSpacing": -2.5,
       "textCase": "ORIGINAL",
       "description": "32px to 52px. Section titles (h2). Gold italic allowed (decision 28).",
-      "sample": "Let's make something good.",
-      "emphasis": [
-        "good."
-      ]
+      "sample": "Let's make something good."
     },
     {
       "role": "subheading",
@@ -69,8 +59,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28).",
-      "sample": "The system had 247 patterns. Not one knew where it came from.",
-      "emphasis": []
+      "sample": "The system had 247 patterns. Not one knew where it came from."
     },
     {
       "role": "card-title",
@@ -83,8 +72,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "18px to 22px. Titles inside cards. Never gold (decision 28).",
-      "sample": "Can I ask this video a question? Yes, you can.",
-      "emphasis": []
+      "sample": "Can I ask this video a question? Yes, you can."
     },
     {
       "role": "lead",
@@ -97,8 +85,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "15px to 18px. The intro paragraph under a page or section title.",
-      "sample": "Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics.",
-      "emphasis": []
+      "sample": "Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics."
     },
     {
       "role": "body",
@@ -111,8 +98,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "15px to 16px. Body text.",
-      "sample": "The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own.",
-      "emphasis": []
+      "sample": "The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own."
     },
     {
       "role": "small",
@@ -125,8 +111,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "13px to 14px. Secondary text: captions, meta, card descriptions.",
-      "sample": "Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away.",
-      "emphasis": []
+      "sample": "Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away."
     },
     {
       "role": "overline",
@@ -139,8 +124,7 @@ const PLAN = {
       "letterSpacing": 12,
       "textCase": "UPPER",
       "description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline.",
-      "sample": "Typologies in the library - each one now traceable to its exact institutional origin",
-      "emphasis": []
+      "sample": "Typologies in the library - each one now traceable to its exact institutional origin"
     }
   ],
   "page": {
@@ -163,8 +147,7 @@ const PLAN = {
       "style": "overline",
       "color": "color/text-muted"
     },
-    "text": "color/text",
-    "emphasis": "color/text-emphasis"
+    "text": "color/text"
   }
 };
 
@@ -259,10 +242,6 @@ for (const [colorMode, background] of P.surfaces) {
       await text.setTextStyleIdAsync(styleOf(r.role).id);
       text.characters = r.sample;
       text.fills = [paint(P.text)];
-      for (const word of r.emphasis) {
-        const start = r.sample.indexOf(word);
-        text.setRangeFills(start, start + word.length, [paint(P.emphasis)]);
-      }
       text.layoutSizingHorizontal = 'FILL';
       text.textAutoResize = 'HEIGHT';
     }
