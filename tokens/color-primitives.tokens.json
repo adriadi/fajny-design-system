@@ -5,7 +5,8 @@
     "900": { "$value": "#1B3A6B", "$description": "Brand navy. The one text colour (decision 20)." },
     "800": { "$value": "#324E7A", "$description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened)." },
     "700": { "$value": "#254D8F", "$description": "Hover on navy fills." },
-    "300": { "$value": "#7FA8D4", "$description": "Light Highlight rule." },
+    "300": { "$value": "#7FA8D4", "$description": "Light Highlight rule; the secondary button border." },
+    "200": { "$value": "#B3C8E6", "$description": "Secondary button hover." },
     "100": { "$value": "#E4EAF4", "$description": "Case-study pull-quote background." }
   },
   "gold": {

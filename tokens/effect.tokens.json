@@ -19,6 +19,10 @@
       "$description": "Modals: the one element above everything else. navy-900 at 30%."
     }
   },
+  "opacity": {
+    "$type": "number",
+    "disabled": { "$value": 0.6, "$description": "A disabled control, with aria-disabled=\"true\" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3)." }
+  },
   "duration": {
     "$type": "duration",
     "$description": "With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes. An animation that starts on its own stops within 5 seconds (WCAG 2.2.2).",

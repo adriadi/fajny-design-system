@@ -26,6 +26,10 @@
     "pill":  { "$value": "999px", "$description": "Every button, tag and chip. No square buttons." },
     "round": { "$value": "50%",   "$description": "Circles: dots, avatars, round icon buttons." }
   },
+  "border-width": {
+    "$type": "dimension",
+    "control": { "$value": "1.5px", "$description": "Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige." }
+  },
   "focus": {
     "$type": "dimension",
     "ring-width":  { "$value": "2px", "$description": "Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow." },
