@@ -1,28 +1,32 @@
-# B-008 · Finish the portfolio, then build the Button
+# B-009 · Pause control in the screen corner, small follow-ups
 
-## Owner's answers to B-007
+## Owner's answers to B-008
 
-The pause control proposal is approved as written. Questions 1–9: all as you recommended. Recorded as decision 56 in `DECISIONS.md` on `main` (`git pull` first).
+- **Pause control position:** decision 57 (`DECISIONS.md` on `main`, `fa6b850`). Fixed in the bottom-right corner of the screen, shown only while the hero is on screen, never covering the cookie banner, not focusable while hidden.
+- **Q1:** the owner imported `tokens-studio.json` with Tokens Studio (all sets).
+- **Q2:** A. Change the Button script to update the component set in place. Do it before the next component (task C2).
+- **Q3:** fix the "None is built yet" sentence on the page. The stale token card goes to the parking lot (decision log), no more work on it.
+- **Q4:** yes. The second portfolio update comes after `components/button` merges, in a later brief.
 
-## A. Portfolio, branch `design-system/tokens` (do this first)
+## Tasks
 
-1. **Pause control:** build it exactly as proposed in B-007 A1, and put the blobs back to continuous motion (decision 55). Under reduced motion they start paused; pressing play is the visitor's choice, so the reduced-motion block needs the exception you described.
-2. **Two colours:** ghost section number → `color-surface-subtle`; "available" dot → `color-success` (the pulse glow stays a decoration literal).
-3. Re-sync `tokens.css` only if part B changed tokens the portfolio uses, and say so.
-4. Screenshots of the home page (1440 and 390), local only, as before.
-5. Commit and push. **Don't merge, don't deploy.** In the report, list the files the owner has to upload to the server after the merge (she uploads by hand), relative to the site root.
+### A. Portfolio, branch `design-system/tokens`
 
-## B. Button (system repo, new branch `components/button` from `main`)
+1. Move the pause control to the bottom-right corner of the viewport (`position: fixed`), offset by spacing tokens. Show it only while the hero is in view (e.g. an `IntersectionObserver`); when hidden, it's removed from the tab order and the accessibility tree (`hidden` or `inert`), and its pressed state is kept. When the cookie banner is visible, the control sits above it, not under it. Below 900px it stays hidden, as now.
+2. Test in Chrome: scroll the hero out and back, tab order with the hero in and out of view, the cookie banner shown and dismissed, reduced motion.
+3. Screenshots of the home page (1440 and 390), local only.
+4. Commit and push. **Don't merge, don't deploy.** Update the upload list if it changed.
 
-Everything per decisions 51, 53 and 56.
+### B. Figma
 
-1. **Tokens:** the `label` role (with its family and text transform), `color-secondary`, `color-text-on-secondary`, `color-secondary-hover`, the new primitive navy-200, the new value of `color-action-hover-on-dark`, `border-width.control`, `opacity.disabled`. Every check passes; add the new pairs to the contrast check (secondary label on secondary fill and on its hover, on both surfaces; dark primary label on its hover).
-2. **Component in code:** `fds-button` with `--primary`, `--secondary`, `--link`, all states from the B-007 tables on both surfaces, the navigation size, loading with `role="status"`, `aria-disabled`. Uses only tokens. Reduced motion respected.
-3. **Docs:** `docs/button.md`: when to use each variant and when not, `<a>` vs `<button>`, states, accessibility notes (focus, hit area, disabled, loading), do and don't, copy-paste HTML.
-4. **Design system page:** add the Button component with a live preview of all variants and states on light and dark, and its guidelines. Nothing else on the page. If the page's generated token card still shows old values afterwards, say so.
-5. **Figma (MCP):** a Button component set with variants for variant × state, bound to the variables and the `label` text style, so a frame's "Dark surface" mode switches it. Make it part of a repo script, like typography (decisions 44, 45). Add a "Button check" page with every variant and state, light and dark.
-6. Commit and push `components/button`. **Don't merge.**
+1. Read the file through MCP and confirm Tokens Studio now owns `navy/200`, `border-width/control` and `opacity/disabled` (same names, values, scopes and hide-from-publishing as the generated file), and nothing else changed. Read only.
+
+### C. System repo, branch `components/button`
+
+1. Design system page: replace "None is built yet" under Components with the current state (Button built, the other five planned). Nothing else on the page.
+2. Button Figma script: update the component set in place instead of replacing it (decision 44): existing variants are updated by name, missing ones created, none deleted. Run it on the file and confirm the variant IDs stay the same between two runs.
+3. Commit and push. **Don't merge.**
 
 ## Report
 
-`REPORT.md` with the ID `B-008`: part A first (commits, upload list), then part B (commits, check results, what the owner should check and where: the preview page and the Figma "Button check" page, screenshot of that page on this branch as `button-check.png`). Numbered questions if any. Push to `handoff` and stop.
+`REPORT.md` with the ID `B-009`: commits per repo, test results for A2, the Figma check for B1, the ID check for C2, the upload list. Questions numbered, if any. Push to `handoff` and stop.
