@@ -535,6 +535,27 @@ function docUnclip(node) {
   if ('children' in node) for (const child of node.children) docUnclip(child);
 }
 
+// Grows a page frame until every shadow inside it fits, so no shadow reaches past its edges. Run it
+// once the page is built: it measures each shadow as Figma draws it.
+function docFitShadows(root) {
+  const box = root.absoluteBoundingBox;
+  let left = 0, top = 0, right = 0, bottom = 0;
+  const shadowed = root.findAll((n) => 'effects' in n && n.effects.some((e) => e.type === 'DROP_SHADOW' && e.visible !== false));
+  for (const node of shadowed) {
+    const r = node.absoluteRenderBounds;
+    if (!r) continue;
+    left = Math.max(left, box.x - r.x);
+    top = Math.max(top, box.y - r.y);
+    right = Math.max(right, r.x + r.width - (box.x + box.width));
+    bottom = Math.max(bottom, r.y + r.height - (box.y + box.height));
+  }
+  root.paddingLeft += Math.ceil(left);
+  root.paddingTop += Math.ceil(top);
+  root.paddingBottom += Math.ceil(bottom);
+  root.resize(root.width + Math.ceil(left) + Math.ceil(right), root.height);
+  return { left, top, right, bottom };
+}
+
 async function docText(chars, style, color, width) {
   const t = figma.createText();
   await t.setTextStyleIdAsync(docStyle(style).id);
@@ -629,6 +650,7 @@ async function docSection(parent, title, subtitle, level) {
     if (item.description) card.appendChild(await docText(item.description, 'small', 'color/text-muted', 232));
   }
   docUnclip(root);
+  docFitShadows(root);
 }
 
 return {

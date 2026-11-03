@@ -97,6 +97,7 @@ const pages = {};
     await tokenRow(list, bar, item);
   }
   docUnclip(root);
+  docFitShadows(root);
   pages.spacing = page.id;
 }
 
@@ -118,6 +119,7 @@ const pages = {};
     await tokenRow(list, box, item);
   }
   docUnclip(root);
+  docFitShadows(root);
   pages.radius = page.id;
 }
 
@@ -140,6 +142,7 @@ const pages = {};
     await tokenRow(list, card, item);
   }
   docUnclip(root);
+  docFitShadows(root);
   pages.shadows = page.id;
 }
 

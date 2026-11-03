@@ -229,6 +229,7 @@ ${DOC_RUNTIME}
     if (item.description) card.appendChild(await docText(item.description, 'small', 'color/text-muted', 232));
   }
   docUnclip(root);
+  docFitShadows(root);
 }
 
 return {

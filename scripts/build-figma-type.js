@@ -232,6 +232,7 @@ for (const [colorMode] of P.surfaces) {
   }
 }
 docUnclip(root);
+docFitShadows(root);
 
 const known = new Set(PLAN.roles.map((r) => r.role));
 return {
