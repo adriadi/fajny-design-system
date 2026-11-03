@@ -45,7 +45,7 @@
   min-height: var(--fds-space-12);
   margin: 0;
   padding: var(--fds-space-2) var(--fds-space-4);
-  border: var(--fds-border-width-control) solid var(--fds-color-border-input);
+  border: var(--fds-border-width-default) solid var(--fds-color-border-input);
   border-radius: var(--fds-radius-md);
   background-color: var(--fds-color-surface);
   color: var(--fds-color-text);

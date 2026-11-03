@@ -354,7 +354,7 @@ const pages = {};
     box.name = 'box'; box.resize(item.wide ? 200 : 96, item.wide ? 64 : 96);
     box.fills = [docPaint('color/surface-highlight')];
     box.strokes = [docPaint('color/border-highlight')];
-    box.setBoundVariable('strokeWeight', docVar('border-width/control'));
+    box.setBoundVariable('strokeWeight', docVar('border-width/default'));
     bindRadius(box, item.variable || 'radius/pill');
     await tokenRow(list, box, item);
   }

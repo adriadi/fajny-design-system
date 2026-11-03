@@ -22,7 +22,7 @@
   min-height: var(--fds-space-12);
   padding: 0 var(--fds-space-8);
   margin: 0;
-  border: var(--fds-border-width-control) solid transparent;
+  border: var(--fds-border-width-default) solid transparent;
   border-radius: var(--fds-radius-pill);
   background: none;
   font-family: var(--fds-font-family-label);

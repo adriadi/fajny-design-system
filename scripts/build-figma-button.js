@@ -25,7 +25,7 @@ const VARIANTS = [
 ];
 const STATES = ['Default', 'Hover', 'Focus', 'Active', 'Disabled', 'Loading'];
 const SHARED = {
-  gap: 'space/2', radius: 'radius/pill', strokeWeight: 'border-width/control', opacity: 'opacity/disabled',
+  gap: 'space/2', radius: 'radius/pill', strokeWeight: 'border-width/default', opacity: 'opacity/disabled',
   focusColor: 'color/focus', focusWidth: 'focus/ring-width', focusOffset: 'focus/ring-offset',
   textStyle: 'label', loadingLabel: 'Loading…',
 };

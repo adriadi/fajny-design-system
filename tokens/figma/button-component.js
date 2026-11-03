@@ -59,7 +59,7 @@ const PLAN = {
   "shared": {
     "gap": "space/2",
     "radius": "radius/pill",
-    "strokeWeight": "border-width/control",
+    "strokeWeight": "border-width/default",
     "opacity": "opacity/disabled",
     "focusColor": "color/focus",
     "focusWidth": "focus/ring-width",

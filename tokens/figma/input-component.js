@@ -146,7 +146,7 @@ const PLAN = {
     "iconSize": "space/4",
     "actionIconSize": "space/5",
     "radius": "radius/md",
-    "strokeWeight": "border-width/control",
+    "strokeWeight": "border-width/default",
     "opacity": "opacity/disabled",
     "focusColor": "color/focus",
     "focusWidth": "focus/ring-width",

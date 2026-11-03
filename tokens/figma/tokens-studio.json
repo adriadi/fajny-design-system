@@ -454,10 +454,10 @@
   },
   "border-width": {
     "border-width": {
-      "control": {
+      "default": {
         "$value": "1.5px",
         "$type": "dimension",
-        "$description": "Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige.",
+        "$description": "The one border width (decision 64): controls, cards and dividers. Thick enough to read at 2.2:1 on beige.",
         "$extensions": {
           "com.figma.scopes": [
             "STROKE_FLOAT"

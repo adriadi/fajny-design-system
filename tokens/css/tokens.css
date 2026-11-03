@@ -40,7 +40,7 @@
   --fds-radius-lg: 16px; /** Every card (text and image), images, banners and modals. */
   --fds-radius-pill: 999px; /** Every button, tag and chip. No square buttons. */
   --fds-radius-round: 50%; /** Circles: dots, avatars, round icon buttons. */
-  --fds-border-width-control: 1.5px; /** Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige. */
+  --fds-border-width-default: 1.5px; /** The one border width (decision 64): controls, cards and dividers. Thick enough to read at 2.2:1 on beige. */
   --fds-focus-ring-width: 2px; /** Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow. */
   --fds-focus-ring-offset: 3px; /** Gap between an element and its focus ring. */
   --fds-shadow-sm: 0px 4px 20px 0px #1B3A6B12; /** Hover on small text cards. navy-900 at 7%. */
@@ -117,7 +117,7 @@
   --fds-color-border-input: var(--fds-stone-400); /** Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces. */
   --fds-color-border-strong: var(--fds-navy-900); /** Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces. */
   --fds-color-border-rule: var(--fds-navy-900); /** Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark. */
-  --fds-color-border-highlight: var(--fds-navy-300); /** The light Highlight's left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button's label carries its meaning. */
+  --fds-color-border-highlight: var(--fds-navy-300); /** The light Highlight's left rule, and the border of the secondary button (border-width.default). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button's label carries its meaning. */
   --fds-color-border-on-dark: var(--fds-navy-800); /** Value of color-border inside a dark surface. Decorative only: 1.34:1 on color-surface-dark. Not referenced by components. */
   --fds-color-border-rule-on-dark: var(--fds-gold-500); /** Value of color-border-rule inside a dark surface. Not referenced by components. 6.11:1 on color-surface-dark. */
   --fds-color-focus: var(--fds-navy-900); /** Keyboard focus ring. On a dark surface it becomes color-focus-on-dark. */

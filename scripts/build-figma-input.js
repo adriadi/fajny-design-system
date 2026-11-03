@@ -22,7 +22,7 @@ const SHARED = {
   width: 320, // the default width of a field in Figma; in code a field is as wide as its container
   gap: 'space/2', minHeight: 'space/12', textareaMinHeight: 'space/30',
   paddingY: 'space/2', paddingX: 'space/4', actionSize: 'space/12', iconSize: 'space/4', actionIconSize: 'space/5',
-  radius: 'radius/md', strokeWeight: 'border-width/control', opacity: 'opacity/disabled',
+  radius: 'radius/md', strokeWeight: 'border-width/default', opacity: 'opacity/disabled',
   focusColor: 'color/focus', focusWidth: 'focus/ring-width', focusOffset: 'focus/ring-offset',
   fill: 'color/surface', label: 'color/text', value: 'color/text', placeholder: 'color/text-placeholder',
   help: 'color/text-muted', action: 'color/text-muted', error: 'color/error',

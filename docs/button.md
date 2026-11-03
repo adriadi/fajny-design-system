@@ -29,7 +29,7 @@ Every variant in every state, on a light and a dark surface.
 
 | State | Primary | Secondary | Link |
 | --- | --- | --- | --- |
-| Default | `color-action` fill, `color-text-on-action` label | `color-secondary` fill, `color-border-highlight` border (`border-width.control`), `color-text-on-secondary` label | `color-text-muted` |
+| Default | `color-action` fill, `color-text-on-action` label | `color-secondary` fill, `color-border-highlight` border (`border-width.default`), `color-text-on-secondary` label | `color-text-muted` |
 | Hover and pressed | `color-action-hover` | `color-secondary-hover` | `color-text` |
 | Focus | ring: `color-focus`, `focus.ring-width`, `focus.ring-offset` | same | same |
 | Disabled | `opacity.disabled` | same | not available: a link can't be disabled |

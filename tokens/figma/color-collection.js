@@ -154,7 +154,7 @@ const PLAN = {
       "scopes": [
         "STROKE_COLOR"
       ],
-      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
+      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.default). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
     },
     {
       "name": "color/focus",
