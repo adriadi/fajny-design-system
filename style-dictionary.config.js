@@ -28,8 +28,8 @@ export default {
   },
   platforms: {
     css: {
-      // The built-in 'css' group minus 'size/rem': spacing and radius stay in px like the
-      // portfolio, and font sizes are already written in rem inside clamp(), which size/rem can't parse.
+      // The built-in 'css' group minus 'size/rem': spacing and radius stay in px as authored,
+      // and font sizes are already written in rem inside clamp(), which size/rem can't parse.
       transforms: [
         'attribute/cti', 'name/kebab', 'time/seconds', 'html/icon', 'color/css',
         'asset/url', 'fontFamily/css', 'cubicBezier/css', 'strokeStyle/css/shorthand',
