@@ -1,10 +1,19 @@
 // The page layout every Figma documentation page follows (decision 58), shared by the scripts that
 // write pages. Each script embeds DOC_RUNTIME in its generated Figma script, so all pages are laid
-// out by the same code: the documented page order, a page frame on the light surface, and sections
-// with a title and a one-sentence subtitle in the system's own text styles and colour roles.
+// out by the same code: the documented page groups and order, a page frame on the light surface,
+// sections with a title and a one-sentence subtitle in the system's own text styles and colour roles,
+// and no clipping, so shadows, focus rings and components always show in full.
 import { readFileSync } from 'node:fs';
 
-export const DOC_ORDER = ['Colors', 'Typography', 'Spacing', 'Corner radius', 'Shadows', 'Button'];
+// Pages in groups, in this order. Basic: the token pages. Regular: Button and other simple
+// components. Advanced: components that nest other components. A separator page named "---" sits
+// between two groups that have pages; Figma shows it as a divider.
+export const DOC_GROUPS = [
+  { name: 'Basic', pages: ['Colors', 'Typography', 'Spacing', 'Corner radius', 'Shadows'] },
+  { name: 'Regular', pages: ['Button'] },
+  { name: 'Advanced', pages: [] },
+];
+export const DOC_SEPARATOR = '---';
 
 // The README's "Colour roles" table: group name, its roles, what the group is for.
 export function readColourGroups() {
@@ -26,7 +35,8 @@ export function readSurfaceRule() {
 
 export const DOC_RUNTIME = `
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_ORDER = ${JSON.stringify(DOC_ORDER)};
+const DOC_GROUPS = ${JSON.stringify(DOC_GROUPS)};
+const DOC_SEPARATOR = ${JSON.stringify(DOC_SEPARATOR)};
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {
   const found = docVars.find((x) => x.name === name);
@@ -47,15 +57,30 @@ const docModeOf = (collection, mode) => {
   return [c, c.modes.find((m) => m.name === mode).modeId];
 };
 
-// Puts the documentation pages first, in the documented order, and removes the empty "Page 1"
-// that every new Figma file starts with.
+// Puts the documentation pages first, group by group, with one separator page between two groups
+// that have pages. Existing separators are reused, missing ones created, extra empty ones removed.
+// Also removes the empty "Page 1" that every new Figma file starts with.
 function docOrder() {
+  const groups = DOC_GROUPS
+    .map((g) => g.pages.map((name) => figma.root.children.find((x) => x.name === name)).filter(Boolean))
+    .filter((pages) => pages.length);
+  const separators = figma.root.children.filter((x) => x.name === DOC_SEPARATOR);
+  while (separators.length < groups.length - 1) {
+    const p = figma.createPage();
+    p.name = DOC_SEPARATOR;
+    separators.push(p);
+  }
   let i = 0;
-  for (const name of DOC_ORDER) {
-    const p = figma.root.children.find((x) => x.name === name);
-    if (!p) continue;
+  const place = (p) => {
     if (figma.root.children.indexOf(p) !== i) figma.root.insertChild(i, p);
     i++;
+  };
+  groups.forEach((pages, g) => {
+    if (g > 0) place(separators[g - 1]);
+    pages.forEach(place);
+  });
+  for (const p of separators.slice(Math.max(groups.length - 1, 0))) {
+    if (p.children.length === 0 && p !== figma.currentPage) p.remove();
   }
   const blank = figma.root.children.find((x) => x.name === 'Page 1' && x.children.length === 0);
   if (blank && blank !== figma.currentPage && figma.root.children.length > 1) blank.remove();
@@ -81,7 +106,16 @@ function docSurface(frame, mode) {
 function docFrame(name, direction, props) {
   const f = figma.createAutoLayout(direction, Object.assign({ name }, props || {}));
   f.fills = [];
+  f.clipsContent = false;
   return f;
+}
+
+// Turns off "Clip content" on a node and everything in it, so shadows, focus rings and components
+// are never cut off. Instances follow their main component, so they're left as they are.
+function docUnclip(node) {
+  if (node.type === 'INSTANCE') return;
+  if ('clipsContent' in node) node.clipsContent = false;
+  if ('children' in node) for (const child of node.children) docUnclip(child);
 }
 
 async function docText(chars, style, color, width) {

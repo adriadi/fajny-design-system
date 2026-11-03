@@ -228,6 +228,7 @@ ${DOC_RUNTIME}
     card.appendChild(await docText(item.hex, 'small', 'color/text-muted', 232));
     if (item.description) card.appendChild(await docText(item.description, 'small', 'color/text-muted', 232));
   }
+  docUnclip(root);
 }
 
 return {

@@ -96,6 +96,7 @@ const pages = {};
     if (item.variable) bar.setBoundVariable('width', docVar(item.variable));
     await tokenRow(list, bar, item);
   }
+  docUnclip(root);
   pages.spacing = page.id;
 }
 
@@ -116,6 +117,7 @@ const pages = {};
     bindRadius(box, item.variable || 'radius/pill');
     await tokenRow(list, box, item);
   }
+  docUnclip(root);
   pages.radius = page.id;
 }
 
@@ -137,6 +139,7 @@ const pages = {};
     await card.setEffectStyleIdAsync(style.id);
     await tokenRow(list, card, item);
   }
+  docUnclip(root);
   pages.shadows = page.id;
 }
 

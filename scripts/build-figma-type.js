@@ -106,8 +106,14 @@ if (errors.length) {
   process.exit(1);
 }
 
-// The specimen section's subtitle on the Typography page, as the README's Figma section says.
-const SPECIMEN_SUBTITLE = 'Real portfolio text in every role, on a 390px and a 1280px screen, on a light and a dark surface.';
+// The specimen section's subtitle on the Typography page: the "Specimen" bullet in the README's
+// Typography section.
+const SPECIMEN_SUBTITLE = readFileSync('README.md', 'utf8').split('\n## Typography\n')[1]?.split('\n## ')[0]
+  .split('\n').find((l) => l.startsWith('- **Specimen:** '))?.replace('- **Specimen:** ', '');
+if (!SPECIMEN_SUBTITLE) {
+  console.error('Figma typography build failed:\n  ✗ README.md has no "- **Specimen:**" line in its "## Typography" section');
+  process.exit(1);
+}
 
 const plan = {
   collection: 'typography',
@@ -115,7 +121,7 @@ const plan = {
   roles,
   page: {
     name: 'Typography',
-    // The first sentence of the font group's description; the specimen's subtitle is in the README too.
+    // The first sentence of the font group's description.
     subtitle: font.$description.split(/(?<=\.) /)[0],
     specimenSubtitle: SPECIMEN_SUBTITLE,
     widths: { Mobile: 390, Desktop: 1280 },
@@ -225,6 +231,7 @@ for (const [colorMode] of P.surfaces) {
     frames.push({ id: frame.id, name: frame.name, width, height: Math.round(frame.height) });
   }
 }
+docUnclip(root);
 
 const known = new Set(PLAN.roles.map((r) => r.role));
 return {
