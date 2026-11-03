@@ -4,6 +4,12 @@
 
 Decision 58 (`DECISIONS.md` on `main`, `2ba3632`): the Figma file is documentation, one page per topic, and **every new page follows the same pattern**. Also on the parking lot: the design system page in Claude will later be replaced by a read-only page of our own; no work on it now.
 
+## Page layout (every page, now and later)
+
+- **Every section has a title and a subtitle**: the title names the section (e.g. "Buttons"), the subtitle is one short sentence on what it is for, taken from the repo docs or token descriptions.
+- **On a component page**, the section with every variant and state (what "Button check" shows today) has a **smaller title, "All components"**, with its own short subtitle, next to the main section with the component set.
+- Titles and subtitles use the system's own text styles and colour roles. This layout is part of decision 58 and applies to every Figma page from now on.
+
 ## Tasks (system repo, on `components/button`, in the Figma file through MCP)
 
 1. **Pages, in this order:** Colors, Typography, Spacing, Corner radius, Shadows, Button. Delete the working pages "Type check" and "Button check". No other pages.
