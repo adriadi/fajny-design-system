@@ -1,102 +1,62 @@
-# B-013 · Report
+# B-014 · Report
 
 ## Commits
 
-- `components/button` of `adriadi/fajny-design-system`: **`a140fff`** "Button page top to bottom with "Variants"; page frames fit their shadows", pushed (`e34a9e4..a140fff`). Not merged.
-- `npm run build` passes all 11 steps; `tokens/css/tokens.css` is unchanged.
-- In Figma I ran the four generated files, full text and unchanged, as in B-012: `color-collection.js`, `typography-collection.js`, `foundations-pages.js`, `button-component.js`. No text changed anywhere (task 3 is a proposal only).
+- `components/button` of `adriadi/fajny-design-system`: **`2df4cce`** "Neutral example texts across the system", pushed (`a140fff..2df4cce`). Not merged.
 
-## Button page
+## Build
 
-- **Component set:** back to the grid it had before B-012, one row per variant and one column per state, without labels.
-- **Order:** the page reads top to bottom: "Button" with its purpose, then "Component set", then "Variants" below it. The "Variants" title is the smaller size, the same as "Component set", and its subtitle is "Every variant in every state, on a light and a dark surface." The script builds every future component page in this order.
-- **Variant IDs:** unchanged, 22 updated and 0 created; the set is `41:68`.
+`npm run build` passes all 11 steps, with 46 contrast pairs passing. `tokens/css/tokens.css` changed only in its description comments.
 
-Screenshot: `figma-button.png`. With the labels gone, `figma-button-set.png` from B-012 was out of date, so I removed it from this branch.
+In Figma I ran the four generated files, full text and unchanged: `color-collection.js`, `typography-collection.js`, `foundations-pages.js`, `button-component.js`. The Button variant IDs are unchanged: 22 updated, 0 created, set `41:68`.
 
-## Room for shadows
+## What changed
 
-Each page script now ends by measuring every shadow on the page as Figma draws it. It then grows the page frame by whatever reaches past an edge (more padding on that side, or more width).
+1. **Typography specimen:** the ten texts from the brief, exactly as given.
+2. **Button labels:** Continue, Learn more, Read more, Contact, and Loading… while loading. They're in the Figma set, `docs/button-preview.html` (through `scripts/build-button-preview.js`), `docs/button.md` and the usage comment in `components/button.css`.
+3. **`docs/button.md` examples:** every replacement from the B-013 table.
+4. **Token descriptions:** the 10 replacements, in the token JSON. After the rebuild they also appear in the CSS comments, the Colors, Spacing, Corner radius and Typography pages, and the `color` and `typography` variable descriptions.
+5. **README:** the Specimen line now starts "Interface text in every role …".
+6. **Comments in `scripts/build-figma-type.js`:** the comment above the samples is replaced, and so is the file's header line, which said "real portfolio text".
+7. **Button page subtitle:** "A control that takes the user somewhere or does something." The script takes it from the first sentence of `docs/button.md`, so I changed it there and it stays on reruns.
 
-On the Shadows page, the frame's bottom padding went from 80 to 96px, so `shadow/overlay` now ends inside it. A read-back of all pages found no shadow outside its frame.
+**Tokens Studio:** the new descriptions for primitives, spacing and radius are in `tokens/figma/tokens-studio.json`, but Tokens Studio writes the variables in Figma itself. The variables in the `primitives`, `spacing` and `radius` collections will show the old descriptions until you re-import that file (Tools → Load from file). The documentation pages already show the new descriptions.
 
-Screenshot: `figma-shadows.png`.
+## Wrap check (390px frame)
 
-## Neutral texts: proposal
+Every text that wrapped before still wraps to at least two lines, and label stays on one line. Line counts, read from Figma:
 
-Nothing below is changed yet.
+| Role | Lines at 390px |
+| --- | --- |
+| display | 3 |
+| title | 2 |
+| heading | 2 |
+| subheading | 2 |
+| card-title | 2 |
+| lead | 3 |
+| body | 5 |
+| small | 3 |
+| overline | 2 |
+| label | 1 |
 
-### Typography specimen (`scripts/build-figma-type.js`, the Typography page)
+## Search for portfolio text (task 7)
 
-Each proposed text wraps to at least two lines on the 390px frame wherever the current one does. Label stays one line.
+I searched every tracked file except `DECISIONS.md` for: Adrianna, case stud(y/ies), CV, portfolio, Let's talk, View my work, Download CV, Hawk, Curaay, Scouting, Calendly, typolog(y/ies), next-project, pain point, visitor and Send message. Two places came back:
 
-| Role | Current text | Proposed text |
-| --- | --- | --- |
-| display | Hi, I am Adrianna. I am empowering Design with AI. | Plan, build and ship with one shared system |
-| title | Hundreds of criminal patterns. None had a paper trail. | Project settings and team access |
-| heading | Let's make something good. | Recent activity in your workspace |
-| subheading | The system had 247 patterns. Not one knew where it came from. | Notification preferences for email and mobile |
-| card-title | Can I ask this video a question? Yes, you can. | Quarterly report: ready for your review and approval |
-| lead | Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics. | Manage your projects, invite your team and keep every decision in one place. Changes are saved as you go. |
-| body | The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own. | Each project has its own members, files and settings. Invite people by email, choose what they can edit, and remove access at any time. Nothing is shared until you say so. |
-| small | Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away. | Last edited 12 March 2026 by the project owner. Version history keeps every change for 90 days. |
-| overline | Typologies in the library - each one now traceable to its exact institutional origin | Account settings · Security, sign-in and connected devices |
-| label | View my work | Continue |
+- README "Why" section: left alone, as you said.
+- `style-dictionary.config.js`, line 32, a code comment: "spacing and radius stay in px like the portfolio". See question 1.
 
-### Button labels
+I also checked "hero" and "contact": they appear in generic descriptions ("Hero and contact blocks.", "Alternate sections, e.g. the contact section.", "The landing page hero only"). These are common page parts, not portfolio examples, so I left them unchanged.
 
-The labels appear in the Figma set (`scripts/build-figma-button.js`), in `docs/button-preview.html` (generated by `scripts/build-button-preview.js`), in `docs/button.md` and in the usage comment at the top of `components/button.css`.
+## Screenshots
 
-| Variant | Current label | Proposed label |
-| --- | --- | --- |
-| Primary | View my work | Continue |
-| Secondary | Download CV | Learn more |
-| Link | Case studies | Read more |
-| Navigation | Let's talk | Contact |
-| Loading state (Primary, Secondary, Navigation) | Sending… | Loading… |
+- `figma-typography.png`: the Typography page with the new specimen.
+- `figma-button.png`: the Button page with the new labels and subtitle.
 
-### `docs/button.md`, other examples
+## Questions
 
-| Place | Current text | Proposed text |
-| --- | --- | --- |
-| Variants table, Primary "Use it for" | "View my work", "Send message" | "Continue", "Save changes" |
-| Variants table, Secondary "Use it for" | "Download CV" | "Learn more" |
-| Variants table, Link "Use it for" | "Case studies", "Experience" | "Read more", "Pricing" |
-| Navigation size | ("Let's talk") | ("Contact") |
-| Do and don't | "Send message", "View my work" | "Save changes", "Continue" |
-| HTML, primary | `href="#work"` View my work | `href="#next"` Continue |
-| HTML, secondary | Download CV | Learn more |
-| HTML, link | `href="#experience"` Experience | `href="#pricing"` Pricing |
-| HTML, navigation | `href="#contact"` Let's talk | `href="#contact"` Contact |
-| HTML, with an icon | `href="#work"` View my work | `href="#next"` Continue |
-| HTML, disabled | Send message; "Fill in your name and email to send." | Save changes; "Fill in your name and email to continue." |
-| HTML, loading | Sending…; "Sending your message…" | Saving…; "Saving your changes…" |
-| HTML, dark surface | `href="https://calendly.com/…"` Schedule a call; `href="#cv"` Download CV | `href="#demo"` Book a demo; `href="#guide"` Learn more |
+1. **Comment in `style-dictionary.config.js`.** It reads: "The built-in 'css' group minus 'size/rem': spacing and radius stay in px like the portfolio, and font sizes are already written in rem inside clamp(), which size/rem can't parse."
+   - A: Change "like the portfolio" to "as authored", so the comment says why without naming a user: "spacing and radius stay in px as authored, and font sizes …".
+   - B: Leave it.
 
-### Token descriptions that use the portfolio as the example
-
-These are descriptions, not sample text, but they name portfolio pages or say the palette comes from the portfolio. They also show in Figma (variable descriptions, the Colors, Spacing, Corner radius and Typography pages) and in the generated CSS comments.
-
-| Token | Current description | Proposed description |
-| --- | --- | --- |
-| primitives group | Raw palette, taken from the portfolio (adriannadziadyk.de). Components and agents never use these directly: use the semantic color-* tokens. | Raw palette. Components and agents never use these directly: use the semantic color-* tokens. |
-| `red.700` | Error. oklch(50% 0.18 25), from the portfolio's contact form. | Error. oklch(50% 0.18 25). |
-| `green.700` | Success. oklch(45% 0.15 140), from the portfolio's CV modal. | Success. oklch(45% 0.15 140). |
-| `navy.100` | Case-study pull-quote background. | Pull-quote background. |
-| `color.action` | Primary button background, including case-study buttons such as View prototype. On a dark surface … | Primary button background. On a dark surface … (rest unchanged) |
-| `space.5` | Paragraph spacing in case studies, grid gaps. | Paragraph spacing in long-form text, grid gaps. |
-| `space.16` | Large blocks, e.g. the next-project block. | Large blocks, e.g. a closing call-to-action block. |
-| `radius.sm` | Small inline blocks: pull quotes, metrics, pain points. Never buttons. | Small inline blocks: pull quotes, metrics, callouts. Never buttons. |
-| `font.size.display` | 40px to 96px. The home hero only: the page's single h1. … | 40px to 96px. The landing page hero only: the page's single h1. … (rest unchanged) |
-| `font.size.title` | 36px to 72px. The page title of a case study: the page's single h1. … | 36px to 72px. The page title of an article or detail page: the page's single h1. … (rest unchanged) |
-
-### Other places
-
-| Place | Current text | Proposed text |
-| --- | --- | --- |
-| README, Typography section, "Specimen" line (the specimen subtitle in Figma) | Real portfolio text in every role, on a 390px and a 1280px screen, on a light and a dark surface. | Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface. |
-| `scripts/build-figma-type.js`, comments above the samples | "Specimen text … from the portfolio (adriadi/portfolio, main)", with one source page per text | "Specimen text: neutral interface text, long enough to wrap where a role wraps in a product" |
-| README, "Why" section | "I gave an AI agent the same task twice in my portfolio's codebase …" | No change proposed: it's the story of why the system exists, not an example. |
-| README, "Use the tokens" example | "Muted text, light on navy" | No change needed: already neutral. |
-
-No questions.
+   **Recommendation: A.** The reason the comment gives is the token values themselves, not the portfolio.
