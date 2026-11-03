@@ -4,6 +4,8 @@
 
 The next component is **Input** (decision 6 scope). This round is an audit and a proposal only, the same way Button started. **Don't build anything, don't change tokens, don't touch Figma.**
 
+**Added by the owner:** she doesn't want the inputs as they look in the portfolio today. She wants a **standard input**: a field with a full border on all four sides (a box, not an underline or a borderless field), the label visible above it, help or error text below it. The audit records the current fields as the "before" state only; the proposal doesn't copy their look. Report how the standard input differs from the current fields.
+
 Starting points already decided:
 - Decision 11: the portfolio's labels aren't linked to their inputs, placeholder contrast is 1.24:1, error text 3.13:1.
 - Decision 27: `color-border-input` for form field borders (3:1, WCAG 1.4.11), `color-error`, `color-success`. `color-border` is for decorative dividers only.
