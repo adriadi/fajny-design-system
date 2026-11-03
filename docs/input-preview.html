@@ -275,7 +275,7 @@
   cursor: progress;
 }
 
-/* Input (decisions 59, 60). Uses only --fds-* tokens; link tokens.css first.
+/* Input (decisions 59, 60, 61). Uses only --fds-* tokens; link tokens.css first.
  *
  *   <div class="fds-field">
  *     <label class="fds-field__label" for="email">Email</label>
@@ -283,6 +283,9 @@
  *     <p class="fds-field__help" id="email-help">Only used to reply to you.</p>
  *     <p class="fds-field__error" id="email-error" hidden>…</p>
  *   </div>
+ *
+ * While the field shows an error, the error message replaces the help text: the script hides the
+ * help and points aria-describedby to the error alone.
  *
  * One class, fds-input, for <input>, <select> and <textarea>, inside an fds-field wrapper.
  * States come from the element, not from classes: :hover, :focus-visible, aria-invalid="true"
@@ -363,6 +366,11 @@
 textarea.fds-input {
   min-height: var(--fds-space-30);
   resize: vertical;
+}
+
+/* A disabled text area can't be resized, so it shows no handle. */
+textarea.fds-input:disabled {
+  resize: none;
 }
 
 select.fds-input {
@@ -532,8 +540,8 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
       <!-- Error: what the email field looks like after a wrong value -->
       <div class="fds-field">
         <label class="fds-field__label" for="email-2">Email</label>
-        <input class="fds-input" id="email-2" type="email" value="name@" aria-invalid="true" aria-describedby="email-2-error email-2-help">
-        <p class="fds-field__help" id="email-2-help">Only used to reply to you.</p>
+        <input class="fds-input" id="email-2" type="email" value="name@" aria-invalid="true" aria-describedby="email-2-error">
+        <p class="fds-field__help" id="email-2-help" hidden>Only used to reply to you.</p>
         <p class="fds-field__error" id="email-2-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Enter an email address like name@example.com.</p>
       </div>
     
@@ -598,8 +606,8 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
           <p class="fds-field__help" id="p4-help">Only used to reply to you.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p5">Email</label>
-          <input class="fds-input" id="p5" type="email" placeholder="e.g. name@example.com" value="name@" aria-invalid="true" aria-describedby="p5-error p5-help">
-          <p class="fds-field__help" id="p5-help">Only used to reply to you.</p>
+          <input class="fds-input" id="p5" type="email" placeholder="e.g. name@example.com" value="name@" aria-invalid="true" aria-describedby="p5-error">
+          <p class="fds-field__help" id="p5-help" hidden>Only used to reply to you.</p>
           <p class="fds-field__error" id="p5-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Enter an email address like name@example.com.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p6">Email</label>
@@ -624,8 +632,8 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
           <p class="fds-field__help" id="p10-help">Pick the closest one.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p11">Topic</label>
-          <select class="fds-input" id="p11" aria-invalid="true" aria-describedby="p11-error p11-help"><option value="">Choose a topic</option><option>A question about a project</option></select>
-          <p class="fds-field__help" id="p11-help">Pick the closest one.</p>
+          <select class="fds-input" id="p11" aria-invalid="true" aria-describedby="p11-error"><option value="">Choose a topic</option><option>A question about a project</option></select>
+          <p class="fds-field__help" id="p11-help" hidden>Pick the closest one.</p>
           <p class="fds-field__error" id="p11-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Choose a topic.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p12">Topic</label>
@@ -650,8 +658,8 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
           <p class="fds-field__help" id="p16-help">A few sentences are enough.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p17">Message</label>
-          <textarea class="fds-input" id="p17" placeholder="What would you like to ask?" aria-invalid="true" aria-describedby="p17-error p17-help"></textarea>
-          <p class="fds-field__help" id="p17-help">A few sentences are enough.</p>
+          <textarea class="fds-input" id="p17" placeholder="What would you like to ask?" aria-invalid="true" aria-describedby="p17-error"></textarea>
+          <p class="fds-field__help" id="p17-help" hidden>A few sentences are enough.</p>
           <p class="fds-field__error" id="p17-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Enter a message.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p18">Message</label>
@@ -676,8 +684,8 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
           <p class="fds-field__help" id="p22-help">At least 8 characters.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p23">Password</label>
-          <input class="fds-input" id="p23" type="password" placeholder="Enter your password" value="abc" aria-invalid="true" aria-describedby="p23-error p23-help"><button class="fds-field__action" type="button" aria-controls="p23" aria-label="Show password" data-toggle-password><svg data-icon="show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><svg data-icon="hide" hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg></button>
-          <p class="fds-field__help" id="p23-help">At least 8 characters.</p>
+          <input class="fds-input" id="p23" type="password" placeholder="Enter your password" value="abc" aria-invalid="true" aria-describedby="p23-error"><button class="fds-field__action" type="button" aria-controls="p23" aria-label="Show password" data-toggle-password><svg data-icon="show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><svg data-icon="hide" hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg></button>
+          <p class="fds-field__help" id="p23-help" hidden>At least 8 characters.</p>
           <p class="fds-field__error" id="p23-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Enter at least 8 characters.</p>
         </div></td><td><div class="fds-field">
           <label class="fds-field__label" for="p24">Password</label>
@@ -688,8 +696,9 @@ td { vertical-align: top; width: calc(var(--fds-space-30) * 2); }
     </table>
   </section>
 <script>
-// Input: error check (decision 60). For every form with data-fds-validate: a field is checked when
+// Input: error check (decisions 60, 61). For every form with data-fds-validate: a field is checked when
 // it loses focus, then live while it's being fixed; on submit, focus moves to the first invalid field.
+// While a field shows its error, the error replaces the help text.
 document.querySelectorAll('form[data-fds-validate]').forEach((form) => {
   const inputs = [...form.querySelectorAll('.fds-input')];
   const check = (input) => {
@@ -700,7 +709,8 @@ document.querySelectorAll('form[data-fds-validate]').forEach((form) => {
     if (invalid) input.setAttribute('aria-invalid', 'true');
     else input.removeAttribute('aria-invalid');
     if (error) error.hidden = !invalid;
-    const describedBy = [invalid && error?.id, help?.id].filter(Boolean).join(' ');
+    if (help) help.hidden = invalid && Boolean(error);
+    const describedBy = invalid && error ? error.id : help?.id;
     if (describedBy) input.setAttribute('aria-describedby', describedBy);
     else input.removeAttribute('aria-describedby');
     return !invalid;

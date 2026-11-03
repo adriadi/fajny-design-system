@@ -1,10 +1,11 @@
 // Builds tokens/figma/input-component.js: a Figma plugin script, run through the Figma MCP use_figma
-// tool, that writes the Input component set and the Input page (decisions 58, 59, 60). Every fill,
+// tool, that writes the Input component set and the Input page (decisions 58, 59, 60, 61). Every fill,
 // stroke, size, radius, gap and opacity is bound to a variable, and every text to a text style
 // (label, help and error in small, the value in field), so the component follows the tokens.
 //
 // Type (Text, Select, Textarea, Password) × State (Default, Hover, Focus, Error, Disabled). Label,
-// help and error are text properties; help and error can be switched off. The icons are the ones in
+// help and error are text properties; help and error can be switched off. In the Error variants the
+// error message replaces the help text, as in code. The icons are the ones in
 // scripts/input-icons.js, and the select's chevron is the one components/input.css draws, so the
 // Figma field can't show other icons than code. The colour roles each state uses are listed below;
 // the build fails if components/input.css uses a colour role the list doesn't name, or the other way.
@@ -180,9 +181,12 @@ async function fill(comp, row, state) {
     ring.constraints = { horizontal: 'STRETCH', vertical: 'STRETCH' };
   }
 
+  // In the Error variants the error message replaces the help text (decision 61), so the help layer
+  // is hidden there. Its text stays linked to the Help property.
   const help = await text(S.defaults.help, S.helpStyle, S.help);
   help.name = 'help';
   comp.appendChild(help); help.layoutSizingHorizontal = 'FILL';
+  help.visible = state !== 'Error';
 
   if (state === 'Error') {
     const error = docFrame('error', 'HORIZONTAL', { counterAxisAlignItems: 'MIN' });
@@ -228,10 +232,15 @@ const keys = {
   showHelp: propKey(P.showHelp, 'BOOLEAN', true),
   showError: propKey(P.showError, 'BOOLEAN', true),
 };
+// A boolean property can only set a layer's visibility to its own value, never to the opposite, so
+// Show error can't also hide the help. In the Error variants the help layer is hidden and not linked
+// to Show help; Show help works in every other state.
 for (const comp of set.children) {
   comp.findChild((n) => n.name === 'label').componentPropertyReferences = { characters: keys.label };
-  comp.findChild((n) => n.name === 'help').componentPropertyReferences = { characters: keys.help, visible: keys.showHelp };
   const error = comp.findChild((n) => n.name === 'error');
+  comp.findChild((n) => n.name === 'help').componentPropertyReferences = error
+    ? { characters: keys.help }
+    : { characters: keys.help, visible: keys.showHelp };
   if (error) {
     error.componentPropertyReferences = { visible: keys.showError };
     error.findChild((n) => n.name === 'message').componentPropertyReferences = { characters: keys.error };

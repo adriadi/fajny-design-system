@@ -1,4 +1,4 @@
-/* Input (decisions 59, 60). Uses only --fds-* tokens; link tokens.css first.
+/* Input (decisions 59, 60, 61). Uses only --fds-* tokens; link tokens.css first.
  *
  *   <div class="fds-field">
  *     <label class="fds-field__label" for="email">Email</label>
@@ -6,6 +6,9 @@
  *     <p class="fds-field__help" id="email-help">Only used to reply to you.</p>
  *     <p class="fds-field__error" id="email-error" hidden>…</p>
  *   </div>
+ *
+ * While the field shows an error, the error message replaces the help text: the script hides the
+ * help and points aria-describedby to the error alone.
  *
  * One class, fds-input, for <input>, <select> and <textarea>, inside an fds-field wrapper.
  * States come from the element, not from classes: :hover, :focus-visible, aria-invalid="true"
@@ -86,6 +89,11 @@
 textarea.fds-input {
   min-height: var(--fds-space-30);
   resize: vertical;
+}
+
+/* A disabled text area can't be resized, so it shows no handle. */
+textarea.fds-input:disabled {
+  resize: none;
 }
 
 select.fds-input {

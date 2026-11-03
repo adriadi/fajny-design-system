@@ -188,7 +188,7 @@ const PLAN = {
   },
   "componentPage": "Input",
   "purpose": "A field where the user types or picks a value.",
-  "setSubtitle": "One class for text fields, selects and text areas, with the label always above the field and help or error text below it (decisions 59 and 60).",
+  "setSubtitle": "One class for text fields, selects and text areas, with the label always above the field and help or error text below it (decisions 59, 60 and 61).",
   "variantsSubtitle": "Every type in every state, on a light surface.",
   "disabledHelp": "Only the workspace owner can change this."
 };
@@ -421,9 +421,12 @@ async function fill(comp, row, state) {
     ring.constraints = { horizontal: 'STRETCH', vertical: 'STRETCH' };
   }
 
+  // In the Error variants the error message replaces the help text (decision 61), so the help layer
+  // is hidden there. Its text stays linked to the Help property.
   const help = await text(S.defaults.help, S.helpStyle, S.help);
   help.name = 'help';
   comp.appendChild(help); help.layoutSizingHorizontal = 'FILL';
+  help.visible = state !== 'Error';
 
   if (state === 'Error') {
     const error = docFrame('error', 'HORIZONTAL', { counterAxisAlignItems: 'MIN' });
@@ -469,10 +472,15 @@ const keys = {
   showHelp: propKey(P.showHelp, 'BOOLEAN', true),
   showError: propKey(P.showError, 'BOOLEAN', true),
 };
+// A boolean property can only set a layer's visibility to its own value, never to the opposite, so
+// Show error can't also hide the help. In the Error variants the help layer is hidden and not linked
+// to Show help; Show help works in every other state.
 for (const comp of set.children) {
   comp.findChild((n) => n.name === 'label').componentPropertyReferences = { characters: keys.label };
-  comp.findChild((n) => n.name === 'help').componentPropertyReferences = { characters: keys.help, visible: keys.showHelp };
   const error = comp.findChild((n) => n.name === 'error');
+  comp.findChild((n) => n.name === 'help').componentPropertyReferences = error
+    ? { characters: keys.help }
+    : { characters: keys.help, visible: keys.showHelp };
   if (error) {
     error.componentPropertyReferences = { visible: keys.showError };
     error.findChild((n) => n.name === 'message').componentPropertyReferences = { characters: keys.error };

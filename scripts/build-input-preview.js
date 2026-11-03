@@ -53,7 +53,7 @@ const cell = (type, state) => {
     state === 'Focus' && 'data-preview="focus"',
     state === 'Disabled' && 'disabled',
     error && 'aria-invalid="true"',
-    `aria-describedby="${error ? `${id}-error ` : ''}${id}-help"`,
+    `aria-describedby="${id}-${error ? 'error' : 'help'}"`,
   ].filter(Boolean).join(' ');
   let field;
   if (type.name === 'Select') {
@@ -74,7 +74,7 @@ const cell = (type, state) => {
   return `<td><div class="fds-field">
           <label class="fds-field__label" for="${id}">${type.label}</label>
           ${field}${action}
-          <p class="fds-field__help" id="${id}-help">${help}</p>${error ? `
+          <p class="fds-field__help" id="${id}-help"${error ? ' hidden' : ''}>${help}</p>${error ? `
           <p class="fds-field__error" id="${id}-error">${ICONS.warning}${type.error}</p>` : ''}
         </div></td>`;
 };

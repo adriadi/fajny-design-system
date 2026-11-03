@@ -1,6 +1,6 @@
 # Input
 
-A field where the user types or picks a value. One class for text fields, selects and text areas, with the label always above the field and help or error text below it (decisions 59 and 60). Stylesheet: `components/input.css` (link `tokens/css/tokens.css` first). Every type in every state, with a form to try: open `docs/input-preview.html`.
+A field where the user types or picks a value. One class for text fields, selects and text areas, with the label always above the field and help or error text below it (decisions 59, 60 and 61). Stylesheet: `components/input.css` (link `tokens/css/tokens.css` first). Every type in every state, with a form to try: open `docs/input-preview.html`.
 
 ## Parts
 
@@ -9,11 +9,11 @@ A field where the user types or picks a value. One class for text fields, select
 | Wrapper | `<div class="fds-field">` | — |
 | Label, always visible | `<label class="fds-field__label" for="id">` | `for` and the field's `id` |
 | Field | `<input>`, `<select>` or `<textarea>` with `class="fds-input"` | `id` |
-| Help text (optional) | `<p class="fds-field__help" id="id-help">` | the field's `aria-describedby` |
+| Help text (optional) | `<p class="fds-field__help" id="id-help">`, hidden while the field shows an error | the field's `aria-describedby`, while it shows |
 | Error text | `<p class="fds-field__error" id="id-error" hidden>`, with the warning icon | the field's `aria-describedby`, only while it shows, and `aria-invalid="true"` |
 | Show/hide button (password only) | `<button class="fds-field__action" type="button">` | `aria-controls` with the field's `id` |
 
-Write the parts in this order: label, field, show/hide button, help, error. While there's an error, `aria-describedby` lists the error first, then the help: `aria-describedby="id-error id-help"`. Without an error it lists only the help. A hidden element that is still listed would be read out, so the script below removes it.
+Write the parts in this order: label, field, show/hide button, help, error. `aria-describedby` lists only the text that shows: the help, or while there's an error, the error alone (`aria-describedby="id-error"`). A hidden element that is still listed would be read out, so the script below changes the list.
 
 ## Types
 
@@ -35,7 +35,7 @@ Every type in every state, on a light surface.
 | Default | — | `color-surface` fill, 1.5px `color-border-input` border (`border-width.control`), `radius-md`. Value in `color-text`, placeholder in `color-text-placeholder`, both in the `field` role. |
 | Hover | `:hover` | Border `color-border-strong`. |
 | Focus | `:focus-visible` | Border `color-border-strong`, plus the system focus ring: `focus.ring-width` in `color-focus` at `focus.ring-offset`. |
-| Error | `aria-invalid="true"` | Border `color-error`, in every state; focus still adds the ring. The message shows below. |
+| Error | `aria-invalid="true"` | Border `color-error`, in every state; focus still adds the ring. The error message shows below, in place of the help text. |
 | Disabled | the `disabled` attribute | The field at `opacity.disabled`. The label and the help text stay at full contrast. |
 
 Sizes: at least 48px high (`space-12`), like the main buttons, so a field and a button line up. Padding `space-2` and `space-4`; a select keeps `space-10` on the right for its arrow, a password field `space-12` for its button. Label, help and error text use the `small` role.
@@ -60,6 +60,7 @@ Mark only the optional fields, with "(optional)" in the label: `<label …>Compa
 ## Errors
 
 - **Where:** directly below the field, in `fds-field__error`, starting with the warning icon. The text, the icon and the red border together mean colour is never the only sign (WCAG 1.4.1).
+- **In place of the help:** while the error shows, the help text is hidden (`hidden`, so screen readers skip it too). One message under the field at a time, as in M3. When the error clears, the help comes back.
 - **What it says:** what to do, in one short sentence: "Enter your name.", "Enter an email address like name@example.com.". No "Error:", no blame.
 - **When:**
   - A field is checked when it loses focus, then again on every change while it's being fixed.
@@ -69,8 +70,9 @@ Mark only the optional fields, with "(optional)" in the label: `<label …>Compa
 Put each field's message in the HTML, hidden, and give the form `novalidate` and `data-fds-validate`. The script uses the browser's own checks (`required`, `type="email"`) and shows your message instead of the browser's:
 
 ```js
-// Input: error check (decision 60). For every form with data-fds-validate: a field is checked when
+// Input: error check (decisions 60, 61). For every form with data-fds-validate: a field is checked when
 // it loses focus, then live while it's being fixed; on submit, focus moves to the first invalid field.
+// While a field shows its error, the error replaces the help text.
 document.querySelectorAll('form[data-fds-validate]').forEach((form) => {
   const inputs = [...form.querySelectorAll('.fds-input')];
   const check = (input) => {
@@ -81,7 +83,8 @@ document.querySelectorAll('form[data-fds-validate]').forEach((form) => {
     if (invalid) input.setAttribute('aria-invalid', 'true');
     else input.removeAttribute('aria-invalid');
     if (error) error.hidden = !invalid;
-    const describedBy = [invalid && error?.id, help?.id].filter(Boolean).join(' ');
+    if (help) help.hidden = invalid && Boolean(error);
+    const describedBy = invalid && error ? error.id : help?.id;
     if (describedBy) input.setAttribute('aria-describedby', describedBy);
     else input.removeAttribute('aria-describedby');
     return !invalid;
@@ -155,8 +158,8 @@ document.querySelectorAll('.fds-field__action[data-toggle-password]').forEach((b
   <!-- Error: what the email field looks like after a wrong value -->
   <div class="fds-field">
     <label class="fds-field__label" for="email-2">Email</label>
-    <input class="fds-input" id="email-2" type="email" value="name@" aria-invalid="true" aria-describedby="email-2-error email-2-help">
-    <p class="fds-field__help" id="email-2-help">Only used to reply to you.</p>
+    <input class="fds-input" id="email-2" type="email" value="name@" aria-invalid="true" aria-describedby="email-2-error">
+    <p class="fds-field__help" id="email-2-help" hidden>Only used to reply to you.</p>
     <p class="fds-field__error" id="email-2-error"><svg data-icon="warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 4.4 2.9 17.5a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4"/><path d="M12 17h.01"/></svg>Enter an email address like name@example.com.</p>
   </div>
 
