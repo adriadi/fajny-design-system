@@ -1,47 +1,65 @@
-# B-020 · Card: audit and proposal
+# B-021 · Build Image and Card
 
-## Owner's decision
+## Owner's answers to B-020
 
-The next component is **Card**. This round is an audit and a proposal only, the same way Input started. **Don't build anything, don't change tokens, don't touch Figma.** The system is neutral (B-013): the portfolio is its first user, so the proposal describes a card for any product, with the portfolio's cards as the evidence.
+Decisions 62, 63 and 64 in `DECISIONS.md` on `main` (`git pull`). In short:
 
-Starting points already decided:
-- **Decision 6:** two variants, **text only** (like the portfolio's article card) and **with an image**. Every state, contrast checked, docs, Figma and code.
-- **Decision 14:** the card with a thumbnail doesn't exist anywhere in the portfolio code, so in the "before" test the agent had nothing to copy and built a hybrid card (a fail in both runs). This is the case for the image variant.
-- **Decision 39:** every card uses `radius-lg` 16px, with or without an image.
-- **Decision 40:** shadows show on interaction, not at rest: `shadow-sm` hover on small text cards, `shadow-md` hover on text cards, `shadow-lg` hover on image cards.
-- **Decision 33:** components use the base colour roles only; a dark surface switches them.
-- **Decisions 17 and 37:** the text roles, `card-title` for card titles.
-- **Decisions 51 and 56:** Button exists, if a card has an action.
-- **Decision 58:** the Figma page pattern.
-- **Parking lot:** "Redesign the project cards". Note what the audit says about it, but don't propose the portfolio's redesign: that's a separate task.
+1. **Card surfaces:**
+   - **Default card:** always white with dark text, on any surface. Inside `.fds-surface-dark` it brings back the light roles for itself, so it looks the same as on a light page.
+   - **Dark card:** a second variant, `fds-card--dark`, for a designer to choose on purpose; nothing switches it automatically.
+2. **One border width, 1.5px**, for controls, cards and dividers. Rename `border-width.control` to `border-width.default` everywhere: the token, its description, Button, Input, the Figma variable and the docs.
+3. **Hover on a linked card:** lift by `space-1` (4px) plus the decision 40 shadow. Reduced motion removes the lift.
+4. **Hover on a dark surface:** the same as 3, no gold border.
+5. **Image ratio 16:10.** The image is its own component, **Image** (decision 63), nested in the Card with an image.
+6. **New-tab links:** A. A visible ↗ plus visually hidden "(opens in a new tab)".
+7. **"Read more":**
+   - It's visible on every linked card, and the whole card stays one link with one tab stop.
+   - "Read more" looks like the link button but isn't a link or a button. It's hidden from screen readers (`aria-hidden="true"`), because the title is the link's name.
+   - The whole card has `cursor: pointer`.
+8. **Layout:** the image on top.
 
-## Tasks
+Everything else follows your B-020 proposal: anatomy, stretched link, non-linked card without hover, padding `space-6`, gaps, equal heights, `radius-lg`, class names. The image rules move from Card to Image.
 
-1. **Audit:**
-   - Every card in the portfolio (`adriadi/portfolio`, `main`): article cards, project cards, case-study cards, metric or market cards, the next-project block, anything that's a card.
-   - For each one record:
-     - the markup and its heading level;
-     - what's clickable (the whole card, a link inside, a button), and how a keyboard and a screen reader reach it;
-     - image, ratio and alt text;
-     - padding, radius, background, border, shadow at rest and on hover;
-     - the text roles, hover and focus styles, motion.
-   - Also list what the agent built for the card in the "before" runs (tag `before-system`, branches `test/before-*`).
-   - Don't open password-protected case studies unless you need to. Screenshots stay local, and don't put the password anywhere.
-2. **Proposal** for Card, with a recommendation and the reason for each point:
-   - **Anatomy of each variant:**
-     - **Text only:** overline, title, text, meta, action. Say which parts are optional.
-     - **With an image:** where the image sits, the ratio or ratios, how the image is cropped.
-   - **Interaction:**
-     - Is the whole card a link? If so, how: the stretched-link pattern (one `<a>` on the title, its `::after` covering the card) or a wrapping `<a>`. Say what each means for screen readers, for text selection and for a second link or button inside the card.
-     - Is there also a non-clickable card?
-   - **States:** default, hover, focus (focus ring on the whole card or on the link), active. Use the decision 40 shadows; say if a lift or other motion is proposed, and how reduced motion handles it.
-   - **Surfaces:** a card on the page background, on `color-surface-subtle` and on a dark surface. Its fill and border on each, and whether it needs a border to be seen (WCAG 1.4.11 applies only if the card's edge is the only sign of an interactive area). Contrast for every text and border pair on each surface.
-   - **Image rules:** `alt` (decorative or meaningful), lazy loading, what happens without an image.
-   - **Sizes:** padding and gaps from the spacing tokens, how the card behaves in a grid and at 390px.
-   - **Class names:** following `fds-button` and `fds-input` (`fds-card`, modifiers, element classes).
-   - **How it differs from the portfolio's cards today**, as a table.
-3. List anything decisions don't settle as numbered questions, each with options, a recommendation and the reason. If something needs a visual choice (for example the image ratio or the layout of the image variant), add a small sketch, as you did for the Input styles.
+## Tasks (system repo, new branch `components/card` from `main`, Figma through MCP)
+
+1. **Tokens:**
+   - The border width rename, as in answer 2. Its description says it's the one border width for controls, cards and dividers.
+   - The build checks must pass. Re-run the Button and Input Figma files so their variables and bindings follow the rename.
+2. **Image** (`components/image.css`, `docs/image.md`, Figma page "Image"):
+   - `fds-image`: 16:10 through `aspect-ratio`, `object-fit: cover`, centred.
+   - **Docs:** the ratio, the alt rules, lazy loading with `width` and `height`, never text in the image. Also **the export sizes**: what pixel size to prepare for a card image, so it's sharp on 2× screens at the widest a card gets. Propose the sizes in the report.
+   - **Figma:** an Image component, a 16:10 frame with a neutral placeholder fill a designer swaps for a picture. Radius comes from where it's nested (the card's top corners), not from Image itself, unless you see a reason otherwise.
+   - The Image page shows the ratio and the export sizes as documentation (decision 58 pattern).
+3. **Card** (`components/card.css`, `docs/card.md`, `docs/card-preview.html` through a script, Figma page "Card"):
+   - **Variants:**
+     - text only and with an image;
+     - linked and not linked;
+     - default (white) and `--dark`.
+   - **States:**
+     - linked: default, hover, focus, active;
+     - not linked: default only.
+   - **Focus:** the system ring on the whole card. It sits outside the card, so on a dark surface it's the gold `color-focus` of that surface.
+   - **New tab:** the docs show a new-tab card with the ↗ and the hidden text.
+   - **Preview:** every variant on `color-background`, on `color-surface-subtle` and inside `.fds-surface-dark`. The hover lift and the reduced-motion case can be tried there.
+   - **Figma:**
+     - The Card with an image nests the Image component.
+     - "Read more" is the link Button style as text; it isn't a Button instance unless that's how Figma shows it best (say which you chose).
+     - Decision 58 puts components that nest others in **Advanced**, so Card goes in Advanced, and Image in Regular after Input. Run the real generated files.
+4. Run `npm run build`. Commit and push `components/card`. **Don't merge.**
+
+## Things to bring back as questions (don't decide them)
+
+- **The dark card inside a dark surface:** navy on navy. How it stays visible (a border role, a different fill), with options and a recommendation.
+- **The export sizes for Image.**
+- Anything else decisions 62–64 and the B-020 proposal don't settle.
 
 ## Report
 
-`REPORT.md` with the ID `B-020`: the audit as a table, the proposal, the questions. No commits on any branch other than `handoff`. Push to `handoff` and stop.
+`REPORT.md` with the ID `B-021`. It needs:
+- commits and the build result;
+- what changed in the tokens;
+- screenshots of the Figma Image and Card pages and of the card preview (all three surfaces);
+- what the owner should check and where;
+- the questions.
+
+Push to `handoff` and stop.
