@@ -1,147 +1,45 @@
-# B-017 · Report
+# B-018 · Report
 
 ## Commits and build
 
-- New branch `components/input` from `main` (`fcb13e5`). **`f256b70`** "Add the Input component (decisions 59, 60)", pushed. Not merged.
-- `npm run build`: exit 0, all **13** steps pass:
-  - the 4 checks;
-  - `tokens.css`;
-  - the Button and Input previews;
-  - the 6 Figma files.
-- Contrast: 46 pairs pass. Zoom: 11 sizes. Type: 11 roles. Components: 2 stylesheets, tokens only.
+- `components/input`: **`05e3cb7`** "Input: the error replaces the help text; no resize on a disabled text area (decision 61)", pushed (`f256b70..05e3cb7`). Not merged.
+- `npm run build`: exit 0, all 13 steps pass. Only `tokens/figma/input-component.js` changed among the Figma files.
 
-## Tokens
+## 1. The error replaces the help
 
-| Token | Value | Description |
-| --- | --- | --- |
-| `font.size.field` | `1rem` | 16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field's text is under 16px, and body is 15px on phones. In rem, so it follows the browser's font size setting. |
-| `font.family.field` | `{font.typeface.inter}` | — |
-| `font.line-height.field` | `1.5` | — |
-| `font.weight.field` | `400` | — |
-| `font.letter-spacing.field` | `0` | — |
-| `radius.md` | 8px (unchanged) | "Panels, tables, success messages, form fields." |
+**Code (script in `docs/input.md`, run by the preview):**
+- While a field is invalid, its help text gets `hidden`, so screen readers skip it too.
+- `aria-describedby` points to the error alone.
+- When the error clears, the help shows again and `aria-describedby` points back to it.
+- A field without an error element keeps its help.
+- Tested in the preview:
+  - wrong email → `aria-describedby="email-error"`, help hidden;
+  - fixed → `aria-describedby="email-help"`, help showing, error hidden;
+  - on submit every invalid field shows its error alone.
 
-- **Font group description:** "Eleven text roles: nine for text, label for button and navigation link text, and field for the text inside form fields." It also says `field` is the one fixed size. The README Typography section says eleven too.
+**Docs:**
+- The Parts table says the help is hidden while the field shows an error.
+- The linking paragraph says `aria-describedby` lists only the text that shows.
+- The States row for Error says the message shows in place of the help.
+- The Errors section has a new point, "In place of the help".
+- The copy-paste error example now has `aria-describedby="email-2-error"` and its help with `hidden`.
 
-**How the checks cover the new role:**
-- **Type check:** covers `field` without changes (11 roles complete).
-- **Zoom check:** it required `clamp()` for every size. It now also accepts a fixed size in rem, which always zooms: no vw part. It reports "10 clamp(), 1 fixed".
-- **Figma typography script:** it reads a fixed rem size as the same value in Mobile and Desktop (16 → 16px).
-- **Contrast:** every Input pair from B-016 was already checked on the light surfaces: `color-text`, `color-text-muted`, `color-text-placeholder`, `color-error`, `color-border-input`, `color-border-strong` and `color-focus`, on background, surface (the field's fill) and surface-subtle. No pair was added. The error border is checked at 4.5:1 as text, stricter than the 3:1 a border needs.
+**Preview:** the Error column hides the help and points `aria-describedby` to the error.
 
-## What was built
+**Figma:**
+- In the 4 Error variants, the help layer is hidden. Its text stays linked to the Help property.
+- **Why it isn't one switch:** a boolean property can only set a layer's visibility to its own value, never the opposite, so Show error can't also hide the help. So in the Error variants the help layer isn't linked to Show help; Show help still works in the other 16 variants.
+- **In practice:** to see a field's help, use any state but Error. In an Error instance, turning Show error off leaves no text below the field.
+- **Run:** I ran the real `input-component.js` once. All 20 variants were updated in place with the same IDs (set `96:161`), and none were created.
+- **Read back:** each Error variant has `help` hidden and linked to the Help text only, and `error` linked to Show error.
 
-- **`components/input.css`:**
-  - **Wrapper:** `fds-field` is a one-column grid. The label is in row 1, the field in row 2, help and error below. The password button (`fds-field__action`) and the select arrow sit in the field's row, at its right edge, so no extra wrapper class is needed.
-  - **States:** `:hover`, `:focus-visible`, `[aria-invalid="true"]` and `:disabled`.
-  - **Arrow:** the select arrow is an inline SVG used as a CSS mask, so it takes `color-text`.
-  - **Text area:** `min-height: space-30`, resizes vertically only.
-  - **Motion:** no transitions at all.
-  - **Tokens only:** the component check passes. The error icon's centring on the first line is computed from tokens, not `1lh`.
-- **`docs/input.md`:** the sections the brief lists. Its two scripts (error check, show/hide) are the ones the preview runs.
-- **`docs/input-preview.html`** (generated by `scripts/build-input-preview.js`):
-  - "Try it": the docs' copy-paste HTML, run with the docs' scripts.
-  - Every type in every state: default, hover, focus, filled, error, disabled.
-  - Tested in a browser:
-    - an error appears on blur and clears live;
-    - `aria-describedby` lists the error first, then help;
-    - submit moves focus to the first invalid field;
-    - show/hide switches the field type, the button's label ("Show password" ↔ "Hide password") and the icon;
-    - every field is 48px high, the text area 120px, the value text 16px.
-- **Shared sources:** `scripts/input-icons.js` (the icons) and `scripts/input-examples.js` (the example texts for the preview and Figma). The build fails if `docs/input.md` shows icons other than `input-icons.js`.
-- **Figma (`tokens/figma/input-component.js`):**
-  - **Set:** **`96:161`**, 20 variants, Type (Text, Select, Textarea, Password) × State (Default, Hover, Focus, Error, Disabled).
-  - **Properties:** Label, Help and Error are text properties. Show help and Show error are booleans; Show error exists only in the Error variants.
-  - **Bindings:** everything is bound to variables and the `small` and `field` text styles.
-  - **Re-run:** I ran it twice. The second run updated all 20 variants with the same IDs and the same properties, and created none.
-  - **Page:** the Input page sits in Regular after Button. It reads top to bottom: title, Component set, Variants (light surface only), and each instance in Variants shows its type's example texts.
+## 2. Disabled text area
 
-## Figma runs
-
-Each file ran with its full text, unchanged:
-
-- `typography-collection.js`: created `font/size/field` (16/16) and the `field` text style, and rebuilt the Typography page with `field`.
-- `input-component.js`: run twice (above).
-- `foundations-pages.js`: the Corner radius page shows the new `radius.md` description.
-
-`color-collection.js` and `button-component.js` changed only in the page-group list inside their shared layout code. That doesn't change their pages, so I didn't rerun them.
-
-Page order read back: Colors, Typography, Spacing, Corner radius, Shadows, `---`, Button, Input.
-
-**For you:** the `radius` variable's description in Figma comes from Tokens Studio, so it shows "form fields" only after you re-import `tokens/figma/tokens-studio.json`.
+`textarea.fds-input:disabled { resize: none; }`: a keyword, so the token check passes. In the preview, the disabled text area computes `resize: none` and shows no handle; the enabled one keeps `vertical`.
 
 ## Screenshots
 
-- `input-icons.png`: the three icons at 16, 20 and 96px, and the warning in an error message. **For your approval.**
-  - **warning:** a rounded triangle with an exclamation mark.
-  - **show:** an open eye; the password is hidden, the button shows it.
-  - **hide:** the eye with a diagonal line; the password is shown, the button hides it.
-  - All three are 24-grid stroke icons with a 1.5 stroke in `currentColor`, `aria-hidden="true"`.
-- `figma-input.png`: the Figma Input page.
-- `figma-typography.png`: the Typography page with `field` in the table and the specimen.
-- `input-preview.png`: the preview page.
+- `figma-input.png`: the Figma Input page. In the Error column, the error message replaces the help in the set and in Variants.
+- `input-preview.png`: the preview after pressing Continue with empty and wrong fields. Each invalid field shows only its error. The optional message and the disabled field keep their help. In the table below, the disabled text area has no handle.
 
-## What to check, and where
-
-1. **Figma, Input page:**
-   - the component set;
-   - on an instance, the Label, Help and Error texts and the two switches in the right panel;
-   - the Variants section.
-2. **Figma, Typography page:** the `field` row (16 → 16px) and `field` in the four specimen frames.
-3. **The preview** (`docs/input-preview.html`, open it in a browser):
-   - Tab through the form, leave Name empty and tab on: the error appears.
-   - Type a name: it clears.
-   - Press Continue: focus goes to the first error.
-   - Try the eye button with a screen reader: its label changes.
-4. **On an iPhone:** tap a field in the preview. The page shouldn't zoom (16px text).
-5. **The icons** (`input-icons.png`): approve or ask for changes.
-
-## Questions
-
-Things decisions 59, 60 and B-016 didn't settle. I chose the option marked as built; each can change.
-
-1. **Field width in Figma.** The components are 320px wide by default; in code a field is as wide as its container. 320 isn't a token.
-   - A: keep 320 as Figma's default width only (built).
-   - B: another width.
-
-   **Recommendation: A.** It's only the starting width in Figma; designers resize the instance.
-2. **Placeholder colour for an empty select option.** An empty first option ("Choose a topic") takes `color-text-placeholder`, through `select:has(option[value=""]:checked)`. The B-016 audit found the site's select hint looking like a chosen value.
-   - A: keep it (built).
-   - B: the select always shows `color-text`.
-
-   **Recommendation: A.** It reads as a hint, like the placeholder in a text field.
-3. **Help and error together.** In the error state, the help text stays and the error shows below it.
-   - A: both show (built).
-   - B: the error replaces the help while it shows (M3's way).
-
-   **Recommendation: A.** The help often says what's expected ("At least 8 characters"), which is useful while fixing the error. Screen readers hear the error first either way.
-4. **Icon sizes.**
-   - A: the warning icon at `space-4` (16px), next to the 13–14px `small` text; the eye icon at `space-5` (20px), inside the 48px button (built).
-   - B: other sizes.
-
-   **Recommendation: A.** 16px matches the error text's line; 20px is easy to see in the field without crowding the value.
-5. **The show/hide button's focus ring.** It uses the system ring (2px at a 3px offset). Because the button sits at the field's edge, the ring reaches 3px past the field's border on the right, top and bottom.
-   - A: keep the system ring (built).
-   - B: an inside ring for this button only (negative offset).
-
-   **Recommendation: A.** One focus style everywhere (decision 56 and the focus token's description: "Focus is always this ring").
-6. **Figma focus ring corners.** In the browser the ring's corners follow the field's radius plus the offset (about 11px). In Figma the ring frame uses `radius/md` (8px), because a sum can't be bound to a variable.
-   - A: keep 8px (built).
-   - B: an unbound 11px.
-
-   **Recommendation: A.** It stays bound to a token; the difference is 3px at the corners.
-7. **Re-running the Figma script.** Variant IDs and properties stay, but the layers inside each variant are rebuilt on every run. An override a designer made on an inner layer of an instance (not on the Label, Help or Error properties) is reset.
-   - A: keep it (built): every run gives exactly the structure in the repo.
-   - B: update the inner layers in place, as the Button script does.
-
-   **Recommendation: B, in a later round.** It protects designers' overrides, at the cost of a longer script. With no designs using Input yet, A is safe for now.
-8. **Default texts of the properties.** "Label", "Help text" and "Error message" on the main components; the Variants section overrides them with each type's examples.
-   - A: keep the generic defaults (built).
-   - B: realistic defaults.
-
-   **Recommendation: A.** One set of defaults has to fit all four types.
-9. **Browser support.** The select arrow, the password field's right padding and the empty-option colour use `:has()`. That's Safari 15.4, Chrome 105 and Firefox 121 or later; in older browsers the select shows no arrow.
-   - A: accept it (built).
-   - B: add a wrapper class for older browsers.
-
-   **Recommendation: A.** `:has()` is in every current browser, and B adds a class the decision didn't name.
+No questions.
