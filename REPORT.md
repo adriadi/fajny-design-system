@@ -1,74 +1,102 @@
-# B-012 · Report
+# B-013 · Report
 
 ## Commits
 
-- `components/button` of `adriadi/fajny-design-system`: **`e34a9e4`** "Figma pages in groups with separators, no clipping, Button set in one column", pushed (`a7e0927..e34a9e4`). Not merged.
+- `components/button` of `adriadi/fajny-design-system`: **`a140fff`** "Button page top to bottom with "Variants"; page frames fit their shadows", pushed (`e34a9e4..a140fff`). Not merged.
 - `npm run build` passes all 11 steps; `tokens/css/tokens.css` is unchanged.
-
-## The real generated files ran
-
-No size limit got in the way: `use_figma` accepts up to 50,000 characters, and the largest file, `color-collection.js`, has 24,166. I passed each file's full text, unchanged, in the README order:
-
-1. `color-collection.js`
-2. `typography-collection.js`
-3. `foundations-pages.js`
-4. `button-component.js`
-
-The first run of `button-component.js` showed two problems on the Button page, so I fixed the generator, rebuilt, and ran the new file again. The run in Figma is the committed `tokens/figma/button-component.js`.
-
-- **The main components rendered black again.** A bound paint also stores a fallback colour, and Figma draws main components with it. The script left it at the black placeholder. The script now sets each fallback to the colour the variable resolves to on the light surface. The variable stays bound, so instances still switch with their surface.
-- **The page frame was narrower than its content.** It now takes the width of its content.
-
-## Pages, as read back from Figma
-
-1. Colors
-2. Typography
-3. Spacing
-4. Corner radius
-5. Shadows
-6. `---` (your separator, `63:288`, kept and reused)
-7. Button
-
-The scripts own the order and the separators: every run reuses existing separators, adds a missing one and removes an extra empty one. The separator before Advanced will appear once an Advanced page exists. The groups are listed in `scripts/figma-doc-layout.js`, and Button is in Regular.
-
-## Clipping
-
-Every frame and section the scripts create has "Clip content" off, the main components and the component set included. A read-back of all seven pages found no frame that clips. Instances are left alone: they follow their main component.
+- In Figma I ran the four generated files, full text and unchanged, as in B-012: `color-collection.js`, `typography-collection.js`, `foundations-pages.js`, `button-component.js`. No text changed anywhere (task 3 is a proposal only).
 
 ## Button page
 
-- **New section:** "Component set", with the subtitle "Three variants, one navigation size, every state from the element itself." (the second sentence of `docs/button.md`).
-- **Layout:** the set is one column, in plan order (Primary, Secondary, Link, Navigation, each through its states). Each variant has a label to its left, e.g. "Primary · Main · Focus".
+- **Component set:** back to the grid it had before B-012, one row per variant and one column per state, without labels.
+- **Order:** the page reads top to bottom: "Button" with its purpose, then "Component set", then "Variants" below it. The "Variants" title is the smaller size, the same as "Component set", and its subtitle is "Every variant in every state, on a light and a dark surface." The script builds every future component page in this order.
 - **Variant IDs:** unchanged, 22 updated and 0 created; the set is `41:68`.
 
-  ```
-  41:2  41:5  41:8  41:11 41:14 41:17 41:20 41:23 41:26 41:29 41:32
-  41:35 41:38 41:41 41:44 41:47 41:50 41:53 41:56 41:59 41:62 41:65
-  ```
+Screenshot: `figma-button.png`. With the labels gone, `figma-button-set.png` from B-012 was out of date, so I removed it from this branch.
 
-## Typography specimen subtitle
+## Room for shadows
 
-The README has a new "Typography" section with a "Specimen" line, and `build-figma-type.js` reads the subtitle from it. If the line is missing, the build fails.
+Each page script now ends by measuring every shadow on the page as Figma draws it. It then grows the page frame by whatever reaches past an edge (more padding on that side, or more width).
 
-## Screenshots
+On the Shadows page, the frame's bottom padding went from 80 to 96px, so `shadow/overlay` now ends inside it. A read-back of all pages found no shadow outside its frame.
 
-- `figma-button.png`: the Button page. The labels next to the set are missing from this screenshot only. The set sits on top of its placeholder as a separate frame, and the screenshot of the page frame includes the set but drops the labels. On the canvas they're there.
-- `figma-button-set.png`: the set's frame on its own, with the labels.
-- `figma-shadows.png`: the Shadows page. The shadows are no longer cut off at the sample's edge.
+Screenshot: `figma-shadows.png`.
 
-The other pages kept their layout; only clipping changed.
+## Neutral texts: proposal
 
-Worth knowing: on the Shadows page, the `shadow/overlay` sample's shadow now reaches past the bottom of the page frame, because nothing clips it any more.
+Nothing below is changed yet.
 
-## Questions
+### Typography specimen (`scripts/build-figma-type.js`, the Typography page)
 
-1. **Fixed labels in the scripts.** Section titles and labels are still set in the scripts, not read from a document. These are "Surfaces switch the roles", "Palette", "Specimen", "Component set", "All components", the Typography table headers, "(code only)" and "n/a". Every sentence (the subtitles and descriptions) comes from the repo.
-   - A: Keep them in the scripts as fixed names of the page structure. Decision 58 already names "All components".
-   - B: Move them into a repo document (e.g. a "Figma pages" table in the README) and have the scripts read them.
+Each proposed text wraps to at least two lines on the 390px frame wherever the current one does. Label stays one line.
 
-   **Recommendation: A.** They're names of the page structure, not explanations, and a document kept only for them would duplicate the scripts.
-2. **"Component set" title size.** It uses the smaller subheading style, the same as "All components", because both sit under the page title "Button".
-   - A: Keep it.
-   - B: Use the larger heading style, the same as the page title.
+| Role | Current text | Proposed text |
+| --- | --- | --- |
+| display | Hi, I am Adrianna. I am empowering Design with AI. | Plan, build and ship with one shared system |
+| title | Hundreds of criminal patterns. None had a paper trail. | Project settings and team access |
+| heading | Let's make something good. | Recent activity in your workspace |
+| subheading | The system had 247 patterns. Not one knew where it came from. | Notification preferences for email and mobile |
+| card-title | Can I ask this video a question? Yes, you can. | Quarterly report: ready for your review and approval |
+| lead | Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics. | Manage your projects, invite your team and keep every decision in one place. Changes are saved as you go. |
+| body | The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own. | Each project has its own members, files and settings. Invite people by email, choose what they can edit, and remove access at any time. Nothing is shared until you say so. |
+| small | Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away. | Last edited 12 March 2026 by the project owner. Version history keeps every change for 90 days. |
+| overline | Typologies in the library - each one now traceable to its exact institutional origin | Account settings · Security, sign-in and connected devices |
+| label | View my work | Continue |
 
-   **Recommendation: A.** The two sections sit side by side and match.
+### Button labels
+
+The labels appear in the Figma set (`scripts/build-figma-button.js`), in `docs/button-preview.html` (generated by `scripts/build-button-preview.js`), in `docs/button.md` and in the usage comment at the top of `components/button.css`.
+
+| Variant | Current label | Proposed label |
+| --- | --- | --- |
+| Primary | View my work | Continue |
+| Secondary | Download CV | Learn more |
+| Link | Case studies | Read more |
+| Navigation | Let's talk | Contact |
+| Loading state (Primary, Secondary, Navigation) | Sending… | Loading… |
+
+### `docs/button.md`, other examples
+
+| Place | Current text | Proposed text |
+| --- | --- | --- |
+| Variants table, Primary "Use it for" | "View my work", "Send message" | "Continue", "Save changes" |
+| Variants table, Secondary "Use it for" | "Download CV" | "Learn more" |
+| Variants table, Link "Use it for" | "Case studies", "Experience" | "Read more", "Pricing" |
+| Navigation size | ("Let's talk") | ("Contact") |
+| Do and don't | "Send message", "View my work" | "Save changes", "Continue" |
+| HTML, primary | `href="#work"` View my work | `href="#next"` Continue |
+| HTML, secondary | Download CV | Learn more |
+| HTML, link | `href="#experience"` Experience | `href="#pricing"` Pricing |
+| HTML, navigation | `href="#contact"` Let's talk | `href="#contact"` Contact |
+| HTML, with an icon | `href="#work"` View my work | `href="#next"` Continue |
+| HTML, disabled | Send message; "Fill in your name and email to send." | Save changes; "Fill in your name and email to continue." |
+| HTML, loading | Sending…; "Sending your message…" | Saving…; "Saving your changes…" |
+| HTML, dark surface | `href="https://calendly.com/…"` Schedule a call; `href="#cv"` Download CV | `href="#demo"` Book a demo; `href="#guide"` Learn more |
+
+### Token descriptions that use the portfolio as the example
+
+These are descriptions, not sample text, but they name portfolio pages or say the palette comes from the portfolio. They also show in Figma (variable descriptions, the Colors, Spacing, Corner radius and Typography pages) and in the generated CSS comments.
+
+| Token | Current description | Proposed description |
+| --- | --- | --- |
+| primitives group | Raw palette, taken from the portfolio (adriannadziadyk.de). Components and agents never use these directly: use the semantic color-* tokens. | Raw palette. Components and agents never use these directly: use the semantic color-* tokens. |
+| `red.700` | Error. oklch(50% 0.18 25), from the portfolio's contact form. | Error. oklch(50% 0.18 25). |
+| `green.700` | Success. oklch(45% 0.15 140), from the portfolio's CV modal. | Success. oklch(45% 0.15 140). |
+| `navy.100` | Case-study pull-quote background. | Pull-quote background. |
+| `color.action` | Primary button background, including case-study buttons such as View prototype. On a dark surface … | Primary button background. On a dark surface … (rest unchanged) |
+| `space.5` | Paragraph spacing in case studies, grid gaps. | Paragraph spacing in long-form text, grid gaps. |
+| `space.16` | Large blocks, e.g. the next-project block. | Large blocks, e.g. a closing call-to-action block. |
+| `radius.sm` | Small inline blocks: pull quotes, metrics, pain points. Never buttons. | Small inline blocks: pull quotes, metrics, callouts. Never buttons. |
+| `font.size.display` | 40px to 96px. The home hero only: the page's single h1. … | 40px to 96px. The landing page hero only: the page's single h1. … (rest unchanged) |
+| `font.size.title` | 36px to 72px. The page title of a case study: the page's single h1. … | 36px to 72px. The page title of an article or detail page: the page's single h1. … (rest unchanged) |
+
+### Other places
+
+| Place | Current text | Proposed text |
+| --- | --- | --- |
+| README, Typography section, "Specimen" line (the specimen subtitle in Figma) | Real portfolio text in every role, on a 390px and a 1280px screen, on a light and a dark surface. | Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface. |
+| `scripts/build-figma-type.js`, comments above the samples | "Specimen text … from the portfolio (adriadi/portfolio, main)", with one source page per text | "Specimen text: neutral interface text, long enough to wrap where a role wraps in a product" |
+| README, "Why" section | "I gave an AI agent the same task twice in my portfolio's codebase …" | No change proposed: it's the story of why the system exists, not an example. |
+| README, "Use the tokens" example | "Muted text, light on navy" | No change needed: already neutral. |
+
+No questions.
