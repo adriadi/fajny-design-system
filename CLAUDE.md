@@ -39,6 +39,8 @@ Tokens: W3C JSON in `tokens/*.json`, built with Style Dictionary into
 - A topic is finished only after the owner checks it on the design system page.
   Then the branch merges into main (decision 32).
 - The owner approves every commit and merge (decision 7). Don't rewrite history.
+- Figma pages follow decision 58: one page per topic, every section with a title and a
+  one-sentence subtitle from the repo, built by a repo script.
 
 ## Handoff
 

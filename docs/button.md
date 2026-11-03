@@ -25,6 +25,8 @@ On a dark surface (inside `.fds-surface-dark`) nothing changes in the HTML:
 
 ## States
 
+Every variant in every state, on a light and a dark surface.
+
 | State | Primary | Secondary | Link |
 | --- | --- | --- | --- |
 | Default | `color-action` fill, `color-text-on-action` label | `color-secondary` fill, `color-border-highlight` border (`border-width.control`), `color-text-on-secondary` label | `color-text-muted` |
