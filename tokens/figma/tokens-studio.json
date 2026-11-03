@@ -346,7 +346,7 @@
       "md": {
         "$value": "8px",
         "$type": "dimension",
-        "$description": "Panels, tables, success messages.",
+        "$description": "Panels, tables, success messages, form fields.",
         "$extensions": {
           "com.figma.scopes": [
             "CORNER_RADIUS"

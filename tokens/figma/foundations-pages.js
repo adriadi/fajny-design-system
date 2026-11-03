@@ -113,7 +113,7 @@ const PLAN = {
         "variable": "radius/md",
         "wide": false,
         "value": "8px",
-        "description": "Panels, tables, success messages."
+        "description": "Panels, tables, success messages, form fields."
       },
       {
         "name": "radius/lg",
@@ -166,7 +166,7 @@ const PLAN = {
 };
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {

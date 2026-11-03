@@ -22,7 +22,7 @@
     "$type": "dimension",
     "$description": "Corner radius in five steps (decision 39): small inline blocks, panels, every card, every button and tag, circles.",
     "sm":    { "$value": "4px",   "$description": "Small inline blocks: pull quotes, metrics, callouts. Never buttons." },
-    "md":    { "$value": "8px",   "$description": "Panels, tables, success messages." },
+    "md":    { "$value": "8px",   "$description": "Panels, tables, success messages, form fields." },
     "lg":    { "$value": "16px",  "$description": "Every card (text and image), images, banners and modals." },
     "pill":  { "$value": "999px", "$description": "Every button, tag and chip. No square buttons." },
     "round": { "$value": "50%",   "$description": "Circles: dots, avatars, round icon buttons." }

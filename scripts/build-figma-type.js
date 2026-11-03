@@ -27,7 +27,8 @@ const STYLE_NAMES = {
 const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
 
 // Specimen text: neutral interface text, long enough to wrap where a role wraps in a product. Each
-// text role wraps to at least two lines in the Mobile frame; label stays on one line, like a button.
+// text role wraps to at least two lines in the Mobile frame; label and field stay on one line, like a
+// button and a single-line field.
 // Every sample is set in its role's text colour only.
 const SAMPLES = {
   display: { text: 'Ship the thing. Then ship the next thing.' },
@@ -40,6 +41,7 @@ const SAMPLES = {
   small: { text: 'Last edited on 12 March 2026 by someone who definitely knew what they were doing. Every version stays for 90 days, just in case.' },
   overline: { text: 'Account settings · Passwords, sign-ins and that old laptop you forgot about' },
   label: { text: 'Continue' },
+  field: { text: 'name@example.com' },
 };
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));
@@ -50,8 +52,10 @@ const roles = [];
 const errors = [];
 for (const role of names(font.size)) {
   const size = font.size[role];
-  const m = String(size.$value).match(/^clamp\(\s*([\d.]+)rem\s*,[^,]+,\s*([\d.]+)rem\s*\)$/);
-  if (!m) { errors.push(`font.size.${role} is not clamp(<min>rem, …, <max>rem)`); continue; }
+  // A fluid size is clamp(<min>rem, …, <max>rem); a fixed size is <n>rem, the same in both modes.
+  const fixed = String(size.$value).match(/^([\d.]+)rem$/);
+  const m = fixed ? [null, fixed[1], fixed[1]] : String(size.$value).match(/^clamp\(\s*([\d.]+)rem\s*,[^,]+,\s*([\d.]+)rem\s*\)$/);
+  if (!m) { errors.push(`font.size.${role} is neither clamp(<min>rem, …, <max>rem) nor <n>rem`); continue; }
 
   const typeface = String(font.family?.[role]?.$value ?? '').match(/^\{font\.typeface\.(.+)\}$/)?.[1];
   const family = font.typeface?.[typeface]?.$value?.[0];

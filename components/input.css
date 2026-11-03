@@ -1,0 +1,213 @@
+/* Input (decisions 59, 60, 61). Uses only --fds-* tokens; link tokens.css first.
+ *
+ *   <div class="fds-field">
+ *     <label class="fds-field__label" for="email">Email</label>
+ *     <input class="fds-input" id="email" type="email" aria-describedby="email-help">
+ *     <p class="fds-field__help" id="email-help">Only used to reply to you.</p>
+ *     <p class="fds-field__error" id="email-error" hidden>…</p>
+ *   </div>
+ *
+ * While the field shows an error, the error message replaces the help text: the script hides the
+ * help and points aria-describedby to the error alone.
+ *
+ * One class, fds-input, for <input>, <select> and <textarea>, inside an fds-field wrapper.
+ * States come from the element, not from classes: :hover, :focus-visible, aria-invalid="true"
+ * and :disabled. Fields are for light surfaces only: the form roles have no dark-surface value.
+ *
+ * The wrapper is a one-column grid: the label in row 1, the field in row 2, help and error text
+ * below. The show/hide button (fds-field__action) and the select arrow sit in the field's row,
+ * at its right edge, so they need no extra wrapper.
+ */
+
+.fds-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--fds-space-2);
+}
+
+.fds-field__label {
+  grid-row: 1;
+  color: var(--fds-color-text);
+  font-family: var(--fds-font-family-small);
+  font-size: var(--fds-font-size-small);
+  line-height: var(--fds-font-line-height-small);
+  font-weight: var(--fds-font-weight-small);
+  letter-spacing: var(--fds-font-letter-spacing-small);
+}
+
+/* ── The field ───────────────────────────────────────────── */
+
+.fds-input {
+  grid-row: 2;
+  grid-column: 1;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--fds-space-12);
+  margin: 0;
+  padding: var(--fds-space-2) var(--fds-space-4);
+  border: var(--fds-border-width-control) solid var(--fds-color-border-input);
+  border-radius: var(--fds-radius-md);
+  background-color: var(--fds-color-surface);
+  color: var(--fds-color-text);
+  font-family: var(--fds-font-family-field);
+  font-size: var(--fds-font-size-field);
+  line-height: var(--fds-font-line-height-field);
+  font-weight: var(--fds-font-weight-field);
+  letter-spacing: var(--fds-font-letter-spacing-field);
+  appearance: none;
+}
+
+.fds-input::placeholder {
+  color: var(--fds-color-text-placeholder);
+  opacity: 1;
+}
+
+.fds-input:not(:disabled):hover {
+  border-color: var(--fds-color-border-strong);
+}
+
+.fds-input:focus-visible {
+  border-color: var(--fds-color-border-strong);
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+}
+
+/* Error: the border turns red in every state; focus still adds the ring. */
+.fds-input[aria-invalid="true"] {
+  border-color: var(--fds-color-error);
+}
+
+/* Disabled: the native attribute, so the field can't be edited or sent. Only the field fades;
+   the label and the help text with the reason stay at full contrast. */
+.fds-input:disabled {
+  opacity: var(--fds-opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* ── Textarea and select ─────────────────────────────────── */
+
+textarea.fds-input {
+  min-height: var(--fds-space-30);
+  resize: vertical;
+}
+
+/* A disabled text area can't be resized, so it shows no handle. */
+textarea.fds-input:disabled {
+  resize: none;
+}
+
+select.fds-input {
+  padding-right: var(--fds-space-10);
+  cursor: pointer;
+}
+
+/* An empty first option ("Choose a topic") is a hint, so it takes the placeholder colour. */
+select.fds-input:has(option[value=""]:checked) {
+  color: var(--fds-color-text-placeholder);
+}
+
+/* The select's arrow: a chevron drawn as a mask, so it takes the text colour. */
+.fds-field:has(> select.fds-input)::after {
+  content: "";
+  grid-row: 2;
+  grid-column: 1;
+  justify-self: end;
+  align-self: center;
+  width: var(--fds-space-4);
+  height: var(--fds-space-4);
+  margin-right: var(--fds-space-4);
+  background-color: var(--fds-color-text);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+
+.fds-field:has(> select.fds-input:disabled)::after {
+  opacity: var(--fds-opacity-disabled);
+}
+
+/* ── Show/hide button (password) ─────────────────────────── */
+
+.fds-field:has(> .fds-field__action) > .fds-input {
+  padding-right: var(--fds-space-12);
+}
+
+.fds-field__action {
+  grid-row: 2;
+  grid-column: 1;
+  justify-self: end;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--fds-space-12);
+  height: var(--fds-space-12);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fds-radius-md);
+  background: none;
+  color: var(--fds-color-text-muted);
+  cursor: pointer;
+}
+
+.fds-field__action svg {
+  width: var(--fds-space-5);
+  height: var(--fds-space-5);
+}
+
+/* The icon for the other state: the hidden attribute has no effect on SVG elements by itself. */
+.fds-field__action svg[hidden] {
+  display: none;
+}
+
+.fds-field__action:not(:disabled):hover {
+  color: var(--fds-color-text);
+}
+
+.fds-field__action:focus-visible {
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+}
+
+.fds-field__action:disabled {
+  opacity: var(--fds-opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* ── Help and error text ─────────────────────────────────── */
+
+.fds-field__help,
+.fds-field__error {
+  margin: 0;
+  font-family: var(--fds-font-family-small);
+  font-size: var(--fds-font-size-small);
+  line-height: var(--fds-font-line-height-small);
+  font-weight: var(--fds-font-weight-small);
+  letter-spacing: var(--fds-font-letter-spacing-small);
+}
+
+.fds-field__help {
+  color: var(--fds-color-text-muted);
+}
+
+/* The warning icon and the text: colour is never the only sign of an error (WCAG 1.4.1). */
+.fds-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fds-space-2);
+  color: var(--fds-color-error);
+}
+
+.fds-field__error[hidden] {
+  display: none;
+}
+
+.fds-field__error svg {
+  flex: none;
+  width: var(--fds-space-4);
+  height: var(--fds-space-4);
+  /* Centred on the first line of the message: (line height − icon) ÷ 2. */
+  margin-top: calc((var(--fds-font-line-height-small) * var(--fds-font-size-small) - var(--fds-space-4)) / 2);
+}

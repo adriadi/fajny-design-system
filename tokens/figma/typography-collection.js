@@ -168,11 +168,27 @@ const PLAN = {
       "textCase": "UPPER",
       "description": "13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label.",
       "sample": "Continue"
+    },
+    {
+      "role": "field",
+      "variable": "font/size/field",
+      "mobile": 16,
+      "desktop": 16,
+      "family": "Inter",
+      "style": "Regular",
+      "lineHeight": 150,
+      "lineHeightValue": 1.5,
+      "weight": 400,
+      "tracking": "0",
+      "letterSpacing": 0,
+      "textCase": "ORIGINAL",
+      "description": "16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field’s text is under 16px, and body is 15px on phones. In rem, so it follows the browser’s font size setting.",
+      "sample": "name@example.com"
     }
   ],
   "page": {
     "name": "Typography",
-    "subtitle": "Ten text roles: nine for text and label for button and navigation link text.",
+    "subtitle": "Eleven text roles: nine for text, label for button and navigation link text, and field for the text inside form fields.",
     "specimenSubtitle": "Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface.",
     "widths": {
       "Mobile": 390,
@@ -240,7 +256,7 @@ if (unbound.length) throw new Error('Font size could not be bound to its variabl
 // ── The Typography page: rebuilt on every run ──
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {

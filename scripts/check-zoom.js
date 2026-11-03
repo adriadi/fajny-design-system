@@ -1,6 +1,7 @@
 // Fails the build when a font size cannot zoom to 200% (WCAG 1.4.4).
-// Every font-size token must be clamp(<min>rem, <preferred>, <max>rem): rem follows the browser's
-// font size setting, and above 2.5× between min and max the vw part keeps text from reaching 200%.
+// Every font-size token must be clamp(<min>rem, <preferred>, <max>rem), or a fixed size in rem: rem
+// follows the browser's font size setting, and above 2.5× between min and max the vw part keeps text
+// from reaching 200%. A fixed rem size has no vw part, so it always zooms.
 import StyleDictionary from 'style-dictionary';
 import config from '../style-dictionary.config.js';
 
@@ -12,9 +13,10 @@ const sizes = allTokens.filter((t) => t.name.startsWith('fds-font-size-'));
 const failures = [];
 for (const t of sizes) {
   const value = String(t.$value ?? t.value);
+  if (/^[\d.]+rem$/.test(value)) continue;
   const m = value.match(/^clamp\(\s*([\d.]+)rem\s*,[^,]+,\s*([\d.]+)rem\s*\)$/);
   if (!m) {
-    failures.push(`${t.name} is ${value}: it needs clamp() with a min and a max in rem`);
+    failures.push(`${t.name} is ${value}: it needs clamp() with a min and a max in rem, or a fixed size in rem`);
     continue;
   }
   const ratio = Number(m[2]) / Number(m[1]);
@@ -25,4 +27,5 @@ if (failures.length) {
   console.error(`Zoom check failed (${failures.length}):\n` + failures.map((f) => `  ✗ ${f}`).join('\n'));
   process.exit(1);
 }
-console.log(`✔︎ Zoom: ${sizes.length} font sizes are clamp() in rem, max at most ${MAX_RATIO}× the min.`);
+const fixed = sizes.filter((t) => /^[\d.]+rem$/.test(String(t.$value ?? t.value))).length;
+console.log(`✔︎ Zoom: ${sizes.length} font sizes in rem: ${sizes.length - fixed} clamp() with the max at most ${MAX_RATIO}× the min, ${fixed} fixed.`);
