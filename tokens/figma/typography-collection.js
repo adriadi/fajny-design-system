@@ -256,7 +256,7 @@ if (unbound.length) throw new Error('Font size could not be bound to its variabl
 // ── The Typography page: rebuilt on every run ──
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image"]},{"name":"Advanced","pages":["Card"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {

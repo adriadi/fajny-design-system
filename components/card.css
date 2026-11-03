@@ -1,0 +1,180 @@
+/* Card (decision 62). Uses only --fds-* tokens; link tokens.css first, and image.css for a card
+ * with an image.
+ *
+ *   <article class="fds-card">
+ *     <div class="fds-card__body">
+ *       <p class="fds-card__overline">Design process</p>
+ *       <h3 class="fds-card__title"><a class="fds-card__link" href="…">Branching without fear</a></h3>
+ *       <p class="fds-card__text">…</p>
+ *       <div class="fds-card__footer">
+ *         <p class="fds-card__meta">9 min read</p>
+ *         <span class="fds-card__more" aria-hidden="true">Read more</span>
+ *       </div>
+ *     </div>
+ *   </article>
+ *
+ * Variants: fds-card--image (an fds-image on top), fds-card--dark (a dark card, chosen on purpose).
+ * A card with an fds-card__link in its title is one link: the link's ::after covers the whole card.
+ * A card without it has no hover. States come from the element: :hover, :active, :focus-visible.
+ *
+ * The default card is always white with dark text. Inside .fds-surface-dark it brings back the light
+ * roles for itself, and the dark card always takes the dark roles: tokens.css sets both, from
+ * scripts/surfaces.js. The card's focus ring keeps the focus colour of the surface around it.
+ */
+
+.fds-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: var(--fds-border-width-default) solid var(--fds-color-border);
+  border-radius: var(--fds-radius-lg);
+  background-color: var(--fds-color-surface);
+  color: var(--fds-color-text);
+}
+
+.fds-card--dark {
+  background-color: var(--fds-color-surface-dark);
+}
+
+/* ── Parts ───────────────────────────────────────────────── */
+
+.fds-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--fds-space-6);
+}
+
+.fds-card__overline {
+  margin: 0 0 var(--fds-space-3);
+  color: var(--fds-color-text-muted);
+  font-family: var(--fds-font-family-overline);
+  font-size: var(--fds-font-size-overline);
+  line-height: var(--fds-font-line-height-overline);
+  font-weight: var(--fds-font-weight-overline);
+  letter-spacing: var(--fds-font-letter-spacing-overline);
+  text-transform: var(--fds-font-text-transform-overline);
+}
+
+.fds-card__title {
+  margin: 0;
+  color: var(--fds-color-text);
+  font-family: var(--fds-font-family-card-title);
+  font-size: var(--fds-font-size-card-title);
+  line-height: var(--fds-font-line-height-card-title);
+  font-weight: var(--fds-font-weight-card-title);
+  letter-spacing: var(--fds-font-letter-spacing-card-title);
+}
+
+.fds-card__text,
+.fds-card__meta {
+  margin: var(--fds-space-2) 0 0;
+  color: var(--fds-color-text-muted);
+  font-family: var(--fds-font-family-small);
+  font-size: var(--fds-font-size-small);
+  line-height: var(--fds-font-line-height-small);
+  font-weight: var(--fds-font-weight-small);
+  letter-spacing: var(--fds-font-letter-spacing-small);
+}
+
+/* Meta, "Read more" and an action sit at the bottom, so cards in a row line up. */
+.fds-card__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fds-space-2);
+  margin-top: auto;
+  padding-top: var(--fds-space-5);
+}
+
+.fds-card__footer > .fds-card__meta {
+  margin: 0;
+}
+
+/* "Read more": the link button's look, but not a link or a button. The title is the link. */
+.fds-card__more {
+  color: var(--fds-color-text-muted);
+  font-family: var(--fds-font-family-label);
+  font-size: var(--fds-font-size-label);
+  line-height: var(--fds-font-line-height-label);
+  font-weight: var(--fds-font-weight-label);
+  letter-spacing: var(--fds-font-letter-spacing-label);
+  text-transform: var(--fds-font-text-transform-label);
+}
+
+/* An action (a Button) on a card that isn't a link: above the card's own layers. */
+.fds-card__action {
+  position: relative;
+}
+
+/* ── A linked card ───────────────────────────────────────── */
+
+.fds-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The link covers the whole card, so the whole card is one click target and one tab stop. */
+.fds-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* The ring is drawn on the card, not on the title. */
+.fds-card__link:focus-visible {
+  outline: none;
+}
+
+/* Text for screen readers only, e.g. "(opens in a new tab)" after a ↗. */
+.fds-card__hidden {
+  position: absolute;
+  clip-path: polygon(0 0, 0 0, 0 0);
+  white-space: nowrap;
+}
+
+.fds-card:has(.fds-card__link) {
+  cursor: pointer;
+  transition:
+    transform var(--fds-duration-base) var(--fds-easing-standard),
+    box-shadow var(--fds-duration-base) var(--fds-easing-standard);
+}
+
+/* Hover and pressed: the card lifts by space-1 and shows its shadow (decision 40). */
+.fds-card:has(.fds-card__link):is(:hover, :active) {
+  transform: translateY(calc(-1 * var(--fds-space-1)));
+  box-shadow: var(--fds-shadow-md);
+}
+
+.fds-card--image:has(.fds-card__link):is(:hover, :active) {
+  box-shadow: var(--fds-shadow-lg);
+}
+
+.fds-card:has(.fds-card__link):is(:hover, :active) .fds-card__more {
+  color: var(--fds-color-text);
+}
+
+/* Focus: the system ring on the whole card, outside it, and the shadow. */
+.fds-card:has(.fds-card__link:focus-visible) {
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+  box-shadow: var(--fds-shadow-md);
+}
+
+.fds-card--image:has(.fds-card__link:focus-visible) {
+  box-shadow: var(--fds-shadow-lg);
+}
+
+/* Reduced motion: no lift; the shadow still shows. */
+@media (prefers-reduced-motion: reduce) {
+  .fds-card:has(.fds-card__link) {
+    transition: box-shadow var(--fds-duration-base) var(--fds-easing-standard);
+  }
+
+  .fds-card:has(.fds-card__link):is(:hover, :active) {
+    transform: none;
+  }
+}

@@ -10,8 +10,8 @@ import { readFileSync } from 'node:fs';
 // between two groups that have pages; Figma shows it as a divider.
 export const DOC_GROUPS = [
   { name: 'Basic', pages: ['Colors', 'Typography', 'Spacing', 'Corner radius', 'Shadows'] },
-  { name: 'Regular', pages: ['Button', 'Input'] },
-  { name: 'Advanced', pages: [] },
+  { name: 'Regular', pages: ['Button', 'Input', 'Image'] },
+  { name: 'Advanced', pages: ['Card'] },
 ];
 export const DOC_SEPARATOR = '---';
 

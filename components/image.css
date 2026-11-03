@@ -1,0 +1,20 @@
+/* Image (decision 63). Uses only --fds-* tokens; link tokens.css first.
+ *
+ *   <img class="fds-image" src="…" alt="" width="1600" height="1000" loading="lazy" decoding="async">
+ *
+ * One ratio, 16:10, for every image in a component. The picture fills the frame and is cropped at
+ * the edges, never stretched or letterboxed. Set width and height on the element, so the frame keeps
+ * its space before the picture loads. The image has no radius of its own: the component it sits in
+ * gives it one (the Card rounds its top corners).
+ */
+
+.fds-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center;
+  /* What shows while the picture loads, or if it doesn't. */
+  background-color: var(--fds-color-surface-subtle);
+}

@@ -165,6 +165,36 @@
   --fds-color-text-on-action: var(--fds-color-text-on-accent);
 }
 
+.fds-card:not(.fds-card--dark) {
+  --fds-color-text: var(--fds-navy-900);
+  --fds-color-text-muted: var(--fds-stone-600);
+  --fds-color-text-emphasis: var(--fds-gold-800);
+  --fds-color-border: var(--fds-sand-300);
+  --fds-color-border-rule: var(--fds-navy-900);
+  --fds-color-action: var(--fds-navy-900);
+  --fds-color-action-hover: var(--fds-navy-700);
+  --fds-color-text-on-action: var(--fds-sand-50);
+}
+
+.fds-card:not(.fds-card--dark) > * {
+  --fds-color-focus: var(--fds-navy-900);
+}
+
+.fds-card--dark {
+  --fds-color-text: var(--fds-color-text-on-dark);
+  --fds-color-text-muted: var(--fds-color-text-muted-on-dark);
+  --fds-color-text-emphasis: var(--fds-color-text-emphasis-on-dark);
+  --fds-color-border: var(--fds-color-border-on-dark);
+  --fds-color-border-rule: var(--fds-color-border-rule-on-dark);
+  --fds-color-action: var(--fds-color-action-on-dark);
+  --fds-color-action-hover: var(--fds-color-action-hover-on-dark);
+  --fds-color-text-on-action: var(--fds-color-text-on-accent);
+}
+
+.fds-card--dark > * {
+  --fds-color-focus: var(--fds-color-focus-on-dark);
+}
+
 /* The preview uses the uploaded Inter of the design system page when it's there. */
 :root { --fds-font-typeface-inter: "Inter Variable Font opsz,wght", Inter, system-ui, sans-serif; }
 /* Button (decisions 51, 53, 56). Uses only --fds-* tokens; link tokens.css first.
