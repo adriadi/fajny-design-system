@@ -32,7 +32,7 @@
     "focus":                 { "$value": "{navy.900}",       "$description": "Keyboard focus ring. On a dark surface it becomes color-focus-on-dark." },
     "focus-on-dark":         { "$value": "{gold.500}",       "$description": "Value of color-focus inside a dark surface (decision 29). Not referenced by components. 6.11:1 on color-surface-dark." },
 
-    "action":                { "$value": "{navy.900}",       "$description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears." },
+    "action":                { "$value": "{navy.900}",       "$description": "Primary button background. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears." },
     "action-hover":          { "$value": "{navy.700}",       "$description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark." },
     "action-on-dark":        { "$value": "{gold.500}",       "$description": "Value of color-action inside a dark surface: the gold button. Not referenced by components. Text on it: color-text-on-accent, 6.11:1." },
     "action-hover-on-dark":  { "$value": "{sand.50}",        "$description": "Value of color-action-hover inside a dark surface: the gold button turns cream on hover. Not referenced by components. Text on it: color-text-on-accent, 10.01:1." },

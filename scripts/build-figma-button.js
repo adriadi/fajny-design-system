@@ -14,20 +14,20 @@ const OUT_FILE = `${OUT_DIR}button-component.js`;
 // Variant rows. fill/hover: frame fill; text/textHover: label colour; stroke: border colour;
 // square: no rounded corners, so the focus ring is square as in CSS.
 const VARIANTS = [
-  { variant: 'Primary', size: 'Main', label: 'View my work', minHeight: 'space/12', paddingX: 'space/8',
+  { variant: 'Primary', size: 'Main', label: 'Continue', minHeight: 'space/12', paddingX: 'space/8',
     fill: 'color/action', fillHover: 'color/action-hover', text: 'color/text-on-action' },
-  { variant: 'Secondary', size: 'Main', label: 'Download CV', minHeight: 'space/12', paddingX: 'space/8',
+  { variant: 'Secondary', size: 'Main', label: 'Learn more', minHeight: 'space/12', paddingX: 'space/8',
     fill: 'color/secondary', fillHover: 'color/secondary-hover', text: 'color/text-on-secondary', stroke: 'color/border-highlight' },
-  { variant: 'Link', size: 'Main', label: 'Case studies', minHeight: 'space/6',
+  { variant: 'Link', size: 'Main', label: 'Read more', minHeight: 'space/6',
     text: 'color/text-muted', textHover: 'color/text', noDisable: true, square: true },
-  { variant: 'Primary', size: 'Navigation', label: "Let's talk", minHeight: 'space/8', paddingX: 'space/6',
+  { variant: 'Primary', size: 'Navigation', label: 'Contact', minHeight: 'space/8', paddingX: 'space/6',
     fill: 'color/action', fillHover: 'color/action-hover', text: 'color/text-on-action' },
 ];
 const STATES = ['Default', 'Hover', 'Focus', 'Active', 'Disabled', 'Loading'];
 const SHARED = {
   gap: 'space/2', radius: 'radius/pill', strokeWeight: 'border-width/control', opacity: 'opacity/disabled',
   focusColor: 'color/focus', focusWidth: 'focus/ring-width', focusOffset: 'focus/ring-offset',
-  textStyle: 'label', loadingLabel: 'Sending…',
+  textStyle: 'label', loadingLabel: 'Loading…',
 };
 
 // The colour roles here must be exactly the ones button.css uses.

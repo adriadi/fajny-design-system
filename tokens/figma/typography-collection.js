@@ -22,8 +22,8 @@ const PLAN = {
       "tracking": "-0.03em",
       "letterSpacing": -3,
       "textCase": "ORIGINAL",
-      "description": "40px to 96px. The home hero only: the page’s single h1. Gold italic allowed (decision 28).",
-      "sample": "Hi, I am Adrianna. I am empowering Design with AI."
+      "description": "40px to 96px. The landing page hero only: the page’s single h1. Gold italic allowed (decision 28).",
+      "sample": "Ship the thing. Then ship the next thing."
     },
     {
       "role": "title",
@@ -38,8 +38,8 @@ const PLAN = {
       "tracking": "-0.025em",
       "letterSpacing": -2.5,
       "textCase": "ORIGINAL",
-      "description": "36px to 72px. The page title of a case study: the page’s single h1. Gold italic allowed (decision 28).",
-      "sample": "Hundreds of criminal patterns. None had a paper trail."
+      "description": "36px to 72px. The page title of an article or detail page: the page’s single h1. Gold italic allowed (decision 28).",
+      "sample": "Settings, but make them friendly"
     },
     {
       "role": "heading",
@@ -55,7 +55,7 @@ const PLAN = {
       "letterSpacing": -2.5,
       "textCase": "ORIGINAL",
       "description": "32px to 52px. Section titles (h2). Gold italic allowed (decision 28).",
-      "sample": "Let's make something good."
+      "sample": "What your team did while you were at lunch"
     },
     {
       "role": "subheading",
@@ -71,7 +71,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28).",
-      "sample": "The system had 247 patterns. Not one knew where it came from."
+      "sample": "Notifications: as loud or as quiet as you like"
     },
     {
       "role": "card-title",
@@ -87,7 +87,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "18px to 22px. Titles inside cards. Never gold (decision 28).",
-      "sample": "Can I ask this video a question? Yes, you can."
+      "sample": "Quarterly report: reviewed, approved and only slightly dramatic"
     },
     {
       "role": "lead",
@@ -103,7 +103,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "15px to 18px. The intro paragraph under a page or section title.",
-      "sample": "Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics."
+      "sample": "Plan your projects, invite your team and keep every decision where you can find it again. Changes save themselves, so you don't have to."
     },
     {
       "role": "body",
@@ -119,7 +119,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "15px to 16px. Body text.",
-      "sample": "The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own."
+      "sample": "Every project gets its own people, files and settings. Invite someone by email, decide what they can touch, and take the keys back whenever you like. Nothing leaves the room until you say so."
     },
     {
       "role": "small",
@@ -135,7 +135,7 @@ const PLAN = {
       "letterSpacing": 0,
       "textCase": "ORIGINAL",
       "description": "13px to 14px. Secondary text: captions, meta, card descriptions.",
-      "sample": "Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away."
+      "sample": "Last edited on 12 March 2026 by someone who definitely knew what they were doing. Every version stays for 90 days, just in case."
     },
     {
       "role": "overline",
@@ -151,7 +151,7 @@ const PLAN = {
       "letterSpacing": 12,
       "textCase": "UPPER",
       "description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline.",
-      "sample": "Typologies in the library - each one now traceable to its exact institutional origin"
+      "sample": "Account settings · Passwords, sign-ins and that old laptop you forgot about"
     },
     {
       "role": "label",
@@ -167,13 +167,13 @@ const PLAN = {
       "letterSpacing": 6,
       "textCase": "UPPER",
       "description": "13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label.",
-      "sample": "View my work"
+      "sample": "Continue"
     }
   ],
   "page": {
     "name": "Typography",
     "subtitle": "Ten text roles: nine for text and label for button and navigation link text.",
-    "specimenSubtitle": "Real portfolio text in every role, on a 390px and a 1280px screen, on a light and a dark surface.",
+    "specimenSubtitle": "Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface.",
     "widths": {
       "Mobile": 390,
       "Desktop": 1280

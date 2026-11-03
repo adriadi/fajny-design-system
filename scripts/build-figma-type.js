@@ -9,7 +9,7 @@
 //   would be applied in px, while a percentage follows the bound size in both modes.
 // - Family, weight and text transform are set on the style from the role's tokens.
 // It also rebuilds the Typography page (decision 58): every role with what it's for and its values,
-// then a specimen with real portfolio text, in four frames
+// then a specimen with interface text in every role, in four frames
 // (Mobile and Desktop, each on a light and a dark surface), so a token change can be checked by eye.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { DOC_RUNTIME } from './figma-doc-layout.js';
@@ -26,30 +26,20 @@ const STYLE_NAMES = {
 // CSS text-transform -> Figma textCase.
 const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
 
-// Specimen text for the Typography page, from the portfolio (adriadi/portfolio, main). Each text
-// role wraps to at least two lines in the Mobile frame; label stays on one line, like a button.
+// Specimen text: neutral interface text, long enough to wrap where a role wraps in a product. Each
+// text role wraps to at least two lines in the Mobile frame; label stays on one line, like a button.
 // Every sample is set in its role's text colour only.
 const SAMPLES = {
-  // index.html, home hero h1
-  display: { text: 'Hi, I am Adrianna. I am empowering Design with AI.' },
-  // usecases/hawk-case-study.html, page title h1
-  title: { text: 'Hundreds of criminal patterns. None had a paper trail.' },
-  // index.html, contact section title h2
-  heading: { text: "Let's make something good." },
-  // usecases/hawk-case-study.html, h3
-  subheading: { text: 'The system had 247 patterns. Not one knew where it came from.' },
-  // index.html, article card title
-  'card-title': { text: 'Can I ask this video a question? Yes, you can.' },
-  // usecases/curaay-case-study.html, overview paragraph
-  lead: { text: 'Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics.' },
-  // usecases/hawk-case-study.html, overview paragraph
-  body: { text: 'The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own.' },
-  // usecases/hawk-case-study.html, image caption
-  small: { text: 'Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away.' },
-  // usecases/hawk-case-study.html, metric label
-  overline: { text: 'Typologies in the library - each one now traceable to its exact institutional origin' },
-  // index.html, hero button. A label is one line, so it doesn't wrap.
-  label: { text: 'View my work' },
+  display: { text: 'Ship the thing. Then ship the next thing.' },
+  title: { text: 'Settings, but make them friendly' },
+  heading: { text: 'What your team did while you were at lunch' },
+  subheading: { text: 'Notifications: as loud or as quiet as you like' },
+  'card-title': { text: 'Quarterly report: reviewed, approved and only slightly dramatic' },
+  lead: { text: "Plan your projects, invite your team and keep every decision where you can find it again. Changes save themselves, so you don't have to." },
+  body: { text: 'Every project gets its own people, files and settings. Invite someone by email, decide what they can touch, and take the keys back whenever you like. Nothing leaves the room until you say so.' },
+  small: { text: 'Last edited on 12 March 2026 by someone who definitely knew what they were doing. Every version stays for 90 days, just in case.' },
+  overline: { text: 'Account settings · Passwords, sign-ins and that old laptop you forgot about' },
+  label: { text: 'Continue' },
 };
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));

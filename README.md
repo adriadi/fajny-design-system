@@ -49,7 +49,7 @@ Each role is `--fds-color-<role>` in CSS and `color/<role>` in Figma.
 
 Components set text in ten roles, never in a typeface or a size of their own. Each role has its family, size, line height, weight and letter spacing in CSS, and one text style in Figma.
 
-- **Specimen:** Real portfolio text in every role, on a 390px and a 1280px screen, on a light and a dark surface.
+- **Specimen:** Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface.
 
 ## Components
 

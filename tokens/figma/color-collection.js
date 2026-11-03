@@ -173,7 +173,7 @@ const PLAN = {
         "FRAME_FILL",
         "SHAPE_FILL"
       ],
-      "description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
+      "description": "Primary button background. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
     },
     {
       "name": "color/action-hover",
@@ -306,12 +306,12 @@ const PLAN = {
         ]
       }
     ],
-    "paletteSubtitle": "Raw palette, taken from the portfolio (adriannadziadyk.de). Components and agents never use these directly: use the semantic color-* tokens.",
+    "paletteSubtitle": "Raw palette. Components and agents never use these directly: use the semantic color-* tokens.",
     "palette": [
       {
         "name": "navy/100",
         "hex": "#E4EAF4",
-        "description": "Case-study pull-quote background."
+        "description": "Pull-quote background."
       },
       {
         "name": "navy/200",
@@ -386,12 +386,12 @@ const PLAN = {
       {
         "name": "red/700",
         "hex": "#B32228",
-        "description": "Error. oklch(50% 0.18 25), from the portfolio’s contact form."
+        "description": "Error. oklch(50% 0.18 25)."
       },
       {
         "name": "green/700",
         "hex": "#176700",
-        "description": "Success. oklch(45% 0.15 140), from the portfolio’s CV modal."
+        "description": "Success. oklch(45% 0.15 140)."
       }
     ]
   }

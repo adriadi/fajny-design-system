@@ -9,7 +9,7 @@ const PLAN = {
     {
       "variant": "Primary",
       "size": "Main",
-      "label": "View my work",
+      "label": "Continue",
       "minHeight": "space/12",
       "paddingX": "space/8",
       "fill": "color/action",
@@ -19,7 +19,7 @@ const PLAN = {
     {
       "variant": "Secondary",
       "size": "Main",
-      "label": "Download CV",
+      "label": "Learn more",
       "minHeight": "space/12",
       "paddingX": "space/8",
       "fill": "color/secondary",
@@ -30,7 +30,7 @@ const PLAN = {
     {
       "variant": "Link",
       "size": "Main",
-      "label": "Case studies",
+      "label": "Read more",
       "minHeight": "space/6",
       "text": "color/text-muted",
       "textHover": "color/text",
@@ -40,7 +40,7 @@ const PLAN = {
     {
       "variant": "Primary",
       "size": "Navigation",
-      "label": "Let's talk",
+      "label": "Contact",
       "minHeight": "space/8",
       "paddingX": "space/6",
       "fill": "color/action",
@@ -65,11 +65,11 @@ const PLAN = {
     "focusWidth": "focus/ring-width",
     "focusOffset": "focus/ring-offset",
     "textStyle": "label",
-    "loadingLabel": "Sending…"
+    "loadingLabel": "Loading…"
   },
   "componentPage": "Button",
   "legacyPage": "Button check",
-  "purpose": "A control that takes the visitor somewhere or does something.",
+  "purpose": "A control that takes the user somewhere or does something.",
   "setSubtitle": "Three variants, one navigation size, every state from the element itself.",
   "variantsSubtitle": "Every variant in every state, on a light and a dark surface."
 };

@@ -1,8 +1,8 @@
 /* Button (decisions 51, 53, 56). Uses only --fds-* tokens; link tokens.css first.
  *
- *   <a class="fds-button fds-button--primary" href="…">View my work</a>
- *   <button class="fds-button fds-button--secondary" type="button">Download CV</button>
- *   <a class="fds-button fds-button--link" href="…">Case studies</a>
+ *   <a class="fds-button fds-button--primary" href="…">Continue</a>
+ *   <button class="fds-button fds-button--secondary" type="button">Learn more</button>
+ *   <a class="fds-button fds-button--link" href="…">Read more</a>
  *
  * Variants: --primary, --secondary, --link. Size: --nav, the small navigation button.
  * States come from the element, not from classes: :hover, :active, :focus-visible,

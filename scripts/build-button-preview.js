@@ -20,10 +20,10 @@ const forced = button
   .join('\n');
 
 const VARIANTS = [
-  ['primary', 'Primary', 'View my work'],
-  ['secondary', 'Secondary', 'Download CV'],
-  ['link', 'Link', 'Case studies'],
-  ['primary fds-button--nav', 'Navigation', "Let's talk"],
+  ['primary', 'Primary', 'Continue'],
+  ['secondary', 'Secondary', 'Learn more'],
+  ['link', 'Link', 'Read more'],
+  ['primary fds-button--nav', 'Navigation', 'Contact'],
 ];
 const STATES = [
   ['default', ''],
@@ -36,7 +36,7 @@ const STATES = [
 
 const cell = ([cls, , label], [state, attrs]) => {
   if (cls === 'link' && (state === 'disabled' || state === 'loading')) return '<td class="na">n/a</td>';
-  const text = state === 'loading' ? 'Sending…' : label;
+  const text = state === 'loading' ? 'Loading…' : label;
   return `<td><button type="button" class="fds-button fds-button--${cls}"${attrs}>${text}</button></td>`;
 };
 const table = (surface) => `

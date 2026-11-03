@@ -34,7 +34,7 @@ const PLAN = {
         "name": "space/5",
         "variable": "space/5",
         "value": "20px",
-        "description": "Paragraph spacing in case studies, grid gaps."
+        "description": "Paragraph spacing in long-form text, grid gaps."
       },
       {
         "name": "space/6",
@@ -70,7 +70,7 @@ const PLAN = {
         "name": "space/16",
         "variable": "space/16",
         "value": "64px",
-        "description": "Large blocks, e.g. the next-project block."
+        "description": "Large blocks, e.g. a closing call-to-action block."
       },
       {
         "name": "space/20",
@@ -106,7 +106,7 @@ const PLAN = {
         "variable": "radius/sm",
         "wide": false,
         "value": "4px",
-        "description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons."
+        "description": "Small inline blocks: pull quotes, metrics, callouts. Never buttons."
       },
       {
         "name": "radius/md",

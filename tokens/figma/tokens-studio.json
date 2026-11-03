@@ -4,7 +4,7 @@
       "100": {
         "$value": "#E4EAF4",
         "$type": "color",
-        "$description": "Case-study pull-quote background.",
+        "$description": "Pull-quote background.",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -174,7 +174,7 @@
       "700": {
         "$value": "#B32228",
         "$type": "color",
-        "$description": "Error. oklch(50% 0.18 25), from the portfolio’s contact form.",
+        "$description": "Error. oklch(50% 0.18 25).",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -187,7 +187,7 @@
       "700": {
         "$value": "#176700",
         "$type": "color",
-        "$description": "Success. oklch(45% 0.15 140), from the portfolio’s CV modal.",
+        "$description": "Success. oklch(45% 0.15 140).",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -242,7 +242,7 @@
       "5": {
         "$value": "20px",
         "$type": "dimension",
-        "$description": "Paragraph spacing in case studies, grid gaps.",
+        "$description": "Paragraph spacing in long-form text, grid gaps.",
         "$extensions": {
           "com.figma.scopes": [
             "GAP"
@@ -302,7 +302,7 @@
       "16": {
         "$value": "64px",
         "$type": "dimension",
-        "$description": "Large blocks, e.g. the next-project block.",
+        "$description": "Large blocks, e.g. a closing call-to-action block.",
         "$extensions": {
           "com.figma.scopes": [
             "GAP"
@@ -336,7 +336,7 @@
       "sm": {
         "$value": "4px",
         "$type": "dimension",
-        "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons.",
+        "$description": "Small inline blocks: pull quotes, metrics, callouts. Never buttons.",
         "$extensions": {
           "com.figma.scopes": [
             "CORNER_RADIUS"

@@ -1,16 +1,16 @@
 # Button
 
-A control that takes the visitor somewhere or does something. Three variants, one navigation size, every state from the element itself. Stylesheet: `components/button.css` (link `tokens/css/tokens.css` first). Every variant in every state, light and dark: open `docs/button-preview.html`.
+A control that takes the user somewhere or does something. Three variants, one navigation size, every state from the element itself. Stylesheet: `components/button.css` (link `tokens/css/tokens.css` first). Every variant in every state, light and dark: open `docs/button-preview.html`.
 
 ## Variants
 
 | Variant | Class | Use it for | Don't use it for |
 | --- | --- | --- | --- |
-| Primary | `fds-button fds-button--primary` | The one main action of a section or a form: "View my work", "Send message". | A second action next to a primary button; use secondary. More than one primary in view. |
-| Secondary | `fds-button fds-button--secondary` | An action next to the primary one, or a lesser action on its own: "Download CV". | The main action of a form. Links inside running text. |
-| Link | `fds-button fds-button--link` | Navigation links and quiet actions in a row: "Case studies", "Experience". | Links inside a sentence; they stay text links in the paragraph's style. The main action of a page. |
+| Primary | `fds-button fds-button--primary` | The one main action of a section or a form: "Continue", "Save changes". | A second action next to a primary button; use secondary. More than one primary in view. |
+| Secondary | `fds-button fds-button--secondary` | An action next to the primary one, or a lesser action on its own: "Learn more". | The main action of a form. Links inside running text. |
+| Link | `fds-button fds-button--link` | Navigation links and quiet actions in a row: "Read more", "Pricing". | Links inside a sentence; they stay text links in the paragraph's style. The main action of a page. |
 
-Navigation size: add `fds-button--nav` to a primary button in the top navigation ("Let's talk"). It's 32px high to the eye and 48px to the pointer.
+Navigation size: add `fds-button--nav` to a primary button in the top navigation ("Contact"). It's 32px high to the eye and 48px to the pointer.
 
 On a dark surface (inside `.fds-surface-dark`) nothing changes in the HTML:
 - **Primary** turns gold with a navy label.
@@ -54,7 +54,7 @@ Colour changes take `duration-fast` with `easing-standard`. Nothing moves, so re
 ## Do and don't
 
 - **Do** use one primary button per section; put the secondary next to it, after it.
-- **Do** keep labels short verbs or destinations: "Send message", "View my work".
+- **Do** keep labels short verbs or destinations: "Save changes", "Continue".
 - **Don't** make square or partly rounded buttons: every button is a pill (decision 39).
 - **Don't** add shadows, lifts or other movement on hover.
 - **Don't** set a colour, size or font on a button by hand. If a button needs something the variants don't give, the system is missing a role: ask for it.
@@ -64,34 +64,34 @@ Colour changes take `duration-fast` with `easing-standard`. Nothing moves, so re
 
 ```html
 <!-- Primary: goes somewhere -->
-<a class="fds-button fds-button--primary" href="#work">View my work</a>
+<a class="fds-button fds-button--primary" href="#next">Continue</a>
 
 <!-- Secondary: does something -->
-<button class="fds-button fds-button--secondary" type="button">Download CV</button>
+<button class="fds-button fds-button--secondary" type="button">Learn more</button>
 
 <!-- Link -->
-<a class="fds-button fds-button--link" href="#experience">Experience</a>
+<a class="fds-button fds-button--link" href="#pricing">Pricing</a>
 
 <!-- Navigation button -->
-<a class="fds-button fds-button--primary fds-button--nav" href="#contact">Let's talk</a>
+<a class="fds-button fds-button--primary fds-button--nav" href="#contact">Contact</a>
 
 <!-- With an icon -->
-<a class="fds-button fds-button--primary" href="#work">
-  View my work
+<a class="fds-button fds-button--primary" href="#next">
+  Continue
   <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 
 <!-- Disabled, with its reason -->
-<button class="fds-button fds-button--primary" type="submit" aria-disabled="true" aria-describedby="send-hint">Send message</button>
-<p id="send-hint">Fill in your name and email to send.</p>
+<button class="fds-button fds-button--primary" type="submit" aria-disabled="true" aria-describedby="send-hint">Save changes</button>
+<p id="send-hint">Fill in your name and email to continue.</p>
 
 <!-- Loading -->
-<button class="fds-button fds-button--primary" type="submit" aria-disabled="true" data-loading>Sending…</button>
-<p role="status">Sending your message…</p>
+<button class="fds-button fds-button--primary" type="submit" aria-disabled="true" data-loading>Saving…</button>
+<p role="status">Saving your changes…</p>
 
 <!-- On a dark surface: the same HTML -->
 <section class="fds-surface-dark">
-  <a class="fds-button fds-button--primary" href="https://calendly.com/…">Schedule a call</a>
-  <a class="fds-button fds-button--secondary" href="#cv">Download CV</a>
+  <a class="fds-button fds-button--primary" href="#demo">Book a demo</a>
+  <a class="fds-button fds-button--secondary" href="#guide">Learn more</a>
 </section>
 ```

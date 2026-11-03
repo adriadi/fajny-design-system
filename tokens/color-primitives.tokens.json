@@ -1,5 +1,5 @@
 {
-  "$description": "Raw palette, taken from the portfolio (adriannadziadyk.de). Components and agents never use these directly: use the semantic color-* tokens.",
+  "$description": "Raw palette. Components and agents never use these directly: use the semantic color-* tokens.",
   "navy": {
     "$type": "color",
     "900": { "$value": "#1B3A6B", "$description": "Brand navy. The one text colour (decision 20)." },
@@ -7,7 +7,7 @@
     "700": { "$value": "#254D8F", "$description": "Hover on navy fills." },
     "300": { "$value": "#7FA8D4", "$description": "Light Highlight rule; the secondary button border." },
     "200": { "$value": "#B3C8E6", "$description": "Secondary button hover." },
-    "100": { "$value": "#E4EAF4", "$description": "Case-study pull-quote background." }
+    "100": { "$value": "#E4EAF4", "$description": "Pull-quote background." }
   },
   "gold": {
     "$type": "color",
@@ -29,10 +29,10 @@
   "white": { "$type": "color", "$value": "#FFFFFF" },
   "red": {
     "$type": "color",
-    "700": { "$value": "#B32228", "$description": "Error. oklch(50% 0.18 25), from the portfolio's contact form." }
+    "700": { "$value": "#B32228", "$description": "Error. oklch(50% 0.18 25)." }
   },
   "green": {
     "$type": "color",
-    "700": { "$value": "#176700", "$description": "Success. oklch(45% 0.15 140), from the portfolio's CV modal." }
+    "700": { "$value": "#176700", "$description": "Success. oklch(45% 0.15 140)." }
   }
 }

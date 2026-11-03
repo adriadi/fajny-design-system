@@ -21,8 +21,8 @@
     },
     "size": {
       "$type": "dimension",
-      "display":    { "$value": "clamp(2.5rem, 0.9663rem + 6.292vw, 6rem)",          "$description": "40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28)." },
-      "title":      { "$value": "clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem)",        "$description": "36px to 72px. The page title of a case study: the page's single h1. Gold italic allowed (decision 28)." },
+      "display":    { "$value": "clamp(2.5rem, 0.9663rem + 6.292vw, 6rem)",          "$description": "40px to 96px. The landing page hero only: the page's single h1. Gold italic allowed (decision 28)." },
+      "title":      { "$value": "clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem)",        "$description": "36px to 72px. The page title of an article or detail page: the page's single h1. Gold italic allowed (decision 28)." },
       "heading":    { "$value": "clamp(2rem, 1.4522rem + 2.247vw, 3.25rem)",         "$description": "32px to 52px. Section titles (h2). Gold italic allowed (decision 28)." },
       "subheading": { "$value": "clamp(1.375rem, 1.1559rem + 0.899vw, 1.875rem)",    "$description": "22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28)." },
       "card-title": { "$value": "clamp(1.125rem, 1.0154rem + 0.449vw, 1.375rem)",    "$description": "18px to 22px. Titles inside cards. Never gold (decision 28)." },
