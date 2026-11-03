@@ -1,6 +1,6 @@
 {
   "font": {
-    "$description": "Nine text roles. Each role has a size, line-height, weight, letter-spacing and family token with the role's name; overline also has a text-transform token. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). Never use a size outside these roles.",
+    "$description": "Ten text roles: nine for text and label for button and navigation link text. Each role has a size, line-height, weight, letter-spacing and family token with the role's name; overline and label also have a text-transform token. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). Never use a size outside these roles.",
     "typeface": {
       "$type": "fontFamily",
       "syne":  { "$value": ["Syne", "sans-serif"],              "$description": "Display typeface. Roles use it through font.family.<role>, never directly." },
@@ -16,19 +16,21 @@
       "lead":       { "$value": "{font.typeface.inter}" },
       "body":       { "$value": "{font.typeface.inter}" },
       "small":      { "$value": "{font.typeface.inter}" },
-      "overline":   { "$value": "{font.typeface.inter}" }
+      "overline":   { "$value": "{font.typeface.inter}" },
+      "label":      { "$value": "{font.typeface.inter}" }
     },
     "size": {
       "$type": "dimension",
-      "display":    { "$value": "clamp(2.5rem, 0.9663rem + 6.292vw, 6rem)",          "$description": "40px to 96px. The home hero only: the page's single h1. Gold italic allowed (decision 28)." },
-      "title":      { "$value": "clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem)",        "$description": "36px to 72px. The page title of a case study: the page's single h1. Gold italic allowed (decision 28)." },
+      "display":    { "$value": "clamp(2.5rem, 0.9663rem + 6.292vw, 6rem)",          "$description": "40px to 96px. The landing page hero only: the page's single h1. Gold italic allowed (decision 28)." },
+      "title":      { "$value": "clamp(2.25rem, 1.264rem + 4.045vw, 4.5rem)",        "$description": "36px to 72px. The page title of an article or detail page: the page's single h1. Gold italic allowed (decision 28)." },
       "heading":    { "$value": "clamp(2rem, 1.4522rem + 2.247vw, 3.25rem)",         "$description": "32px to 52px. Section titles (h2). Gold italic allowed (decision 28)." },
       "subheading": { "$value": "clamp(1.375rem, 1.1559rem + 0.899vw, 1.875rem)",    "$description": "22px to 30px. Subsection titles (h3), e.g. form headings. Never gold: it can be smaller than 24px (decision 28)." },
       "card-title": { "$value": "clamp(1.125rem, 1.0154rem + 0.449vw, 1.375rem)",    "$description": "18px to 22px. Titles inside cards. Never gold (decision 28)." },
       "lead":       { "$value": "clamp(0.9375rem, 0.8553rem + 0.337vw, 1.125rem)",   "$description": "15px to 18px. The intro paragraph under a page or section title." },
       "body":       { "$value": "clamp(0.9375rem, 0.9101rem + 0.112vw, 1rem)",       "$description": "15px to 16px. Body text." },
       "small":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Secondary text: captions, meta, card descriptions." },
-      "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline." }
+      "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline." },
+      "label":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label." }
     },
     "line-height": {
       "$type": "number",
@@ -40,7 +42,8 @@
       "lead":       { "$value": 1.65 },
       "body":       { "$value": 1.7 },
       "small":      { "$value": 1.5 },
-      "overline":   { "$value": 1.3 }
+      "overline":   { "$value": 1.3 },
+      "label":      { "$value": 1.2 }
     },
     "weight": {
       "$type": "fontWeight",
@@ -52,7 +55,8 @@
       "lead":       { "$value": 300, "$description": "Light: the weight is what sets lead apart from body text." },
       "body":       { "$value": 400 },
       "small":      { "$value": 400 },
-      "overline":   { "$value": 600 }
+      "overline":   { "$value": 600 },
+      "label":      { "$value": 500 }
     },
     "letter-spacing": {
       "$type": "dimension",
@@ -64,10 +68,12 @@
       "lead":       { "$value": "0" },
       "body":       { "$value": "0" },
       "small":      { "$value": "0" },
-      "overline":   { "$value": "0.12em" }
+      "overline":   { "$value": "0.12em" },
+      "label":      { "$value": "0.06em" }
     },
     "text-transform": {
-      "overline": { "$value": "uppercase", "$description": "Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out." }
+      "overline": { "$value": "uppercase", "$description": "Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out." },
+      "label":    { "$value": "uppercase", "$description": "Button and navigation link text is always uppercase. Write it in sentence case in the HTML." }
     }
   }
 }

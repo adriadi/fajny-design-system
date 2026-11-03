@@ -17,8 +17,8 @@ const isToken = (node) => node && typeof node === 'object' && '$value' in node;
 
 // Copies a group, writing $type on every token (inherited from its groups in the source) and
 // dropping group descriptions. `keep(name, token)` decides which tokens go in.
-// Descriptions get typographic apostrophes (’): Tokens Studio writes a straight one into Figma
-// as &#39;.
+// Descriptions get typographic apostrophes (’) and quotes (“ ”): Tokens Studio writes straight
+// ones into Figma as &#39; and &quot;.
 function copyGroup(group, keep = () => true, inheritedType) {
   const type = group.$type ?? inheritedType;
   const out = {};
@@ -27,7 +27,7 @@ function copyGroup(group, keep = () => true, inheritedType) {
     if (isToken(node)) {
       if (!keep(name, node)) continue;
       out[name] = { $value: node.$value, $type: node.$type ?? type };
-      if (node.$description) out[name].$description = node.$description.replaceAll("'", '’');
+      if (node.$description) out[name].$description = node.$description.replaceAll("'", '’').replace(/"([^"]*)"/g, '“$1”');
     } else {
       out[name] = copyGroup(node, keep, type);
     }
@@ -46,6 +46,13 @@ function toBoxShadow(group) {
   return group;
 }
 
+// Figma opacity variables run from 0 to 100. Tokens Studio converts a 0–1 value only for its own
+// opacity type, so the W3C number becomes that type here.
+function toOpacity(group) {
+  for (const token of Object.values(group)) token.$type = 'opacity';
+  return group;
+}
+
 const primitives = read('color-primitives.tokens.json');
 const dimension = read('dimension.tokens.json');
 const effect = read('effect.tokens.json');
@@ -59,6 +66,8 @@ const sets = {
   radius: { radius: copyGroup(dimension.radius, (_, t) => !String(t.$value).endsWith('%')) },
   shadow: { shadow: toBoxShadow(copyGroup(effect.shadow)) },
   focus: { focus: copyGroup(dimension.focus) },
+  'border-width': { 'border-width': copyGroup(dimension['border-width']) },
+  opacity: { opacity: toOpacity(copyGroup(effect.opacity)) },
 };
 
 // Figma variable scopes: which pickers in Figma offer each variable. Tokens Studio reads them from
@@ -70,6 +79,8 @@ const SCOPES = {
   spacing: () => ['GAP'],
   radius: () => ['CORNER_RADIUS'],
   focus: (name) => ({ 'ring-width': ['STROKE_FLOAT'], 'ring-offset': ['NONE'] })[name],
+  'border-width': () => ['STROKE_FLOAT'],
+  opacity: () => ['OPACITY'],
 };
 
 // Variables hidden from publishing: they stay out of the published library. Tokens Studio reads

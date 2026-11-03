@@ -8,9 +8,11 @@
 // - Line height and letter spacing are percentages on the text style, not variables: a variable
 //   would be applied in px, while a percentage follows the bound size in both modes.
 // - Family, weight and text transform are set on the style from the role's tokens.
-// It also rebuilds the "Type check" page: every role with real portfolio text, in four frames
+// It also rebuilds the Typography page (decision 58): every role with what it's for and its values,
+// then a specimen with interface text in every role, in four frames
 // (Mobile and Desktop, each on a light and a dark surface), so a token change can be checked by eye.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { DOC_RUNTIME } from './figma-doc-layout.js';
 
 const OUT_DIR = 'tokens/figma/';
 const OUT_FILE = `${OUT_DIR}typography-collection.js`;
@@ -24,27 +26,20 @@ const STYLE_NAMES = {
 // CSS text-transform -> Figma textCase.
 const TEXT_CASE = { none: 'ORIGINAL', uppercase: 'UPPER', lowercase: 'LOWER', capitalize: 'TITLE' };
 
-// Specimen text for the "Type check" page, from the portfolio (adriadi/portfolio, main). Each one
-// wraps to at least two lines in the Mobile frame and is set in its role's text colour only.
+// Specimen text: neutral interface text, long enough to wrap where a role wraps in a product. Each
+// text role wraps to at least two lines in the Mobile frame; label stays on one line, like a button.
+// Every sample is set in its role's text colour only.
 const SAMPLES = {
-  // index.html, home hero h1
-  display: { text: 'Hi, I am Adrianna. I am empowering Design with AI.' },
-  // usecases/hawk-case-study.html, page title h1
-  title: { text: 'Hundreds of criminal patterns. None had a paper trail.' },
-  // index.html, contact section title h2
-  heading: { text: "Let's make something good." },
-  // usecases/hawk-case-study.html, h3
-  subheading: { text: 'The system had 247 patterns. Not one knew where it came from.' },
-  // index.html, article card title
-  'card-title': { text: 'Can I ask this video a question? Yes, you can.' },
-  // usecases/curaay-case-study.html, overview paragraph
-  lead: { text: 'Curaay is an AI-powered health platform that helps patients in Germany find and book doctors - fast, across both digitised and non-digitised clinics.' },
-  // usecases/hawk-case-study.html, overview paragraph
-  body: { text: 'The typologies existed. But ask where any of them came from - which institution published it, which document, which section - and the system went quiet. Analysts were on their own.' },
-  // usecases/hawk-case-study.html, image caption
-  small: { text: 'Screen 2 · Typology Detail - the 4-level source chain is permanent, not hidden behind a tab. Every level links. The original PDF is one click away.' },
-  // usecases/hawk-case-study.html, metric label
-  overline: { text: 'Typologies in the library - each one now traceable to its exact institutional origin' },
+  display: { text: 'Ship the thing. Then ship the next thing.' },
+  title: { text: 'Settings, but make them friendly' },
+  heading: { text: 'What your team did while you were at lunch' },
+  subheading: { text: 'Notifications: as loud or as quiet as you like' },
+  'card-title': { text: 'Quarterly report: reviewed, approved and only slightly dramatic' },
+  lead: { text: "Plan your projects, invite your team and keep every decision where you can find it again. Changes save themselves, so you don't have to." },
+  body: { text: 'Every project gets its own people, files and settings. Invite someone by email, decide what they can touch, and take the keys back whenever you like. Nothing leaves the room until you say so.' },
+  small: { text: 'Last edited on 12 March 2026 by someone who definitely knew what they were doing. Every version stays for 90 days, just in case.' },
+  overline: { text: 'Account settings · Passwords, sign-ins and that old laptop you forgot about' },
+  label: { text: 'Continue' },
 };
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));
@@ -73,7 +68,7 @@ for (const role of names(font.size)) {
   if (Number.isNaN(em)) errors.push(`font.letter-spacing.${role} must be 0 or a value in em`);
 
   const sample = SAMPLES[role];
-  if (!sample) errors.push(`${role} has no specimen text for the Type check page`);
+  if (!sample) errors.push(`${role} has no specimen text for the Typography page`);
 
   const transform = font['text-transform']?.[role]?.$value ?? 'none';
   if (!TEXT_CASE[transform]) errors.push(`font.text-transform.${role}: no Figma text case for ${transform}`);
@@ -86,6 +81,9 @@ for (const role of names(font.size)) {
     family,
     style,
     lineHeight: round(lineHeight * 100),
+    lineHeightValue: lineHeight,
+    weight,
+    tracking,
     letterSpacing: round(em * 100),
     textCase: TEXT_CASE[transform],
     description: (size.$description ?? '').replaceAll("'", '’'),
@@ -98,12 +96,24 @@ if (errors.length) {
   process.exit(1);
 }
 
+// The specimen section's subtitle on the Typography page: the "Specimen" bullet in the README's
+// Typography section.
+const SPECIMEN_SUBTITLE = readFileSync('README.md', 'utf8').split('\n## Typography\n')[1]?.split('\n## ')[0]
+  .split('\n').find((l) => l.startsWith('- **Specimen:** '))?.replace('- **Specimen:** ', '');
+if (!SPECIMEN_SUBTITLE) {
+  console.error('Figma typography build failed:\n  ✗ README.md has no "- **Specimen:**" line in its "## Typography" section');
+  process.exit(1);
+}
+
 const plan = {
   collection: 'typography',
   modes: ['Mobile', 'Desktop'],
   roles,
   page: {
-    name: 'Type check',
+    name: 'Typography',
+    // The first sentence of the font group's description.
+    subtitle: font.$description.split(/(?<=\.) /)[0],
+    specimenSubtitle: SPECIMEN_SUBTITLE,
     widths: { Mobile: 390, Desktop: 1280 },
     // [color mode, frame background]: text colours come from the roles and switch with the mode.
     surfaces: [['Light surface', 'color/background'], ['Dark surface', 'color/surface-dark']],
@@ -115,7 +125,7 @@ const plan = {
 const script = `// Generated by scripts/build-figma-type.js from tokens/typography.tokens.json: don't edit, rebuild.
 // Figma plugin script for the Figma MCP use_figma tool. It writes the "typography" collection
 // (font/size/<role>, modes Mobile and Desktop) and one text style per role, with its size bound to
-// the variable, then rebuilds the "Type check" page. Safe to run again.
+// the variable, then rebuilds the Typography page. Safe to run again.
 const PLAN = ${JSON.stringify(plan, null, 2)};
 
 const [MOBILE, DESKTOP] = PLAN.modes;
@@ -159,67 +169,60 @@ for (const r of PLAN.roles) {
 }
 if (unbound.length) throw new Error('Font size could not be bound to its variable on: ' + unbound.join(', '));
 
-// The "Type check" page: replaced on every run. Four frames, Mobile and Desktop on each surface.
+// ── The Typography page: rebuilt on every run ──
+${DOC_RUNTIME}
 const P = PLAN.page;
-const allStyles = await figma.getLocalTextStylesAsync();
-const styleOf = (name) => allStyles.find((s) => s.name === name);
-const colorCollection = (await figma.variables.getLocalVariableCollectionsAsync()).find((c) => c.name === 'color');
-if (!colorCollection) throw new Error('No "color" collection: run color-collection.js first.');
-const colorVars = (await figma.variables.getLocalVariablesAsync('COLOR')).filter((v) => v.variableCollectionId === colorCollection.id);
-const paint = (name) => {
-  const v = colorVars.find((x) => x.name === name);
-  if (!v) throw new Error('Colour role not found: ' + name);
-  return figma.variables.setBoundVariableForPaint({ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }, 'color', v);
-};
-
-let page = figma.root.children.find((p) => p.name === P.name);
-if (!page) { page = figma.createPage(); page.name = P.name; }
-await figma.setCurrentPageAsync(page);
+const legacy = figma.root.children.find((p) => p.name === 'Type check');
+if (legacy) legacy.remove();
+const page = await docPage(P.name);
 for (const child of [...page.children]) child.remove();
+const root = docRoot(page, 1920);
 
+// Every role with what it's for and its values.
+const roles = await docSection(root, 'Typography', P.subtitle);
+const table = docFrame('roles', 'VERTICAL', { itemSpacing: 16 });
+roles.appendChild(table);
+const COLUMNS = [['Role', 160], ['What it’s for', 640], ['Family', 200], ['Size, 390 → 1280px', 200], ['Line height', 140], ['Letter spacing', 160]];
+const header = docFrame('header', 'HORIZONTAL', { itemSpacing: 24 });
+table.appendChild(header);
+for (const [label, width] of COLUMNS) header.appendChild(await docText(label, 'overline', 'color/text-muted', width));
+for (const r of PLAN.roles) {
+  const row = docFrame(r.role, 'HORIZONTAL', { itemSpacing: 24 });
+  table.appendChild(row);
+  const cells = [r.role, r.description, r.family + ' ' + r.weight, r.mobile + ' → ' + r.desktop + 'px', String(r.lineHeightValue), r.tracking];
+  for (let i = 0; i < cells.length; i++) row.appendChild(await docText(cells[i], i === 0 ? 'body' : 'small', i === 0 ? 'color/text' : 'color/text-muted', COLUMNS[i][1]));
+}
+
+// The specimen: four frames, Mobile and Desktop on each surface.
+const specimen = await docSection(root, 'Specimen', P.specimenSubtitle, 'subheading');
 const frames = [];
-let y = 0;
-for (const [colorMode, background] of P.surfaces) {
-  let x = 0;
-  let rowHeight = 0;
+for (const [colorMode] of P.surfaces) {
+  const line = docFrame(colorMode, 'HORIZONTAL', { itemSpacing: 64 });
+  specimen.appendChild(line);
   for (const modeName of PLAN.modes) {
     const width = P.widths[modeName];
-    const frame = figma.createAutoLayout('VERTICAL', { name: modeName + ' · ' + colorMode, itemSpacing: 40, paddingTop: 48, paddingBottom: 48, paddingLeft: 24, paddingRight: 24 });
-    page.appendChild(frame);
+    const frame = docFrame(modeName + ' · ' + colorMode, 'VERTICAL', { itemSpacing: 40, paddingTop: 48, paddingBottom: 48, paddingLeft: 24, paddingRight: 24 });
+    line.appendChild(frame);
     frame.counterAxisSizingMode = 'FIXED';
     frame.resize(width, frame.height);
-    frame.fills = [paint(background)];
+    docSurface(frame, colorMode);
     frame.setExplicitVariableModeForCollection(collection, collection.modes.find((m) => m.name === modeName).modeId);
-    frame.setExplicitVariableModeForCollection(colorCollection, colorCollection.modes.find((m) => m.name === colorMode).modeId);
 
     for (const r of PLAN.roles) {
-      const block = figma.createAutoLayout('VERTICAL', { name: r.role, itemSpacing: 8 });
+      const block = docFrame(r.role, 'VERTICAL', { itemSpacing: 8 });
       frame.appendChild(block);
-      block.fills = [];
       block.layoutSizingHorizontal = 'FILL';
-
-      const label = figma.createText();
-      block.appendChild(label);
-      await label.setTextStyleIdAsync(styleOf(P.label.style).id);
-      label.characters = r.role;
-      label.fills = [paint(P.label.color)];
-
-      const text = figma.createText();
+      block.appendChild(await docText(r.role, P.label.style, P.label.color));
+      const text = await docText(r.sample, r.role, P.text);
       block.appendChild(text);
-      await text.setTextStyleIdAsync(styleOf(r.role).id);
-      text.characters = r.sample;
-      text.fills = [paint(P.text)];
       text.layoutSizingHorizontal = 'FILL';
       text.textAutoResize = 'HEIGHT';
     }
-    frame.x = x;
-    frame.y = y;
-    x += width + 120;
-    rowHeight = Math.max(rowHeight, frame.height);
     frames.push({ id: frame.id, name: frame.name, width, height: Math.round(frame.height) });
   }
-  y += rowHeight + 120;
 }
+docUnclip(root);
+docFitShadows(root);
 
 const known = new Set(PLAN.roles.map((r) => r.role));
 return {
@@ -228,7 +231,7 @@ return {
   roles: PLAN.roles.length,
   created,
   textStylesNotInTokens: styles.filter((s) => !known.has(s.name)).map((s) => s.name),
-  typeCheckPage: { id: page.id, frames },
+  typographyPage: { id: page.id, frames },
 };
 `;
 

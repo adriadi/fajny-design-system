@@ -24,7 +24,7 @@
     "border-input":          { "$value": "{stone.400}",      "$description": "Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces." },
     "border-strong":         { "$value": "{navy.900}",       "$description": "Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces." },
     "border-rule":           { "$value": "{navy.900}",       "$description": "Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark." },
-    "border-highlight":      { "$value": "{navy.300}",       "$description": "The light Highlight's left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight." },
+    "border-highlight":      { "$value": "{navy.300}",       "$description": "The light Highlight's left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button's label carries its meaning." },
 
     "border-on-dark":        { "$value": "{navy.800}",       "$description": "Value of color-border inside a dark surface. Decorative only: 1.34:1 on color-surface-dark. Not referenced by components." },
     "border-rule-on-dark":   { "$value": "{gold.500}",       "$description": "Value of color-border-rule inside a dark surface. Not referenced by components. 6.11:1 on color-surface-dark." },
@@ -32,10 +32,14 @@
     "focus":                 { "$value": "{navy.900}",       "$description": "Keyboard focus ring. On a dark surface it becomes color-focus-on-dark." },
     "focus-on-dark":         { "$value": "{gold.500}",       "$description": "Value of color-focus inside a dark surface (decision 29). Not referenced by components. 6.11:1 on color-surface-dark." },
 
-    "action":                { "$value": "{navy.900}",       "$description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears." },
+    "action":                { "$value": "{navy.900}",       "$description": "Primary button background. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears." },
     "action-hover":          { "$value": "{navy.700}",       "$description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark." },
     "action-on-dark":        { "$value": "{gold.500}",       "$description": "Value of color-action inside a dark surface: the gold button. Not referenced by components. Text on it: color-text-on-accent, 6.11:1." },
-    "action-hover-on-dark":  { "$value": "{gold.500}",       "$description": "Value of color-action-hover inside a dark surface. The gold button keeps its colour on hover and lifts with a shadow instead. Not referenced by components." },
+    "action-hover-on-dark":  { "$value": "{sand.50}",        "$description": "Value of color-action-hover inside a dark surface: the gold button turns cream on hover. Not referenced by components. Text on it: color-text-on-accent, 10.01:1." },
+
+    "secondary":             { "$value": "{navy.100}",       "$description": "Secondary button fill. The same on every surface: it doesn't switch inside a dark surface, so its label stays navy. Border: color-border-highlight." },
+    "secondary-hover":       { "$value": "{navy.200}",       "$description": "Secondary button fill on hover and while pressed. The same on every surface." },
+    "text-on-secondary":     { "$value": "{navy.900}",       "$description": "Label of the secondary button, on color-secondary and color-secondary-hover. Always navy, on every surface: 9.32:1 and 6.61:1." },
 
     "accent":                { "$value": "{gold.500}",       "$description": "Brand gold fill: accent button background, secondary-link underline. Text on it: color-text-on-accent. Not a text colour on light backgrounds." },
 

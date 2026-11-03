@@ -19,6 +19,10 @@ export const DARK_SURFACE = {
 // Roles that must never appear on a dark surface: forms and status messages are light-only.
 export const LIGHT_ONLY = ['color-error', 'color-success', 'color-text-placeholder', 'color-border-input', 'color-border-strong'];
 
+// Roles that look the same on every surface: the secondary button keeps its light fill and navy label
+// inside a dark surface, so none of them may get a dark-surface value.
+export const SAME_ON_EVERY_SURFACE = ['color-secondary', 'color-secondary-hover', 'color-text-on-secondary'];
+
 // Roles with no contrast minimum (WCAG exempts pure decoration).
 export const DECORATIVE = ['color-border', 'color-border-highlight'];
 
@@ -43,6 +47,8 @@ export const PAIRS = [
   // Text on fills, on light and dark surfaces alike.
   ['color-text-on-action', ['color-action', 'color-action-hover'], 4.5],
   ['color-text-on-accent', ['color-accent', 'color-action-on-dark', 'color-action-hover-on-dark'], 4.5],
+  // The secondary button: the same on light and dark surfaces (SAME_ON_EVERY_SURFACE).
+  ['color-text-on-secondary', ['color-secondary', 'color-secondary-hover'], 4.5],
 ];
 
 export const DARK_BACKGROUNDS = DARK;

@@ -154,7 +154,7 @@ const PLAN = {
       "scopes": [
         "STROKE_COLOR"
       ],
-      "description": "The light Highlight’s left rule. Decorative (decision 31): 2.06:1 on color-surface-highlight."
+      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
     },
     {
       "name": "color/focus",
@@ -173,17 +173,46 @@ const PLAN = {
         "FRAME_FILL",
         "SHAPE_FILL"
       ],
-      "description": "Primary button background, including case-study buttons such as View prototype. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
+      "description": "Primary button background. On a dark surface it becomes color-action-on-dark (gold), so the button never disappears."
     },
     {
       "name": "color/action-hover",
       "light": "navy/700",
-      "dark": "gold/500",
+      "dark": "sand/50",
       "scopes": [
         "FRAME_FILL",
         "SHAPE_FILL"
       ],
       "description": "Primary button hover. On a dark surface it becomes color-action-hover-on-dark."
+    },
+    {
+      "name": "color/secondary",
+      "light": "navy/100",
+      "dark": "navy/100",
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "description": "Secondary button fill. The same on every surface: it doesn’t switch inside a dark surface, so its label stays navy. Border: color-border-highlight."
+    },
+    {
+      "name": "color/secondary-hover",
+      "light": "navy/200",
+      "dark": "navy/200",
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "description": "Secondary button fill on hover and while pressed. The same on every surface."
+    },
+    {
+      "name": "color/text-on-secondary",
+      "light": "navy/900",
+      "dark": "navy/900",
+      "scopes": [
+        "TEXT_FILL"
+      ],
+      "description": "Label of the secondary button, on color-secondary and color-secondary-hover. Always navy, on every surface: 9.32:1 and 6.61:1."
     },
     {
       "name": "color/accent",
@@ -215,7 +244,157 @@ const PLAN = {
       ],
       "description": "The only success colour. 6.27:1 on background, 7.06 on surface, 5.79 on surface-subtle. Light surfaces only: 1.60:1 on color-surface-dark."
     }
-  ]
+  ],
+  "page": {
+    "subtitle": "Named by role, not by hue.",
+    "surfaceSubtitle": "Surfaces switch the text roles automatically, as in Material 3.",
+    "surfaceText": "Put dark content inside .fds-surface-dark and every base role inside it (--fds-color-text, -text-muted, -text-emphasis, -border, -border-rule, -focus, -action) takes its dark-surface value. Components only ever use the base roles; the -on-dark tokens are values, never referenced directly.",
+    "groups": [
+      {
+        "name": "Text",
+        "purpose": "What text is set in: one main colour, a muted one for secondary text, and the colours for text on fills.",
+        "roles": [
+          "color/text",
+          "color/text-muted",
+          "color/text-placeholder",
+          "color/text-emphasis",
+          "color/text-on-action",
+          "color/text-on-accent",
+          "color/text-on-secondary"
+        ]
+      },
+      {
+        "name": "Surfaces",
+        "purpose": "What content sits on: the page, cards, alternate sections, the light Highlight and every dark area.",
+        "roles": [
+          "color/background",
+          "color/surface",
+          "color/surface-subtle",
+          "color/surface-highlight",
+          "color/surface-dark"
+        ]
+      },
+      {
+        "name": "Lines and focus",
+        "purpose": "Dividers, input underlines, decorative rules and the keyboard focus ring.",
+        "roles": [
+          "color/border",
+          "color/border-input",
+          "color/border-strong",
+          "color/border-rule",
+          "color/border-highlight",
+          "color/focus"
+        ]
+      },
+      {
+        "name": "Actions",
+        "purpose": "Button fills, their hover, and the gold accent fill.",
+        "roles": [
+          "color/action",
+          "color/action-hover",
+          "color/secondary",
+          "color/secondary-hover",
+          "color/accent"
+        ]
+      },
+      {
+        "name": "Status",
+        "purpose": "The only error and success colours, on light surfaces only.",
+        "roles": [
+          "color/error",
+          "color/success"
+        ]
+      }
+    ],
+    "paletteSubtitle": "Raw palette. Components and agents never use these directly: use the semantic color-* tokens.",
+    "palette": [
+      {
+        "name": "navy/100",
+        "hex": "#E4EAF4",
+        "description": "Pull-quote background."
+      },
+      {
+        "name": "navy/200",
+        "hex": "#B3C8E6",
+        "description": "Secondary button hover."
+      },
+      {
+        "name": "navy/300",
+        "hex": "#7FA8D4",
+        "description": "Light Highlight rule; the secondary button border."
+      },
+      {
+        "name": "navy/700",
+        "hex": "#254D8F",
+        "description": "Hover on navy fills."
+      },
+      {
+        "name": "navy/800",
+        "hex": "#324E7A",
+        "description": "Decorative dividers on dark surfaces (white at 10% on navy-900, flattened)."
+      },
+      {
+        "name": "navy/900",
+        "hex": "#1B3A6B",
+        "description": "Brand navy. The one text colour (decision 20)."
+      },
+      {
+        "name": "gold/500",
+        "hex": "#E8B84B",
+        "description": "Brand gold. Fills and accents on light backgrounds; text only on navy."
+      },
+      {
+        "name": "gold/800",
+        "hex": "#9A7420",
+        "description": "Italic headings on light backgrounds (decision 18)."
+      },
+      {
+        "name": "sand/50",
+        "hex": "#F5F1EB",
+        "description": "Page background."
+      },
+      {
+        "name": "sand/100",
+        "hex": "#EDE8E0",
+        "description": ""
+      },
+      {
+        "name": "sand/300",
+        "hex": "#D9D1C5",
+        "description": ""
+      },
+      {
+        "name": "sand/400",
+        "hex": "#C8C0B4",
+        "description": "Muted text on dark surfaces."
+      },
+      {
+        "name": "stone/400",
+        "hex": "#8C8274",
+        "description": "Input underlines."
+      },
+      {
+        "name": "stone/600",
+        "hex": "#6B6359",
+        "description": "Muted text."
+      },
+      {
+        "name": "white",
+        "hex": "#FFFFFF",
+        "description": ""
+      },
+      {
+        "name": "red/700",
+        "hex": "#B32228",
+        "description": "Error. oklch(50% 0.18 25)."
+      },
+      {
+        "name": "green/700",
+        "hex": "#176700",
+        "description": "Success. oklch(45% 0.15 140)."
+      }
+    ]
+  }
 };
 
 const collections = await figma.variables.getLocalVariableCollectionsAsync();
@@ -270,6 +449,210 @@ for (const c of await figma.variables.getLocalVariableCollectionsAsync()) {
   if (c.variableIds.length === 0) { removedEmptyCollections.push(c.name); c.remove(); }
 }
 
+// ── The Colors page: rebuilt on every run ──
+
+// ── Documentation page layout (decision 58), shared by every page script ──
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button"]},{"name":"Advanced","pages":[]}];
+const DOC_SEPARATOR = "---";
+const docVars = await figma.variables.getLocalVariablesAsync();
+const docVar = (name) => {
+  const found = docVars.find((x) => x.name === name);
+  if (!found) throw new Error('Variable not found: ' + name);
+  return found;
+};
+const docPaint = (name) => figma.variables.setBoundVariableForPaint({ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }, 'color', docVar(name));
+const docStyles = await figma.getLocalTextStylesAsync();
+const docStyle = (name) => {
+  const found = docStyles.find((s) => s.name === name);
+  if (!found) throw new Error('Text style not found: ' + name + ' (run typography-collection.js first)');
+  return found;
+};
+for (const s of docStyles) await figma.loadFontAsync(s.fontName);
+const docCollections = await figma.variables.getLocalVariableCollectionsAsync();
+const docModeOf = (collection, mode) => {
+  const c = docCollections.find((x) => x.name === collection);
+  return [c, c.modes.find((m) => m.name === mode).modeId];
+};
+
+// Puts the documentation pages first, group by group, with one separator page between two groups
+// that have pages. Existing separators are reused, missing ones created, extra empty ones removed.
+// Also removes the empty "Page 1" that every new Figma file starts with.
+function docOrder() {
+  const groups = DOC_GROUPS
+    .map((g) => g.pages.map((name) => figma.root.children.find((x) => x.name === name)).filter(Boolean))
+    .filter((pages) => pages.length);
+  const separators = figma.root.children.filter((x) => x.name === DOC_SEPARATOR);
+  while (separators.length < groups.length - 1) {
+    const p = figma.createPage();
+    p.name = DOC_SEPARATOR;
+    separators.push(p);
+  }
+  let i = 0;
+  const place = (p) => {
+    if (figma.root.children.indexOf(p) !== i) figma.root.insertChild(i, p);
+    i++;
+  };
+  groups.forEach((pages, g) => {
+    if (g > 0) place(separators[g - 1]);
+    pages.forEach(place);
+  });
+  for (const p of separators.slice(Math.max(groups.length - 1, 0))) {
+    if (p.children.length === 0 && p !== figma.currentPage) p.remove();
+  }
+  const blank = figma.root.children.find((x) => x.name === 'Page 1' && x.children.length === 0);
+  if (blank && blank !== figma.currentPage && figma.root.children.length > 1) blank.remove();
+}
+
+async function docPage(name) {
+  let page = figma.root.children.find((x) => x.name === name);
+  if (!page) { page = figma.createPage(); page.name = name; }
+  await figma.setCurrentPageAsync(page);
+  docOrder();
+  return page;
+}
+
+// Light or dark surface, desktop type sizes.
+function docSurface(frame, mode) {
+  const [cc, cid] = docModeOf('color', mode);
+  frame.setExplicitVariableModeForCollection(cc, cid);
+  const [tc, tid] = docModeOf('typography', 'Desktop');
+  frame.setExplicitVariableModeForCollection(tc, tid);
+  frame.fills = [docPaint(mode === 'Dark surface' ? 'color/surface-dark' : 'color/background')];
+}
+
+function docFrame(name, direction, props) {
+  const f = figma.createAutoLayout(direction, Object.assign({ name }, props || {}));
+  f.fills = [];
+  f.clipsContent = false;
+  return f;
+}
+
+// Turns off "Clip content" on a node and everything in it, so shadows, focus rings and components
+// are never cut off. Instances follow their main component, so they're left as they are.
+function docUnclip(node) {
+  if (node.type === 'INSTANCE') return;
+  if ('clipsContent' in node) node.clipsContent = false;
+  if ('children' in node) for (const child of node.children) docUnclip(child);
+}
+
+// Grows a page frame until every shadow inside it fits, so no shadow reaches past its edges. Run it
+// once the page is built: it measures each shadow as Figma draws it.
+function docFitShadows(root) {
+  const box = root.absoluteBoundingBox;
+  let left = 0, top = 0, right = 0, bottom = 0;
+  const shadowed = root.findAll((n) => 'effects' in n && n.effects.some((e) => e.type === 'DROP_SHADOW' && e.visible !== false));
+  for (const node of shadowed) {
+    const r = node.absoluteRenderBounds;
+    if (!r) continue;
+    left = Math.max(left, box.x - r.x);
+    top = Math.max(top, box.y - r.y);
+    right = Math.max(right, r.x + r.width - (box.x + box.width));
+    bottom = Math.max(bottom, r.y + r.height - (box.y + box.height));
+  }
+  root.paddingLeft += Math.ceil(left);
+  root.paddingTop += Math.ceil(top);
+  root.paddingBottom += Math.ceil(bottom);
+  root.resize(root.width + Math.ceil(left) + Math.ceil(right), root.height);
+  return { left, top, right, bottom };
+}
+
+async function docText(chars, style, color, width) {
+  const t = figma.createText();
+  await t.setTextStyleIdAsync(docStyle(style).id);
+  t.characters = String(chars);
+  t.fills = [docPaint(color)];
+  if (width) { t.resize(width, t.height); t.textAutoResize = 'HEIGHT'; }
+  return t;
+}
+
+// The page frame: everything on a page sits in it, on the light surface.
+function docRoot(page, width) {
+  const root = docFrame(page.name, 'VERTICAL', { itemSpacing: 96, paddingTop: 80, paddingBottom: 80, paddingLeft: 80, paddingRight: 80 });
+  page.appendChild(root);
+  root.counterAxisSizingMode = 'FIXED';
+  root.resize(width, root.height);
+  docSurface(root, 'Light surface');
+  return root;
+}
+
+// A section: a title (heading, or subheading for a smaller section) and a one-sentence subtitle,
+// then its content. Returns the section frame; append the content to it.
+async function docSection(parent, title, subtitle, level) {
+  const section = docFrame(title, 'VERTICAL', { itemSpacing: 32 });
+  parent.appendChild(section);
+  const head = docFrame('title', 'VERTICAL', { itemSpacing: 12 });
+  section.appendChild(head);
+  head.appendChild(await docText(title, level || 'heading', 'color/text'));
+  head.appendChild(await docText(subtitle, 'lead', 'color/text-muted', 880));
+  return section;
+}
+
+{
+  const P = PLAN.page;
+  const page = await docPage('Colors');
+  for (const child of [...page.children]) child.remove();
+  const root = docRoot(page, 1440);
+  await docSection(root, 'Colors', P.subtitle);
+
+  const switching = await docSection(root, 'Surfaces switch the roles', P.surfaceSubtitle, 'subheading');
+  switching.appendChild(await docText(P.surfaceText, 'body', 'color/text', 880));
+
+  const roleBy = Object.fromEntries(PLAN.roles.map((r) => [r.name, r]));
+  for (const group of P.groups) {
+    const section = await docSection(root, group.name, group.purpose, 'subheading');
+    const row = docFrame('surfaces', 'HORIZONTAL', { itemSpacing: 32 });
+    section.appendChild(row);
+    for (const mode of [PLAN.lightMode, PLAN.darkMode]) {
+      const surface = docFrame(mode, 'VERTICAL', { itemSpacing: 20, paddingTop: 32, paddingBottom: 32, paddingLeft: 32, paddingRight: 32 });
+      row.appendChild(surface);
+      docSurface(surface, mode);
+      surface.counterAxisSizingMode = 'FIXED';
+      surface.resize(624, surface.height);
+      surface.appendChild(await docText(mode, 'overline', 'color/text-muted'));
+      for (const name of group.roles) {
+        const r = roleBy[name];
+        const line = docFrame(name, 'HORIZONTAL', { itemSpacing: 20 });
+        surface.appendChild(line);
+        const chip = figma.createFrame();
+        chip.name = 'swatch'; chip.resize(56, 56);
+        chip.fills = [docPaint(name)];
+        chip.strokes = [docPaint('color/border')]; chip.strokeWeight = 1;
+        ['topLeftRadius', 'topRightRadius', 'bottomLeftRadius', 'bottomRightRadius'].forEach((f) => chip.setBoundVariable(f, docVar('radius/md')));
+        line.appendChild(chip);
+        const info = docFrame('info', 'VERTICAL', { itemSpacing: 4 });
+        line.appendChild(info);
+        info.appendChild(await docText(name, 'body', 'color/text', 484));
+        info.appendChild(await docText('→ ' + (mode === PLAN.lightMode ? r.light : r.dark), 'small', 'color/text-muted', 484));
+        info.appendChild(await docText(r.description, 'small', 'color/text-muted', 484));
+      }
+    }
+  }
+
+  const paletteSection = await docSection(root, 'Palette', P.paletteSubtitle, 'subheading');
+  const grid = docFrame('palette', 'HORIZONTAL', { itemSpacing: 24, counterAxisSpacing: 32 });
+  paletteSection.appendChild(grid);
+  grid.layoutWrap = 'WRAP';
+  grid.primaryAxisSizingMode = 'FIXED';
+  grid.resize(1280, grid.height);
+  const prims = (await figma.variables.getLocalVariablesAsync('COLOR')).filter((x) => x.variableCollectionId === primitives.id);
+  for (const item of P.palette) {
+    const card = docFrame(item.name, 'VERTICAL', { itemSpacing: 6 });
+    grid.appendChild(card);
+    const chip = figma.createFrame();
+    chip.name = 'swatch'; chip.resize(232, 72);
+    const prim = prims.find((x) => x.name === item.name);
+    chip.fills = [figma.variables.setBoundVariableForPaint({ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }, 'color', prim)];
+    chip.strokes = [docPaint('color/border')]; chip.strokeWeight = 1;
+    ['topLeftRadius', 'topRightRadius', 'bottomLeftRadius', 'bottomRightRadius'].forEach((f) => chip.setBoundVariable(f, docVar('radius/md')));
+    card.appendChild(chip);
+    card.appendChild(await docText(item.name, 'body', 'color/text', 232));
+    card.appendChild(await docText(item.hex, 'small', 'color/text-muted', 232));
+    if (item.description) card.appendChild(await docText(item.description, 'small', 'color/text-muted', 232));
+  }
+  docUnclip(root);
+  docFitShadows(root);
+}
+
 return {
   collectionId: collection.id,
   modes: collection.modes.map((m) => m.name),
@@ -277,4 +660,5 @@ return {
   createdVariables: created,
   notInTokens: extra,
   removedEmptyCollections,
+  colorsPage: figma.root.children.find((p) => p.name === 'Colors').id,
 };

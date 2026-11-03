@@ -4,7 +4,18 @@
       "100": {
         "$value": "#E4EAF4",
         "$type": "color",
-        "$description": "Case-study pull-quote background.",
+        "$description": "Pull-quote background.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "NONE"
+          ],
+          "com.figma.hiddenFromPublishing": true
+        }
+      },
+      "200": {
+        "$value": "#B3C8E6",
+        "$type": "color",
+        "$description": "Secondary button hover.",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -15,7 +26,7 @@
       "300": {
         "$value": "#7FA8D4",
         "$type": "color",
-        "$description": "Light Highlight rule.",
+        "$description": "Light Highlight rule; the secondary button border.",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -163,7 +174,7 @@
       "700": {
         "$value": "#B32228",
         "$type": "color",
-        "$description": "Error. oklch(50% 0.18 25), from the portfolio’s contact form.",
+        "$description": "Error. oklch(50% 0.18 25).",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -176,7 +187,7 @@
       "700": {
         "$value": "#176700",
         "$type": "color",
-        "$description": "Success. oklch(45% 0.15 140), from the portfolio’s CV modal.",
+        "$description": "Success. oklch(45% 0.15 140).",
         "$extensions": {
           "com.figma.scopes": [
             "NONE"
@@ -231,7 +242,7 @@
       "5": {
         "$value": "20px",
         "$type": "dimension",
-        "$description": "Paragraph spacing in case studies, grid gaps.",
+        "$description": "Paragraph spacing in long-form text, grid gaps.",
         "$extensions": {
           "com.figma.scopes": [
             "GAP"
@@ -291,7 +302,7 @@
       "16": {
         "$value": "64px",
         "$type": "dimension",
-        "$description": "Large blocks, e.g. the next-project block.",
+        "$description": "Large blocks, e.g. a closing call-to-action block.",
         "$extensions": {
           "com.figma.scopes": [
             "GAP"
@@ -325,7 +336,7 @@
       "sm": {
         "$value": "4px",
         "$type": "dimension",
-        "$description": "Small inline blocks: pull quotes, metrics, pain points. Never buttons.",
+        "$description": "Small inline blocks: pull quotes, metrics, callouts. Never buttons.",
         "$extensions": {
           "com.figma.scopes": [
             "CORNER_RADIUS"
@@ -437,6 +448,34 @@
             "NONE"
           ],
           "com.figma.hiddenFromPublishing": true
+        }
+      }
+    }
+  },
+  "border-width": {
+    "border-width": {
+      "control": {
+        "$value": "1.5px",
+        "$type": "dimension",
+        "$description": "Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "STROKE_FLOAT"
+          ]
+        }
+      }
+    }
+  },
+  "opacity": {
+    "opacity": {
+      "disabled": {
+        "$value": 0.6,
+        "$type": "opacity",
+        "$description": "A disabled control, with aria-disabled=“true” so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "OPACITY"
+          ]
         }
       }
     }

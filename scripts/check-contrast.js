@@ -2,7 +2,7 @@
 // Values come from the same Style Dictionary build that writes tokens.css.
 import StyleDictionary from 'style-dictionary';
 import config from '../style-dictionary.config.js';
-import { DARK_SURFACE, LIGHT_ONLY, DECORATIVE, PAIRS, DARK_BACKGROUNDS } from './surfaces.js';
+import { DARK_SURFACE, LIGHT_ONLY, SAME_ON_EVERY_SURFACE, DECORATIVE, PAIRS, DARK_BACKGROUNDS } from './surfaces.js';
 
 const { allTokens } = await new StyleDictionary(config, { verbosity: 'silent' }).getPlatformTokens('css');
 const color = Object.fromEntries(
@@ -34,6 +34,10 @@ for (const [role, token] of Object.entries(DARK_SURFACE)) {
 }
 for (const role of LIGHT_ONLY) {
   if (DARK_SURFACE[role]) failures.push(`${role} is light-only (forms and status messages) but has a dark-surface value`);
+}
+for (const role of SAME_ON_EVERY_SURFACE) {
+  value(role);
+  if (DARK_SURFACE[role]) failures.push(`${role} must look the same on every surface but has a dark-surface value`);
 }
 
 for (const [fg, backgrounds, min] of PAIRS) {
