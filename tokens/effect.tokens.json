@@ -21,6 +21,7 @@
   },
   "opacity": {
     "$type": "number",
+    "tint": { "$value": 0.07, "$description": "A veil of light over a dark surface: the secondary card's fill (decision 66). 7%, so the card reads without changing the contrast of the text on it." },
     "disabled": { "$value": 0.6, "$description": "A disabled control, with aria-disabled=\"true\" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3)." }
   },
   "duration": {

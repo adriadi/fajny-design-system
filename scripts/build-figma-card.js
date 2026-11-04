@@ -1,7 +1,9 @@
 // Builds tokens/figma/card-component.js: a Figma plugin script, run through the Figma MCP use_figma
 // tool, that writes the Card component set and the Card page (decisions 58, 62). The Card with an
 // image nests the Image component (run image-component.js first), so the page belongs to the
-// Advanced group.
+// Advanced group. The secondary card (Style=Dark) is for dark surfaces: a veil of light, the fill in
+// color/surface at opacity/tint, over a backdrop in color/surface-dark that its variant carries, since
+// the veil can't be seen on a light page. Its gradient prototype (B) is shown in Variants for comparison.
 //
 // Image (No, Yes) × Link (Yes, No) × Style (Default, Dark) × State. A linked card has Default, Hover,
 // Focus and Active; a card that isn't a link has Default only. Overline, Title, Text and Meta are text
@@ -14,6 +16,7 @@
 // surface, as in code. The lift is space-1 of padding that moves from the top to the bottom.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { DOC_RUNTIME } from './figma-doc-layout.js';
+import { ICONS } from './card-icons.js';
 
 const OUT_DIR = 'tokens/figma/';
 const OUT_FILE = `${OUT_DIR}card-component.js`;
@@ -23,7 +26,9 @@ const SHARED = {
   width: 360, // the default width in Figma; in code a card is as wide as its grid cell
   lift: 'space/1', padding: 'space/6', bodyGap: 'space/5', contentGap: 'space/2', headGap: 'space/3', footerGap: 'space/2',
   radius: 'radius/lg', strokeWeight: 'border-width/default',
-  fill: { Default: 'color/surface', Dark: 'color/surface-dark' },
+  fill: { Default: 'color/surface', Dark: 'color/surface' }, veil: 'opacity/tint', backdrop: 'color/surface-dark', sheenPeak: 1.5,
+  accent: 'color/accent', onAccent: 'color/text-on-accent',
+  badge: { size: 'space/10', right: 'space/4', overlap: 'space/4', icon: 'space/5' },
   mode: { Default: 'Light surface', Dark: 'Dark surface' },
   border: 'color/border', title: 'color/text', muted: 'color/text-muted', moreHover: 'color/text',
   focusColor: 'color/focus', focusWidth: 'focus/ring-width', focusOffset: 'focus/ring-offset',
@@ -36,7 +41,7 @@ const SHARED = {
 // The colour roles here must be exactly the ones card.css uses.
 const css = readFileSync('components/card.css', 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
 const inCss = new Set([...css.matchAll(/var\(--fds-color-([\w-]+)\)/g)].map((m) => `color/${m[1]}`));
-const inPlan = new Set([...Object.values(SHARED.fill), SHARED.border, SHARED.title, SHARED.muted, SHARED.moreHover, SHARED.focusColor]);
+const inPlan = new Set([...Object.values(SHARED.fill), SHARED.border, SHARED.title, SHARED.muted, SHARED.moreHover, SHARED.focusColor, SHARED.accent, SHARED.onAccent]);
 const drift = [
   ...[...inCss].filter((r) => !inPlan.has(r)).map((r) => `${r} is in card.css but not in the Figma card`),
   ...[...inPlan].filter((r) => !inCss.has(r)).map((r) => `${r} is in the Figma card but not in card.css`),
@@ -53,6 +58,8 @@ if (drift.length) {
   process.exit(1);
 }
 
+const figmaSvg = (svg) => svg.replace(/ data-icon="\w+"| aria-hidden="true"| focusable="false"/g, '').replace('currentColor', 'black');
+
 const variants = [];
 for (const style of ['Default', 'Dark']) {
   for (const image of ['No', 'Yes']) {
@@ -63,7 +70,7 @@ for (const style of ['Default', 'Dark']) {
 }
 
 const plan = {
-  variants, shared: SHARED, page: 'Card', imagePage: 'Image', purpose, setSubtitle, variantsSubtitle,
+  variants, shared: SHARED, badgeIcon: figmaSvg(ICONS.arrow), page: 'Card', imagePage: 'Image', purpose, setSubtitle, variantsSubtitle,
   surfaces: [['Page background', 'Light surface', null], ['Subtle surface', 'Light surface', 'color/surface-subtle'], ['Dark surface', 'Dark surface', null]],
 };
 
@@ -113,7 +120,8 @@ async function fill(comp, v) {
   comp.primaryAxisSizingMode = 'AUTO';
   comp.counterAxisSizingMode = 'FIXED';
   comp.resize(S.width, comp.height);
-  comp.fills = [];
+  // The secondary card carries the dark surface it belongs on, so its veil and its text can be seen.
+  comp.fills = v.style === 'Dark' ? [docPaint(S.backdrop)] : [];
   comp.clipsContent = false;
   comp.itemSpacing = 0;
   for (const f of ['paddingLeft', 'paddingRight']) { comp.setBoundVariable(f, null); comp[f] = 0; }
@@ -126,6 +134,8 @@ async function fill(comp, v) {
   card.setExplicitVariableModeForCollection(cc, cid);
   const [tc, tid] = docModeOf('typography', 'Desktop');
   card.setExplicitVariableModeForCollection(tc, tid);
+  // The default card is white; the secondary card is the same white at opacity/tint, a veil (its
+  // paint is set once the other paints are resolved, below).
   card.fills = [docPaint(S.fill[v.style])];
   card.strokes = [docPaint(S.border)];
   card.strokeAlign = 'INSIDE';
@@ -172,6 +182,28 @@ async function fill(comp, v) {
     footer.appendChild(more);
   }
 
+  // The hover badge (decision 65): a gold circle with an arrow, half on the image and half on the body,
+  // on a linked card with an image, while it is hovered, focused or pressed.
+  if (v.image === 'Yes' && v.link === 'Yes' && v.state !== 'Default') {
+    const picture = card.findChild((n) => n.name === 'image');
+    const badge = docFrame('badge', 'HORIZONTAL', { primaryAxisAlignItems: 'CENTER', counterAxisAlignItems: 'CENTER' });
+    card.appendChild(badge);
+    badge.layoutPositioning = 'ABSOLUTE';
+    badge.primaryAxisSizingMode = 'FIXED'; badge.counterAxisSizingMode = 'FIXED';
+    bind(badge, 'width', S.badge.size); bind(badge, 'height', S.badge.size);
+    RADII.forEach((f) => bind(badge, f, 'radius/pill'));
+    badge.fills = [docPaint(S.accent)];
+    const arrow = figma.createNodeFromSvg(PLAN.badgeIcon);
+    arrow.name = 'arrow';
+    arrow.fills = [];
+    arrow.rescale(value(S.badge.icon) / arrow.width);
+    for (const vec of arrow.findAll((n) => n.type === 'VECTOR')) vec.strokes = [docPaint(S.onAccent)];
+    badge.appendChild(arrow);
+    const size = value(S.badge.size);
+    badge.x = card.width - value(S.badge.right) - size;
+    badge.y = picture.height + value(S.badge.overlap) - size;
+  }
+
   if (v.state === 'Focus') {
     // The system focus ring, outside the card, in the colour mode of the frame the card is placed in.
     const offset = value(S.focusOffset);
@@ -207,7 +239,7 @@ if (!set) {
   for (const comp of fresh) set.appendChild(comp);
 }
 ids.created = fresh.map((c) => c.id);
-set.description = 'Text only or with an Image on top; default (always white) or dark; linked (one link, lifts by space-1 with its shadow on hover) or not (no hover). Decision 62. Bound to the color, spacing, radius, focus and border-width variables, the shadow effect styles and the text styles. Same as components/card.css.';
+set.description = 'Text only or with an Image on top; default (always white) or secondary (a veil of light for dark surfaces); linked (one link, lifts by space-1 with its shadow on hover, and a gold badge on an image card) or not (no hover). Decisions 62, 65, 66. Bound to the color, spacing, radius, focus and border-width variables, the shadow effect styles and the text styles. Same as components/card.css.';
 
 // Text and boolean properties: found by name, created once, then every variant's layers point to them.
 const propKey = (name, type, val) => Object.keys(set.componentPropertyDefinitions).find((k) => k.split('#')[0] === name)
@@ -283,6 +315,16 @@ async function resolvePaints(node) {
 }
 await resolvePaints(holder);
 
+// The secondary card's veil: color/surface (white) at opacity/tint. Set last, and not bound to the
+// colour variable: a bound paint loses its opacity in instances. The colour is read from color/surface
+// as it is now; the opacity from opacity/tint.
+for (const comp of set.children) {
+  if (!comp.name.includes('Style=Dark')) continue;
+  const card = comp.findChild((n) => n.name === 'card');
+  const { r, g, b } = docVar(S.fill.Dark).resolveForConsumer(card).value;
+  card.fills = [{ type: 'SOLID', color: { r, g, b }, opacity: value(S.veil) / 100 }];
+}
+
 // ── The page around the set: rebuilt on every run ──
 for (const child of [...componentPage.children]) if (child !== holder) child.remove();
 const root = docRoot(componentPage, 1440);
@@ -293,21 +335,52 @@ slot.name = 'Component set placeholder'; slot.fills = [];
 slot.resize(holder.width, holder.height);
 setSection.appendChild(slot);
 
-// Variants: every kind of card at rest, on three surfaces.
+// Variants: every kind of card at rest, on three surfaces; on the dark surface also the two
+// treatments of the secondary card, side by side (A, the flat veil, is the one in the set).
 const variantsSection = await docSection(root, 'Variants', PLAN.variantsSubtitle, 'subheading');
 const shown = [['No', 'Yes'], ['Yes', 'Yes'], ['No', 'No'], ['Yes', 'No']];
+const linkedStates = [['No', 'Hover'], ['No', 'Focus'], ['Yes', 'Hover'], ['Yes', 'Focus']];
+const instanceOf = (image, link, style, state) =>
+  set.findChild((n) => n.name === variantName({ image, link, style, state })).createInstance();
+
+// Prototype B: the same veil, strongest at the top left and fading to nothing at the bottom right.
+// The peak is sheenPeak times the flat veil. The stops take the colour of color/surface as it is now;
+// they aren't bound, because a bound stop ignores its own alpha.
+function sheen(instance) {
+  const card = instance.findOne((n) => n.name === 'card');
+  const surface = docVar(S.fill.Dark);
+  const { r, g, b } = surface.resolveForConsumer(card).value;
+  const peak = value(S.veil) / 100 * S.sheenPeak;
+  card.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[0.5, 0.5, 0], [-0.5, 0.5, 0.5]],
+    gradientStops: [
+      { position: 0, color: { r, g, b, a: peak } },
+      { position: 1, color: { r, g, b, a: 0 } },
+    ] }];
+}
+
+const treatments = [];
 for (const [name, mode, fillRole] of PLAN.surfaces) {
   const frame = docFrame(name, 'VERTICAL', { itemSpacing: 32, paddingTop: 40, paddingBottom: 40, paddingLeft: 40, paddingRight: 40 });
   variantsSection.appendChild(frame);
   docSurface(frame, mode);
   if (fillRole) frame.fills = [docPaint(fillRole)];
   frame.appendChild(await docText(name, 'overline', 'color/text-muted'));
-  for (const style of ['Default', 'Dark']) {
-    const line = docFrame(style, 'HORIZONTAL', { itemSpacing: 24, counterAxisAlignItems: 'MIN' });
+  const rows = [
+    ['Default card: linked, linked with an image, not linked, not linked with an image', 'Default', null, shown.map(([i, l]) => [i, l, 'Default'])],
+    ['Linked card, hovered and focused (the gold badge shows on an image card)', 'Default', null, linkedStates.map(([i, st]) => [i, 'Yes', st])],
+  ];
+  if (mode === 'Dark surface') {
+    rows.push(['Secondary card, prototype A: a flat veil of light over the surface (the one in the component set)', 'Dark', 'A', shown.map(([i, l]) => [i, l, 'Default'])]);
+    rows.push(['Secondary card, prototype B: a diagonal sheen, strongest at the top left (for comparison)', 'Dark', 'B', shown.map(([i, l]) => [i, l, 'Default'])]);
+  }
+  for (const [title, style, treatment, cards] of rows) {
+    frame.appendChild(await docText(title, 'small', 'color/text-muted'));
+    const line = docFrame(style + ' ' + (treatment || ''), 'HORIZONTAL', { itemSpacing: 24, counterAxisAlignItems: 'MIN' });
     frame.appendChild(line);
-    for (const [image, link] of shown) {
-      const comp = set.findChild((n) => n.name === variantName({ image, link, style, state: 'Default' }));
-      line.appendChild(comp.createInstance());
+    for (const [image, link, state] of cards) {
+      const instance = instanceOf(image, link, style, state);
+      line.appendChild(instance);
+      if (treatment === 'B') { sheen(instance); treatments.push(instance.id); }
     }
   }
 }
@@ -321,7 +394,7 @@ holder.y = slot.absoluteBoundingBox.y;
 docUnclip(holder);
 
 return { componentSetId: set.id, variants: set.children.length, updated: ids.updated.length, created: ids.created.length,
-  variantIds: set.children.map((c) => c.id).sort(), properties: Object.keys(set.componentPropertyDefinitions), page: componentPage.id,
+  variantIds: set.children.map((c) => c.id).sort(), sheenInstances: treatments.length, properties: Object.keys(set.componentPropertyDefinitions), page: componentPage.id,
   order: figma.root.children.map((p) => p.name) };
 `;
 

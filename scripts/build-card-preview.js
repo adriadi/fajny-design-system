@@ -8,17 +8,24 @@
 // data-preview attributes. The reduced-motion rules of card.css are copied under a class the switch
 // sets, so reduced motion can be tried without changing the computer's setting.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { ICONS } from './card-icons.js';
 
 const OUT = 'docs/card-preview.html';
+const doc = readFileSync('docs/card.md', 'utf8');
+if (!doc.includes(ICONS.arrow)) {
+  console.error('Card preview build failed:\n  ✗ docs/card.md does not show the badge arrow exactly as scripts/card-icons.js draws it');
+  process.exit(1);
+}
 const tokens = readFileSync('tokens/css/tokens.css', 'utf8').replace(/^\/\*\*[\s\S]*?\*\/\s*/, '');
 const image = readFileSync('components/image.css', 'utf8');
 const card = readFileSync('components/card.css', 'utf8');
 const button = readFileSync('components/button.css', 'utf8');
 
 const plain = card.replace(/\/\*[\s\S]*?\*\//g, '');
-const reducedBlock = plain.match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/)?.[1];
-if (!reducedBlock) {
-  console.error('Card preview build failed:\n  ✗ components/card.css has no prefers-reduced-motion block');
+const reducedOf = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '').match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/)?.[1];
+const reducedBlock = [reducedOf(card), reducedOf(image)].join('\n');
+if (!reducedOf(card) || !reducedOf(image)) {
+  console.error('Card preview build failed:\n  ✗ components/card.css and components/image.css each need a prefers-reduced-motion block');
   process.exit(1);
 }
 const force = (selector) => selector
@@ -37,7 +44,7 @@ const PICTURE = 'data:image/svg+xml,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000"><rect width="1600" height="1000" fill="#E4EAF4"/>'
   + '<rect x="420" y="180" width="760" height="520" rx="24" fill="#FFFFFF"/><rect x="480" y="250" width="320" height="28" rx="14" fill="#B3C8E6"/>'
   + '<rect x="480" y="310" width="560" height="16" rx="8" fill="#D9D1C5"/><rect x="480" y="345" width="480" height="16" rx="8" fill="#D9D1C5"/>'
-  + '<rect x="480" y="420" width="640" height="220" rx="16" fill="#F5F1EB"/><circle cx="1240" cy="760" r="120" fill="#E8B84B"/></svg>');
+  + '<rect x="480" y="420" width="640" height="220" rx="16" fill="#F5F1EB"/><circle cx="1240" cy="760" r="120" fill="#B3C8E6"/></svg>');
 
 const CARDS = [
   { image: false, linked: true, overline: 'Design process', title: 'Branching without fear', text: 'What a year of Figma branches taught us about version control.', meta: '9 min read' },
@@ -47,8 +54,8 @@ const CARDS = [
 ];
 
 let n = 0;
-const cardHtml = (c, dark, state) => {
-  const classes = ['fds-card', c.image && 'fds-card--image', dark && 'fds-card--dark'].filter(Boolean).join(' ');
+const cardHtml = (c, dark, state, sheen) => {
+  const classes = ['fds-card', c.image && 'fds-card--image', dark && 'fds-card--dark', sheen && 'fds-card--sheen'].filter(Boolean).join(' ');
   const preview = state ? ` data-preview="${state}"` : '';
   const id = `c${++n}`;
   const title = c.linked ? `<a class="fds-card__link" href="#${id}">${c.title}</a>` : c.title;
@@ -56,7 +63,10 @@ const cardHtml = (c, dark, state) => {
     c.meta && `<p class="fds-card__meta">${c.meta}</p>`,
     c.linked && '<span class="fds-card__more" aria-hidden="true">Read more</span>',
   ].filter(Boolean).join('');
-  return `<article class="${classes}"${preview} id="${id}">${c.image ? `<img class="fds-image" src="${PICTURE}" alt="" width="1600" height="1000">` : ''}
+  const media = c.image
+    ? `<div class="fds-card__media"><img class="fds-image" src="${PICTURE}" alt="" width="1600" height="1000">${c.linked ? `<span class="fds-card__badge" aria-hidden="true">${ICONS.arrow}</span>` : ''}</div>`
+    : '';
+  return `<article class="${classes}"${preview} id="${id}">${media}
           <div class="fds-card__body">${c.overline ? `<p class="fds-card__overline">${c.overline}</p>` : ''}
             <h3 class="fds-card__title">${title}</h3>${c.text ? `<p class="fds-card__text">${c.text}</p>` : ''}
             ${c.action ? `<div class="fds-card__footer fds-card__action"><a class="fds-button fds-button--secondary" href="#${id}">${c.action}</a></div>` : footer ? `<div class="fds-card__footer">${footer}</div>` : ''}
@@ -65,25 +75,53 @@ const cardHtml = (c, dark, state) => {
 };
 
 const SURFACES = [['Page background', ''], ['Subtle surface', ' subtle'], ['Dark surface', ' fds-surface-dark']];
-const panel = ([name, cls]) => `
+
+// The secondary card (decision 66) in a row like the Experience section: a few non-linked cards and
+// one linked card with an image, flat veil (A) against the diagonal sheen (B).
+const EXPERIENCE = [
+  { image: false, linked: false, overline: '2022 – 2024', title: 'Senior product designer', text: 'Led the design of a booking flow for a team of twelve.' },
+  { image: false, linked: false, overline: '2019 – 2022', title: 'Product designer', text: 'Built the first design system and the research habit.' },
+  { image: false, linked: false, overline: '2016 – 2019', title: 'UX designer', text: 'Shipped mobile apps for three small teams.' },
+  CARDS[1],
+];
+const secondary = (title, sheen) => `
+    <p class="note">${title}</p>
+    <div class="grid">
+      ${EXPERIENCE.map((c) => cardHtml(c, true, '', sheen)).join('\n      ')}
+    </div>`;
+
+const panel = ([name, cls]) => {
+  const dark = cls.includes('dark');
+  return `
   <section class="panel${cls}">
     <h2>${name}</h2>
     <p class="note">Default card: linked, linked with an image, not linked, not linked with an image</p>
     <div class="grid">
       ${CARDS.map((c) => cardHtml(c, false)).join('\n      ')}
     </div>
-    <p class="note">Dark card</p>
+    <p class="note">Linked card states, shown at rest: hover, focus, then the same with an image (the gold badge shows)</p>
     <div class="grid">
-      ${CARDS.map((c) => cardHtml(c, true)).join('\n      ')}
-    </div>
-    <p class="note">Linked card states: hover, focus, active (shown at rest)</p>
+      ${cardHtml(CARDS[0], false, 'hover')}
+      ${cardHtml(CARDS[0], false, 'focus')}
+      ${cardHtml(CARDS[1], false, 'hover')}
+      ${cardHtml(CARDS[1], false, 'focus')}
+    </div>${dark ? secondary('Secondary card, prototype A: a flat veil of light over the surface', false) + secondary('Secondary card, prototype B: a diagonal sheen, strongest at the top left', true) : ''}
+  </section>`;
+};
+
+// The image loading state (decision 67): a frame with a picture that never arrives, so the shimmer keeps
+// running. With the switch on, or reduced motion on the computer, only the flat tint shows.
+const loadingPanel = `
+  <section class="panel">
+    <h2>Image loading</h2>
+    <p class="note">These pictures never arrive, so the frame keeps its shimmer: a light sweep across the tint. Throttle the network in the browser's developer tools to see it on a real picture. Reduced motion shows the flat tint.</p>
     <div class="grid">
-      ${['hover', 'focus', 'hover'].map((s) => cardHtml(CARDS[0], false, s)).join('\n      ')}
-      ${cardHtml(CARDS[1], true, 'hover')}
+      <img class="fds-image" src="missing-picture.jpg" alt="" width="1600" height="1000">
+      <article class="fds-card fds-card--image"><div class="fds-card__media"><img class="fds-image" src="missing-picture.jpg" alt="" width="1600" height="1000"></div><div class="fds-card__body"><h3 class="fds-card__title">A card whose picture is still loading</h3><p class="fds-card__text">The frame keeps its 16:10 shape.</p></div></article>
     </div>
   </section>`;
 
-const html = `<!-- @dsCard group="Components" height=900 width=1200 subtitle="Text and image cards, default and dark, linked and not, on three surfaces" -->
+const html = `<!-- @dsCard group="Components" height=900 width=1200 subtitle="Text and image cards, the secondary card on dark, linked and not, on three surfaces" -->
 <!-- Generated by scripts/build-card-preview.js from tokens/css/tokens.css and components/*.css: don't edit, rebuild. -->
 <!doctype html>
 <html lang="en">
@@ -114,8 +152,9 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
 </style>
 </head>
 <body>
-  <p class="bar"><label><input type="checkbox" id="reduce"> Reduce motion: hover a linked card; it shows its shadow but doesn't lift.</label></p>
+  <p class="bar"><label><input type="checkbox" id="reduce"> Reduce motion: the card doesn't lift, the badge doesn't fade or scale, and the image placeholder doesn't shimmer.</label></p>
 ${SURFACES.map(panel).join('\n')}
+${loadingPanel}
 <script>
 document.getElementById('reduce').addEventListener('change', (event) => {
   document.body.classList.toggle('preview-reduced-motion', event.target.checked);

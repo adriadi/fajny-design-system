@@ -5,6 +5,14 @@
 // Safe to run again.
 const PLAN = {
   "width": 320,
+  "placeholder": {
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"black\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4.5\" width=\"18\" height=\"15\" rx=\"2\"/><circle cx=\"8.5\" cy=\"9.5\" r=\"1.5\"/><path d=\"m21 16-5-5-8 8.5\"/></svg>",
+    "caption": "16:10 · 1600 × 1000",
+    "iconSize": "space/6",
+    "gap": "space/2",
+    "color": "color/text-muted",
+    "style": "small"
+  },
   "ratio": [
     16,
     10
@@ -13,24 +21,53 @@ const PLAN = {
   "page": "Image",
   "purpose": "A picture inside a component, always at one ratio, 16:10.",
   "componentSubtitle": "It's nested in the Card with an image, and in every later component that shows a picture (decision 63).",
-  "exportSubtitle": "Export every image for a component at 16:10, twice as wide as the widest it's shown, so it's sharp on 2× screens.",
+  "exportSubtitle": "Export every image at twice the width of the widest it's shown, so it's sharp on 2× screens, and a lighter file for phones. Two categories: a picture in a Card, and a picture in a case study.",
   "exportHeader": [
-    "Export",
+    "Category",
+    "Size",
+    "Ratio",
     "Pixels",
     "Use"
   ],
   "exportRows": [
     [
-      "Large",
+      "Card",
+      "Desktop",
+      "16:10",
       "1600 × 1000",
       "The src: sharp on a 2× screen up to 800px wide, wider than a card gets in a two-column grid"
     ],
     [
-      "Small",
+      "Card",
+      "Mobile",
+      "16:10",
       "800 × 500",
-      "In srcset, for 1× screens and phones"
+      "In srcset, for phones and 1× screens: a card is about 360px wide at 390px"
+    ],
+    [
+      "Case study",
+      "Desktop",
+      "16:9",
+      "2400 × 1350",
+      "The hero image: shown up to 1184px wide, so 2× is about 2400px"
+    ],
+    [
+      "Case study",
+      "Mobile",
+      "16:9",
+      "800 × 450",
+      "In srcset, for phones: a case study image is about 360px wide at 390px"
     ]
-  ]
+  ],
+  "caseStudy": {
+    "title": "Case study images",
+    "subtitle": "A case study's pictures are content, not a frame: screens, whiteboards, flows.",
+    "bullets": [
+      "the hero image is 16:9, exported at the Case study sizes above;",
+      "an inline picture keeps its own ratio: export it at its natural shape, 1800px wide on desktop (shown up to 860px) and 800px wide for phones, and set width and height to the file's size, so the page keeps its space;",
+      "it's shown at the full width of the column, with height: auto, never cropped."
+    ]
+  }
 };
 
 
@@ -178,8 +215,25 @@ if (!image) image = figma.createComponent();
 image.name = 'Image';
 image.description = 'A picture inside a component, at 16:10 (decision 63). Swap the placeholder fill for the picture. No radius of its own: the component it sits in rounds it. Export at the sizes on the Image page.';
 for (const child of [...image.children]) child.remove();
-image.layoutMode = 'NONE';
+// The placeholder: a picture icon over a caption with the ratio and the export size, centred.
+image.layoutMode = 'VERTICAL';
+image.primaryAxisSizingMode = 'FIXED'; image.counterAxisSizingMode = 'FIXED';
+image.primaryAxisAlignItems = 'CENTER'; image.counterAxisAlignItems = 'CENTER';
 image.resize(PLAN.width, PLAN.width * PLAN.ratio[1] / PLAN.ratio[0]);
+image.setBoundVariable('itemSpacing', docVar(PLAN.placeholder.gap));
+{
+  const icon = figma.createNodeFromSvg(PLAN.placeholder.icon);
+  icon.name = 'icon';
+  icon.fills = [];
+  const size = docVar(PLAN.placeholder.iconSize);
+  icon.rescale(size.valuesByMode[Object.keys(size.valuesByMode)[0]] / icon.width);
+  for (const v of icon.findAll((n) => n.type === 'VECTOR')) v.strokes = [docPaint(PLAN.placeholder.color)];
+  image.appendChild(icon);
+  const caption = await docText(PLAN.placeholder.caption, PLAN.placeholder.style, PLAN.placeholder.color);
+  caption.name = 'caption';
+  caption.textAutoResize = 'WIDTH_AND_HEIGHT';
+  image.appendChild(caption);
+}
 image.fills = [docPaint(PLAN.fill)];
 image.strokes = [];
 image.clipsContent = false;
@@ -217,9 +271,9 @@ componentSection.appendChild(slot);
 const sizes = await docSection(root, 'Export sizes', PLAN.exportSubtitle, 'subheading');
 const table = docFrame('sizes', 'VERTICAL', { itemSpacing: 16 });
 sizes.appendChild(table);
-const COLUMNS = [160, 200, 760];
+const COLUMNS = [140, 120, 100, 200, 640];
 const row = async (cells, header) => {
-  const line = docFrame(cells[0], 'HORIZONTAL', { itemSpacing: 24 });
+  const line = docFrame(cells[0] + ' ' + cells[1], 'HORIZONTAL', { itemSpacing: 24 });
   table.appendChild(line);
   for (let i = 0; i < cells.length; i++) {
     line.appendChild(await docText(cells[i], header ? 'overline' : i === 0 ? 'body' : 'small', header || i > 0 ? 'color/text-muted' : 'color/text', COLUMNS[i]));
@@ -227,6 +281,10 @@ const row = async (cells, header) => {
 };
 await row(PLAN.exportHeader, true);
 for (const cells of PLAN.exportRows) await row(cells, false);
+
+// Case study pictures keep their own ratio: shown as text, not as a frame.
+const study = await docSection(root, PLAN.caseStudy.title, PLAN.caseStudy.subtitle, 'subheading');
+for (const bullet of PLAN.caseStudy.bullets) study.appendChild(await docText('• ' + bullet, 'body', 'color/text', 880));
 
 docUnclip(root);
 docFitShadows(root);

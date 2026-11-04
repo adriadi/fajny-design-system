@@ -468,6 +468,16 @@
   },
   "opacity": {
     "opacity": {
+      "tint": {
+        "$value": 0.07,
+        "$type": "opacity",
+        "$description": "A veil of light over a dark surface: the secondary card’s fill (decision 66). 7%, so the card reads without changing the contrast of the text on it.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "OPACITY"
+          ]
+        }
+      },
       "disabled": {
         "$value": 0.6,
         "$type": "opacity",

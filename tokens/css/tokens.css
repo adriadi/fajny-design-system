@@ -47,6 +47,7 @@
   --fds-shadow-md: 0px 12px 40px 0px #1B3A6B1A; /** Hover on text cards; floating banners. navy-900 at 10%. */
   --fds-shadow-lg: 0px 20px 60px 0px #1B3A6B4D; /** Hover on image cards. navy-900 at 30%. */
   --fds-shadow-overlay: 0px 32px 80px 0px #1B3A6B4D; /** Modals: the one element above everything else. navy-900 at 30%. */
+  --fds-opacity-tint: 0.07; /** A veil of light over a dark surface: the secondary card's fill (decision 66). 7%, so the card reads without changing the contrast of the text on it. */
   --fds-opacity-disabled: 0.6; /** A disabled control, with aria-disabled="true" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3). */
   --fds-duration-fast: 0.2s; /** Colour, background and border changes; presses. */
   --fds-duration-base: 0.3s; /** Hover lifts with shadow, menus, toggles. */

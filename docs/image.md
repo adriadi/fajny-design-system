@@ -10,14 +10,16 @@ The image has no radius of its own. The component it sits in rounds it: the Card
 
 ## Export sizes
 
-Export every image for a component at 16:10, twice as wide as the widest it's shown, so it's sharp on 2× screens.
+Export every image at twice the width of the widest it's shown, so it's sharp on 2× screens, and a lighter file for phones. Two categories: a picture in a Card, and a picture in a case study.
 
-| Export | Pixels | Use |
-| --- | --- | --- |
-| Large | 1600 × 1000 | The `src`: sharp on a 2× screen up to 800px wide, wider than a card gets in a two-column grid |
-| Small | 800 × 500 | In `srcset`, for 1× screens and phones |
+| Category | Size | Ratio | Pixels | Use |
+| --- | --- | --- | --- | --- |
+| Card | Desktop | 16:10 | 1600 × 1000 | The `src`: sharp on a 2× screen up to 800px wide, wider than a card gets in a two-column grid |
+| Card | Mobile | 16:10 | 800 × 500 | In `srcset`, for phones and 1× screens: a card is about 360px wide at 390px |
+| Case study | Desktop | 16:9 | 2400 × 1350 | The hero image: shown up to 1184px wide, so 2× is about 2400px |
+| Case study | Mobile | 16:9 | 800 × 450 | In `srcset`, for phones: a case study image is about 360px wide at 390px |
 
-Save as JPEG or WebP (photos and screenshots) at a quality that keeps text in screenshots crisp; keep each file under about 300 KB.
+Save as JPEG or WebP (photos and screenshots) at a quality that keeps text in screenshots crisp; keep each Card file under about 300 KB, and each Case study file under about 800 KB.
 
 ```html
 <img class="fds-image"
@@ -30,6 +32,16 @@ Save as JPEG or WebP (photos and screenshots) at a quality that keeps text in sc
 
 Set `sizes` to the width the image is shown at in your layout.
 
+## Case study images
+
+A case study's pictures are content, not a frame: screens, whiteboards, flows. The three case studies of the portfolio show a mix of shapes (the audit behind this section): the three heroes are all 1687 × 949 (16:9), about half of the inline pictures are 16:9 too (1400 × 810 to 2220 × 1280), and the rest range from 1.9:1 to 1.25:1, with three portrait ones (0.85, 0.75 and 0.71). A fixed 16:10 crop would cut the portrait screens and the wide ones, so a case study picture is **not** cropped to the Image frame:
+
+- the hero image is 16:9, exported at the Case study sizes above;
+- an inline picture keeps its own ratio: export it at its natural shape, 1800px wide on desktop (shown up to 860px) and 800px wide for phones, and set `width` and `height` to the file's size, so the page keeps its space;
+- it's shown at the full width of the column, with `height: auto`, never cropped.
+
+The Image component and its 16:10 frame are for components that crop, such as the Card.
+
 ## Alt text
 
 - **Empty (`alt=""`)** when the image only illustrates what the text next to it already says, e.g. a card's picture of the project the title names. Screen readers skip it; the title is enough.
@@ -40,7 +52,7 @@ Set `sizes` to the width the image is shown at in your layout.
 
 - `loading="lazy"` and `decoding="async"` on every image below the first screen.
 - Always set `width` and `height` (the export size): the browser keeps the 16:10 space before the picture arrives, so nothing jumps.
-- While the picture loads, or if it doesn't, the frame shows `color-surface-subtle`.
+- While the picture loads, or if it fails, the frame shows a light sweep across `color-surface-subtle` (a shimmer, decision 67). The picture covers it once it has loaded. Under reduced motion there's no sweep, only the flat tint.
 
 ## Do and don't
 
