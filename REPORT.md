@@ -1,112 +1,92 @@
-# B-021 · Report
+# B-022 · Report
 
 ## Commits and build
 
-New branch `components/card` from `main` (`4fe1a6c`), pushed, not merged:
-- **`b5ed22a`** "Rename border-width.control to border-width.default (decision 64)"
-- **`d29fa44`** "Add the Image and Card components (decisions 62, 63)"
+Branch `components/card`, not merged:
+- **`41986b0`** "Card: gold hover badge, secondary-card treatments, Image shimmer and case study sizes (decisions 65, 66, 67)", on top of `d29fa44`.
 
-`npm run build`: exit 0, all **16** steps pass:
-- the 4 checks (46 contrast pairs, 4 stylesheets tokens only);
-- `tokens.css`;
-- the Button, Input and Card previews;
-- 8 Figma files.
+`npm run build`: exit 0, all **16** steps pass (46 contrast pairs, tokens only in 4 stylesheets, the three previews, 8 Figma files).
 
-## Tokens
+`components/card` is pushed to `origin` (the first attempt hit a GitHub server error; a retry went through).
 
-- **`border-width.control` → `border-width.default`.** Value 1.5px. Description: "The one border width (decision 64): controls, cards and dividers. Thick enough to read at 2.2:1 on beige." Renamed everywhere:
-  - `button.css`, `input.css`;
-  - the Button, Input and foundations Figma scripts;
-  - `docs/button.md`, `docs/input.md`;
-  - the `color-border-highlight` description.
+Figma was updated through MCP by running the generated `tokens/figma/image-component.js` and `card-component.js` (Image page, Card page). One honest note on the method: the `PLAN` data literal at the top of the generated file was pasted with condensed whitespace (same data); the rest of each file is the generated text unchanged.
 
-  No reference to the old name is left.
-- **No new token.**
-- **`tokens.css` has two new generated blocks** for elements that are a surface of their own (decision 62):
-  - **Default card** (`.fds-card:not(.fds-card--dark)`): brings back the light value of every switched role, so inside `.fds-surface-dark` it stays white with navy text. The values come from the tokens themselves (`var(--fds-navy-900)` …), written by the build, not by a component.
-  - **Dark card** (`.fds-card--dark`): always takes the dark values.
-  - **Focus colour:** set on the card's children only, so the card's own ring, drawn outside it, keeps the colour of the surface around it: navy on light, gold on dark. Its children (a Button in a card that isn't a link) get the card's own focus colour.
-  - **Where it lives:** the selectors are listed in `scripts/surfaces.js` (`LIGHT_ELEMENTS`, `DARK_ELEMENTS`, `OUTER_ROLES`), next to the dark-surface table the contrast check already reads (question 5).
+## 1. Gold hover badge (decision 65)
 
-## Figma
+- **What it is:** a 40px circle (`space-10`) in `color-accent` (the palette gold, gold-500), with the new arrow icon (↗, `scripts/card-icons.js`, 24 grid, 1.5 stroke like the Input icons) in `color-text-on-accent` (navy). At the bottom right of the image, `space-4` from the right edge, overlapping the image by half and sitting on the body: `bottom: -space-4`.
+- **When it exists:** only `.fds-card--image` that contains a `.fds-card__link`. Text cards, non-linked cards and the secondary card without an image have no badge (`display: none`).
+- **Motion:** at rest `opacity: 0; transform: scale(0.7)`. On hover, press (`:hover`, `:active`) and keyboard focus it goes to `1 / none` with `duration-base` and `easing-standard`, the same as the lift and the shadow. Under reduced motion it still shows on hover, with `transition: none`, so it snaps in. `aria-hidden="true"`.
+- **Colour choice:** I used `color-accent`, not `color-focus`, because the focus role switches by surface and the badge should be the same gold everywhere. Arrow navy on gold: **6.11:1**. The gold circle against the white card body is only 1.84:1; it's decoration (the title and "Read more" carry the meaning), so I treated it as not needing 3:1. Say if you want that handled differently (question 4).
+- **Where to see it:** `docs/card-preview.html`, panel "Linked states": hover a card with an image, or tab to it. Figma: Card page, "Linked card, hovered and focused" row (image cards, gold badge). Screenshots: `figma-card-dark.png` (second row, the two image cards with the gold badge) and `card-preview.png`.
 
-- **Variable rename:** the `border-width/control` variable is renamed to `border-width/default` **in place** (a one-off rename through MCP), so every binding kept working.
-  - It's a Tokens Studio collection. When you next import `tokens-studio.json`, Tokens Studio finds the variable under its new name, and its description is already the new one.
-  - Read back: the file has only `border-width/default` (`VariableID:38:4`).
-- **The generated files ran unchanged:**
-  - `image-component.js`: created the Image component (`103:3`, 320×200, 16:10) and the Image page.
-  - `card-component.js`: created the Card set (`104:234`), 20 variants and 7 properties. I ran it a second time after fixing "Read more" wrapping onto two lines: 20 updated, 0 created, the same IDs.
-  - `button-component.js`: 22 updated, 0 created, the same IDs.
-  - `input-component.js`: 20 updated, 0 created, the same IDs.
-  - Not run: `color-collection.js`, `typography-collection.js` and `foundations-pages.js`. They changed only in the page-group list (and foundations in the border-width name); the Corner radius boxes kept their binding through the in-place rename.
-- **Page order read back:** Colors, Typography, Spacing, Corner radius, Shadows, `---`, Button, Input, Image, `---`, Card. The second separator was added by the scripts, as decision 58 says.
-- **The Card set:**
-  - Image (No, Yes) × Link (Yes, No) × Style (Default, Dark) × State. A linked card has Default, Hover, Focus and Active; a card that isn't a link has Default only.
-  - Text properties: Overline, Title, Text, Meta. Switches: Show overline, Show text, Show meta.
-  - The card with an image nests the Image component; its top corners take `radius/lg` from the card.
-  - **"Read more" is text, not a Button instance.** It uses the `label` style and the link button's colours (`color-text-muted`, `color-text` on hover). It isn't a button in code either, and an instance would carry a button's states and focus ring that don't belong there.
-  - **Lift:** `space/1` of padding that moves from the top (rest) to the bottom (hover and active), so the card shifts up 4px inside a variant of constant height.
-  - **Colour modes:** the card frame carries its own mode (Light surface or Dark surface). The focus ring sits outside it, so it takes the mode of where the card is placed, gold on a dark surface, as in code.
-- **The Image page:** the purpose, the component, and the export sizes, all from `docs/image.md`.
+## 2. Secondary card, two treatments (decision 66)
 
-## Screenshots
+`.fds-card--dark` stays the class. Docs call it "a quieter card for a dark surface". Both are only for dark surfaces; text keeps the dark-surface roles (sand title, muted sand text). The card has no fill of its own: a `::before` veil behind the content at `opacity.tint`.
 
-- `figma-image.png`: the Image page. The component's sand-100 placeholder is very faint on the sand-50 page, and the page screenshot leaves out the floating component frame.
-- `figma-card.png`: the Card page, with the set at the top and "Variants" on the three surfaces. The page screenshot shows only part of the floating set frame.
-- `figma-card-set.png`: the component set on its own: every variant and state.
-- `card-preview.png`: the preview, with every variant on the page background, the subtle surface and the dark surface, plus the linked card's states held at rest.
+| | A: flat veil | B: sheen |
+| --- | --- | --- |
+| Fill | `color-surface` (white) at 7% | gradient white → transparent, top left to bottom right, peak at **10.5%** (1.5 × the tint) |
+| Border | `color-border` (dark-surface value) | the same |
+| Class | `fds-card--dark` | `fds-card--dark fds-card--sheen` |
+| Title contrast | **8.16:1** | **7.33:1** at the peak |
+| Muted text contrast | **5.10:1** | **4.58:1** at the peak (passes narrowly) |
+| Without any veil (for reference) | title 10.01, muted 6.25 | |
 
-## What was checked in the preview
+- **B's peak is 1.5×, not 2×.** At 14% the muted text at the corner is 4.12:1, a fail; the maximum that passes is about 11.4%. I kept the strength just under that.
+- **Recommendation: A** as the one in the set. It is calmer, has more margin on the contrast (5.10 vs 4.58), and the sheen is hard to see at a contrast-safe strength.
+- **New token (flagged):** `opacity.tint` = 0.07 ("A veil of light over a dark surface: the secondary card's fill (decision 66). 7%, so the card reads without changing the contrast of the text on it."). The brief asked for "roughly 6–8%", so a value had to be picked; you can change it in one place. It is in `tokens.css` as `--fds-opacity-tint` and in the Tokens Studio file (`opacity` set).
+- **Where to see it:** preview, dark surface panel: "Secondary card, prototype A" and "prototype B" rows with the EXPERIENCE cards, side by side. Figma: Card page, Variants, "Dark surface" frame: rows A and B (`figma-card-dark.png`); the component set's Dark variants use A.
+- **Figma notes:** the veil and the sheen stops are not bound to the colour variable: Figma ignores the paint opacity of a bound paint in instances (and a bound gradient stop ignores its alpha). The generator reads the colour of `color/surface` at build time and sets the opacity from `opacity/tint`. The Dark variants carry a `color/surface-dark` backdrop in their frame, so the veil can be seen in the set; the CSS has no such backdrop. The variable `opacity/tint` was created once in Figma by a one-off script; Tokens Studio will find it by name on the next import.
+- **Seen in the screenshot:** the Image placeholder inside a secondary card keeps its light tint and its caption is faint there (the image is not dark-aware). It's a placeholder state only (question 6).
 
-- **Titles:** the default card's title is Syne 500, 22px, navy on every surface, including inside the dark surface. The dark card's title is sand.
-- **Focus ring:** on the dark surface it's gold; on light, navy.
-- **Hover lift:** −4px. With "Reduce motion" on, the lift is gone and the shadow stays.
-- **Linked card:** pointer cursor, one tab stop (the title link), and the link's name is the title.
+## 3. Image sizing
+
+Audit of the case-study images in the portfolio `main` (code read only, nothing run, no password used):
+
+| Case study | Images | Sizes (px) | Ratios |
+| --- | --- | --- | --- |
+| Curaay | hero + 6 inline | hero 1687×949; inline 1400×809 to 1400×1118 | 16:9; 1.73, 1.72, 1.73, 1.25, 1.52, 1.70 |
+| HAWK | hero + 3 inline | hero 1687×949; 1480×853, 2220×1280 ×2 | 16:9; 1.74, 1.73, 1.73 |
+| Scouting | hero + 8 inline | hero 1687×949; 1687×949, 1920×1179, 1687×882, 1920×2269, 1200×1600, 1920×1270 ×2, 1920×2719 | 16:9; 1.78, 1.63, 1.91, **0.85, 0.75** (portrait), 1.51, 1.51, **0.71** (portrait) |
+
+11 of the 20 are about 16:9; 3 are portrait. Shown at up to about 1184px wide (hero, `min(1280px, 90vw)` minus the gutters) and about 860px (inline); about 358px on a 390px phone.
+
+**Proposal**
+- **Hero:** 16:9. Desktop **2400 × 1350** (2× the 1184px it's shown at, rounded), mobile **800 × 450** (2× the ~360px on a phone). Under about 800 KB.
+- **Inline pictures:** keep their own ratio, never cropped. Desktop **1800px** wide (2× of 860 is 1720), mobile **800px** wide; set `width` and `height` to the file's own size.
+- Card stays 16:10: 1600 × 1000 and 800 × 500.
+
+**Done in the repo:** `docs/image.md`: "Export sizes" is now a 5-column table (Category, Size, Ratio, Pixels, Use) and a new section "Case study images". Figma Image page: the same table and section.
+
+**Question 1: ratio.** The audit says a Case study image is not 16:10. Options:
+- **(a, recommended)** No Case study variant of the Image component now. The hero is 16:9 and inline pictures keep their own shape; the Image component and its 16:10 frame stay for components that crop (the Card). Documented as above.
+- (b) A second Image variant at 16:9 for the hero, built when the case-study page is redesigned with the system.
+- (c) Crop everything to 16:10: cuts the portrait screens and the wide ones, so I advise against it.
+I didn't build a new variant, as the brief says.
+
+## 4. Image loading animation (decision 67)
+
+- `.fds-image` keeps its flat `color-surface-subtle`, with a looping sweep: a gradient `subtle → surface → subtle` moving left to right over the frame, `duration-slow × 2` (1.4s), `easing-standard`, infinite. Under reduced motion: `animation: none; background-image: none`, so only the flat tint. Tokens only (`check-components` passes).
+- **How to see it:** `docs/card-preview.html`, panel "Image loading": its images point to a file that doesn't exist, so the frame stays in the loading/error state. In a real page, throttle the network in dev tools. The reduced-motion switch at the top of the preview shows the flat tint.
+- **Question 2 (accessibility):** the `duration` token's description says looping animations must stop within 5 seconds (WCAG 2.2.2) and that reduced motion drops looping animations; decision 67 asks for a loop. Options: **(a, recommended)** keep it infinite, since it is a loading indicator that ends when the picture arrives; (b) limit it to 3 iterations (about 4.2s) then rest on the flat tint. If you choose (a), the `duration` description should be reworded (it's yours to decide; I haven't touched it).
+- **Question 3:** the shimmer keeps running behind a picture that has loaded (it's just hidden). Stopping it needs a `data-loaded` attribute set by a tiny script, or `:not([src])`-style tricks that don't work for failed loads. Recommendation: leave it, since the cost is negligible; say if you prefer the script.
+- Figma Image page: the placeholder now shows an icon and the caption `16:10 · 1600 × 1000` (decision 66 asked for it). Static, as Figma has no looping fill.
 
 ## What to check, and where
 
-1. **`docs/card-preview.html`** in a browser:
-   - hover the linked cards on each surface;
-   - tab through: one stop per linked card, the ring around the whole card;
-   - turn on "Reduce motion".
-2. **Figma, Card page:** the set; and on an instance, the four text properties and three switches in the right panel. Also check the dark cards in the "Dark surface" frame (question 1).
-3. **Figma, Image page:** swap the placeholder fill for a picture on an instance; the 16:10 ratio and the card's corners should hold.
-4. **Tokens Studio:** re-import `tokens/figma/tokens-studio.json`; it should update `border-width/default`, not add a second variable.
+1. **Preview** (`docs/card-preview.html`): hover and tab to a linked image card for the badge; the dark panel for A and B side by side; the "Image loading" panel; the reduced-motion switch.
+2. **Figma, Card page:** Variants → "Linked card, hovered and focused", and the "Dark surface" frame (A and B). Check A renders as a soft veil (it was opaque white in the previous run: fixed).
+3. **Figma, Image page:** the placeholder, the export table, the new Case study section.
+4. **Docs:** `docs/card.md` (the badge section, the variants table, the contrast table), `docs/image.md` (sizes, case study section).
 
-## Questions
+Screenshots in this branch: `card-preview.png` (the preview), `figma-card-dark.png` (the Dark surface frame: default, hover and focus with the badge, A, B), `figma-image.png` (the Image page).
 
-1. **The dark card inside a dark surface.** Its fill is the surface's own navy (1.00:1), so only its border shows, `color-border-on-dark` (navy-800) at 1.34:1. You can see the faint outline in the preview and on the Figma page.
-   - A: the dark card is for light surfaces only (the docs say so); inside a dark surface, use the default card.
-   - B: a new role for the dark card's fill on a dark surface, e.g. navy-800 (1.34:1 against the surface; text 7.45:1, muted 4.65:1).
-   - C: a stronger border for the dark card, e.g. `color-border-highlight` (navy-300), 4.54:1 on navy.
+## Other questions
 
-   **Recommendation: A.** The dark card exists to stand out on a light page; on a dark page the default card already does that. B and C add roles for a case no page has today. B's muted text at 4.65:1 passes but narrowly.
-2. **Export sizes for Image** (written in `docs/image.md`, to confirm).
-   - A: 1600×1000 as `src` and 800×500 in `srcset`. Sharp on a 2× screen up to 800px wide: wider than a card in a two-column grid, and the width of a single card column just under 900px.
-   - B: one size only, 1600×1000.
-   - C: add 2400×1500 for full-width images up to 1200px.
+- **Question 4:** the gold badge is 1.84:1 against the white body and sits half on the picture. OK as decoration, or should it get a border or a shadow? Recommendation: leave it as it is.
+- **Question 5:** the new token `opacity.tint` = 0.07. Keep, or another value (6–8% still works)? Recommendation: keep.
+- **Question 6:** in a secondary card with an image, should the placeholder take the dark roles? It only matters while loading. Recommendation: no, leave it.
 
-   **Recommendation: A.** It covers every card width the site has. The small file keeps phones fast; C is for full-width images, which no component has yet.
-3. **New element classes** not named in the B-020 proposal:
-   - `fds-card__footer`: holds meta, "Read more" or an action at the bottom, so cards in a row line up.
-   - `fds-card__more`: "Read more".
-   - `fds-card__hidden`: visually hidden text for "(opens in a new tab)".
-   - A: keep them (built).
-   - B: other names.
+## Other notes
 
-   **Recommendation: A.** They follow the `fds-card__*` pattern. `fds-card__hidden` is card-scoped because the system has no general visually-hidden class yet; if another component needs one, a shared class would replace it.
-4. **Image loading colour.** While a picture loads, or if it fails, the frame shows `color-surface-subtle`.
-   - A: keep it (built).
-   - B: no colour (transparent).
-
-   **Recommendation: A.** The card keeps its 16:10 shape visibly, and it matches the Figma placeholder.
-5. **Where the card's surface rule lives.** The selectors `.fds-card:not(.fds-card--dark)` and `.fds-card--dark` are listed in `scripts/surfaces.js`, and the build writes their role blocks into `tokens.css`.
-   - A: keep it there (built). The surface table stays the one place that decides which roles switch, and the contrast check reads the same file.
-   - B: generic `.fds-surface-light` and `.fds-surface-dark` classes that a card adds in its HTML.
-
-   **Recommendation: A.** The card does it "for itself" (decision 62), with no extra class for an agent to forget.
-6. **Card width in Figma.** The components are 360px wide by default (Input is 320); in code a card is as wide as its grid cell.
-   - A: keep 360 (built).
-   - B: 320, the same as Input.
-
-   **Recommendation: A.** 360 leaves room for a two-line title and a 16:10 image of a useful size; designers resize the instance anyway.
+- No change to `DECISIONS.md`, no merge, no history rewrite.
