@@ -166,7 +166,7 @@ const PLAN = {
 };
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image"]},{"name":"Advanced","pages":["Card"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {
@@ -354,7 +354,7 @@ const pages = {};
     box.name = 'box'; box.resize(item.wide ? 200 : 96, item.wide ? 64 : 96);
     box.fills = [docPaint('color/surface-highlight')];
     box.strokes = [docPaint('color/border-highlight')];
-    box.setBoundVariable('strokeWeight', docVar('border-width/control'));
+    box.setBoundVariable('strokeWeight', docVar('border-width/default'));
     bindRadius(box, item.variable || 'radius/pill');
     await tokenRow(list, box, item);
   }

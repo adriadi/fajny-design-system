@@ -32,7 +32,7 @@ Every type in every state, on a light surface.
 
 | State | From | Field |
 | --- | --- | --- |
-| Default | — | `color-surface` fill, 1.5px `color-border-input` border (`border-width.control`), `radius-md`. Value in `color-text`, placeholder in `color-text-placeholder`, both in the `field` role. |
+| Default | — | `color-surface` fill, 1.5px `color-border-input` border (`border-width.default`), `radius-md`. Value in `color-text`, placeholder in `color-text-placeholder`, both in the `field` role. |
 | Hover | `:hover` | Border `color-border-strong`. |
 | Focus | `:focus-visible` | Border `color-border-strong`, plus the system focus ring: `focus.ring-width` in `color-focus` at `focus.ring-offset`. |
 | Error | `aria-invalid="true"` | Border `color-error`, in every state; focus still adds the ring. The error message shows below, in place of the help text. |

@@ -21,11 +21,12 @@
   },
   "opacity": {
     "$type": "number",
+    "tint": { "$value": 0.07, "$description": "A veil of light over a dark surface: the secondary card's fill (decision 66). 7%, so the card reads without changing the contrast of the text on it." },
     "disabled": { "$value": 0.6, "$description": "A disabled control, with aria-disabled=\"true\" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3)." }
   },
   "duration": {
     "$type": "duration",
-    "$description": "With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes. An animation that starts on its own stops within 5 seconds (WCAG 2.2.2).",
+    "$description": "An animation that starts on its own stops within 5 seconds (WCAG 2.2.2), except a loading indicator, which keeps going until its content arrives or fails — it isn't decorative, and it ends on its own. With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes.",
     "fast": { "$value": "200ms", "$description": "Colour, background and border changes; presses." },
     "base": { "$value": "300ms", "$description": "Hover lifts with shadow, menus, toggles." },
     "slow": { "$value": "700ms", "$description": "Content fading in as it appears." }

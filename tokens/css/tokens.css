@@ -40,13 +40,14 @@
   --fds-radius-lg: 16px; /** Every card (text and image), images, banners and modals. */
   --fds-radius-pill: 999px; /** Every button, tag and chip. No square buttons. */
   --fds-radius-round: 50%; /** Circles: dots, avatars, round icon buttons. */
-  --fds-border-width-control: 1.5px; /** Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige. */
+  --fds-border-width-default: 1.5px; /** The one border width (decision 64): controls, cards and dividers. Thick enough to read at 2.2:1 on beige. */
   --fds-focus-ring-width: 2px; /** Width of the keyboard focus ring. Focus is always this ring in color-focus, never a shadow. */
   --fds-focus-ring-offset: 3px; /** Gap between an element and its focus ring. */
   --fds-shadow-sm: 0px 4px 20px 0px #1B3A6B12; /** Hover on small text cards. navy-900 at 7%. */
   --fds-shadow-md: 0px 12px 40px 0px #1B3A6B1A; /** Hover on text cards; floating banners. navy-900 at 10%. */
   --fds-shadow-lg: 0px 20px 60px 0px #1B3A6B4D; /** Hover on image cards. navy-900 at 30%. */
   --fds-shadow-overlay: 0px 32px 80px 0px #1B3A6B4D; /** Modals: the one element above everything else. navy-900 at 30%. */
+  --fds-opacity-tint: 0.07; /** A veil of light over a dark surface: the secondary card's fill (decision 66). 7%, so the card reads without changing the contrast of the text on it. */
   --fds-opacity-disabled: 0.6; /** A disabled control, with aria-disabled="true" so it stays focusable and its reason can be read out. Contrast is exempt (WCAG 1.4.3). */
   --fds-duration-fast: 0.2s; /** Colour, background and border changes; presses. */
   --fds-duration-base: 0.3s; /** Hover lifts with shadow, menus, toggles. */
@@ -117,7 +118,7 @@
   --fds-color-border-input: var(--fds-stone-400); /** Resting input underlines. 3.36:1 on background, 3.78 on surface, 3.10 on surface-subtle (WCAG 1.4.11 needs 3:1). Inputs appear only on light surfaces. */
   --fds-color-border-strong: var(--fds-navy-900); /** Focused or active input underline. A state, not decoration: use color-border-rule for decorative lines. Forms appear only on light surfaces. */
   --fds-color-border-rule: var(--fds-navy-900); /** Decorative strong lines: eyebrow rules, card top rules, the reading progress bar. Same value as color-border-strong, different role. On a dark surface it becomes color-border-rule-on-dark. */
-  --fds-color-border-highlight: var(--fds-navy-300); /** The light Highlight's left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button's label carries its meaning. */
+  --fds-color-border-highlight: var(--fds-navy-300); /** The light Highlight's left rule, and the border of the secondary button (border-width.default). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button's label carries its meaning. */
   --fds-color-border-on-dark: var(--fds-navy-800); /** Value of color-border inside a dark surface. Decorative only: 1.34:1 on color-surface-dark. Not referenced by components. */
   --fds-color-border-rule-on-dark: var(--fds-gold-500); /** Value of color-border-rule inside a dark surface. Not referenced by components. 6.11:1 on color-surface-dark. */
   --fds-color-focus: var(--fds-navy-900); /** Keyboard focus ring. On a dark surface it becomes color-focus-on-dark. */
@@ -158,4 +159,34 @@
   --fds-color-action: var(--fds-color-action-on-dark);
   --fds-color-action-hover: var(--fds-color-action-hover-on-dark);
   --fds-color-text-on-action: var(--fds-color-text-on-accent);
+}
+
+.fds-card:not(.fds-card--dark) {
+  --fds-color-text: var(--fds-navy-900);
+  --fds-color-text-muted: var(--fds-stone-600);
+  --fds-color-text-emphasis: var(--fds-gold-800);
+  --fds-color-border: var(--fds-sand-300);
+  --fds-color-border-rule: var(--fds-navy-900);
+  --fds-color-action: var(--fds-navy-900);
+  --fds-color-action-hover: var(--fds-navy-700);
+  --fds-color-text-on-action: var(--fds-sand-50);
+}
+
+.fds-card:not(.fds-card--dark) > * {
+  --fds-color-focus: var(--fds-navy-900);
+}
+
+.fds-card--dark {
+  --fds-color-text: var(--fds-color-text-on-dark);
+  --fds-color-text-muted: var(--fds-color-text-muted-on-dark);
+  --fds-color-text-emphasis: var(--fds-color-text-emphasis-on-dark);
+  --fds-color-border: var(--fds-color-border-on-dark);
+  --fds-color-border-rule: var(--fds-color-border-rule-on-dark);
+  --fds-color-action: var(--fds-color-action-on-dark);
+  --fds-color-action-hover: var(--fds-color-action-hover-on-dark);
+  --fds-color-text-on-action: var(--fds-color-text-on-accent);
+}
+
+.fds-card--dark > * {
+  --fds-color-focus: var(--fds-color-focus-on-dark);
 }

@@ -16,6 +16,14 @@ export const DARK_SURFACE = {
   'color-text-on-action': 'color-text-on-accent',
 };
 
+// Elements that are a surface of their own (decision 62). The default card is always light, so inside
+// a dark surface it brings back the light value of every switched role; the dark card always takes the
+// dark values. color-focus is set on their children only: the card's own focus ring is drawn outside
+// it, so it keeps the focus colour of the surface around the card.
+export const LIGHT_ELEMENTS = ['.fds-card:not(.fds-card--dark)'];
+export const DARK_ELEMENTS = ['.fds-card--dark'];
+export const OUTER_ROLES = ['color-focus'];
+
 // Roles that must never appear on a dark surface: forms and status messages are light-only.
 export const LIGHT_ONLY = ['color-error', 'color-success', 'color-text-placeholder', 'color-border-input', 'color-border-strong'];
 

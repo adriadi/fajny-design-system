@@ -146,7 +146,7 @@ const PLAN = {
     "iconSize": "space/4",
     "actionIconSize": "space/5",
     "radius": "radius/md",
-    "strokeWeight": "border-width/control",
+    "strokeWeight": "border-width/default",
     "opacity": "opacity/disabled",
     "focusColor": "color/focus",
     "focusWidth": "focus/ring-width",
@@ -195,7 +195,7 @@ const PLAN = {
 
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image"]},{"name":"Advanced","pages":["Card"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {

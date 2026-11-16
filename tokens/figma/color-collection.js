@@ -154,7 +154,7 @@ const PLAN = {
       "scopes": [
         "STROKE_COLOR"
       ],
-      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.control). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
+      "description": "The light Highlight’s left rule, and the border of the secondary button (border-width.default). Decorative (decision 31): 2.06:1 on color-surface-highlight; the button’s label carries its meaning."
     },
     {
       "name": "color/focus",
@@ -452,7 +452,7 @@ for (const c of await figma.variables.getLocalVariableCollectionsAsync()) {
 // ── The Colors page: rebuilt on every run ──
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input"]},{"name":"Advanced","pages":[]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image"]},{"name":"Advanced","pages":["Card"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {

@@ -29,7 +29,7 @@
   },
   "border-width": {
     "$type": "dimension",
-    "control": { "$value": "1.5px", "$description": "Border of controls: the secondary button, icon buttons. Thick enough to read at 2.2:1 on beige." }
+    "default": { "$value": "1.5px", "$description": "The one border width (decision 64): controls, cards and dividers. Thick enough to read at 2.2:1 on beige." }
   },
   "focus": {
     "$type": "dimension",
