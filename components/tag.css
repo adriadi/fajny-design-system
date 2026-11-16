@@ -1,0 +1,61 @@
+/* Tag (decisions 69, 70). Uses only --fds-* tokens; link tokens.css first.
+ *
+ *   <span class="fds-tag">Design process</span>
+ *   <span class="fds-tag"><span class="fds-tag__dot" aria-hidden="true"></span>Open to new work</span>
+ *
+ * A static label in a pill. It is never clickable, so it has no hover, no focus and no pressed state: a
+ * control that filters or acts is a button, not a tag. One size for every tag.
+ *
+ * Variants: the default is an outlined pill that follows the surface around it. fds-tag--accent is gold
+ * text and a gold border on a solid dark fill, for a dark surface only. fds-tag--filled is a gold pill with
+ * navy text, on any surface. fds-tag--muted lowers a tag to the muted text role and the plain border
+ * (the "not selected" look), after any other variant. A tag over a photo is a tag that is itself a dark
+ * surface: add .fds-surface-dark to it, and it takes a solid dark fill with the dark roles.
+ * fds-tag__dot is the status dot, for a tag on a light surface.
+ */
+
+.fds-tag {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fds-space-2);
+  padding: var(--fds-space-1) var(--fds-space-3);
+  border: var(--fds-border-width-default) solid var(--fds-color-border);
+  border-radius: var(--fds-radius-pill);
+  color: var(--fds-color-text);
+  font-family: var(--fds-font-family-overline);
+  font-size: var(--fds-font-size-overline);
+  line-height: var(--fds-font-line-height-overline);
+  font-weight: var(--fds-font-weight-overline);
+  letter-spacing: var(--fds-font-letter-spacing-overline);
+  text-transform: var(--fds-font-text-transform-overline);
+  white-space: nowrap;
+}
+
+/* The status dot: a light surface only, since color-success has no dark-surface value. */
+.fds-tag__dot {
+  flex: none;
+  width: var(--fds-space-2);
+  height: var(--fds-space-2);
+  border-radius: var(--fds-radius-round);
+  background-color: var(--fds-color-success);
+}
+
+/* Dark surface only. The fill is solid, so the gold text keeps its contrast whatever sits behind the tag. */
+.fds-tag--accent {
+  border-color: var(--fds-color-accent);
+  background-color: var(--fds-color-surface-dark);
+  color: var(--fds-color-accent);
+}
+
+.fds-tag--filled {
+  border-color: var(--fds-color-accent);
+  background-color: var(--fds-color-accent);
+  color: var(--fds-color-text-on-accent);
+}
+
+/* Dims by colour, not by opacity: the text stays above 4.5:1. Keep this rule last. */
+.fds-tag--muted {
+  border-color: var(--fds-color-border);
+  color: var(--fds-color-text-muted);
+}

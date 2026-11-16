@@ -46,6 +46,8 @@ export const PAIRS = [
   ['color-text-muted', [...ALL_LIGHT, ...DARK], 4.5],
   ['color-text-placeholder', LIGHT, 4.5],
   ['color-text-emphasis', [...LIGHT, ...DARK], 3],
+  // Gold text on the solid dark fill of the accent Tag (decision 70). Not a text colour on light surfaces.
+  ['color-accent', DARK, 4.5],
   ['color-error', LIGHT, 4.5],
   ['color-success', LIGHT, 4.5],
   ['color-border-input', LIGHT, 3],
