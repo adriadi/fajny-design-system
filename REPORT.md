@@ -1,96 +1,87 @@
-# B-025 · Tag audit
+# B-026 · Report
 
-Audit only: no code changed, no commits besides this report.
+Both tasks are done. Nothing is merged to `main`.
 
-## Where I looked
+## Commits
 
-- **`portfolio-tokens`** (branch `design-system/tokens`, and merged to its `main`): the site as it is now, on the design system tokens. Measured in a real browser (computed styles, contrast from rendered pixels).
-- **`portfolio`** (branch `test/before-2`): the original, for the pre-migration values (off-grid padding, original colours).
-- Caveats:
-  - `work-with-me.html` exists **only in `portfolio`**, not in `portfolio-tokens`. Its tag (pattern 7) has not been migrated.
-  - The three case-study pages sit behind the password page, so I did not open them. Their tag (pattern 8) is read from CSS, with no screenshot.
-- Contrast: computed from the tokens, and where a tint is involved, measured from the rendered pixels.
+| What | Where | Commit |
+| --- | --- | --- |
+| Task 1: `work-with-me.html` onto tokens (alone) | `portfolio-tokens`, branch `design-system/work-with-me` (from `main`), **local, not pushed** | `50f0871` |
+| Task 2, portfolio: chip contrast fix + Medium badge hover removed | same branch, **local, not pushed** | `a1f5dc1` |
+| Task 2, design system: the Tag component | `fajny-design-system`, branch `components/tag`, pushed | `3c81d5b` |
 
-## Summary
+`npm run build` in the design system: exit 0, all steps, including the new contrast pair and `tag-component.js`.
 
-Eight distinct tag/chip-shaped patterns, six of them pills. Only two are interactive: the skill filters and the Clear button. Every pill already uses `radius-pill` after migration (originally `100px` or `999px`), so decision 39 holds. The patterns do not share one type size, weight or padding.
+## Task 1: `work-with-me.html` on tokens
 
-| # | Pattern (class) | Where, and what it's for | Static / interactive | Surface | Radius | Padding original → now | Type |
-|---|---|---|---|---|---|---|---|
-| 1 | Hero status tag (`body.home .hero-tag`) | Home hero. Status: "Open to senior product design roles", with a pulsing green dot | Static | Light (beige) | 999px | 6px 14px → 8px 16px | 11px / 600, 0.1em, uppercase |
-| 2 | Medium badge (`.medium-badge`) | Home, Articles heading. Marks the source platform | Static `<span>` (but has a `:hover` opacity rule) | Light | 999px | 4px 12px 4px 8px, same | 11px / 600, 0.04em |
-| 3 | Project tag (`.project-tag`) | Home project cards: topic label ("AI · Healthcare") over a photo | Static | Photo + overlay | 999px | 4px 10px → 4px 12px | 10px / 600, 0.08em, uppercase |
-| 4 | Skill filter (`.sm-skill`) | Home, skill map (dark navy). Filter: pick a skill | **Interactive** `<button aria-pressed>` | Dark | 8px desktop, **999px mobile** | 7px 6px (6px 12px mobile) → 8px; 8px 12px mobile | 11px / 500 (12px mobile) |
-| 5 | Clear (`.sm-clear`) | Home, skill map, appears once a skill is pinned | **Interactive** `<button>` | Dark | 999px | 7px 12px → 8px 12px | 12px / 500 |
-| 6 | Skill chip (`.sm-chip`, `lvl-1`, `lvl-2`, `is-on`) | Home, skill map, each role. Skill and level (core / also involved). Visually hidden on desktop (screen-reader only), shown at ≤760px | Static | Dark | 999px | 4px 10px (3px 8px mobile) → 4px 12px; 4px 8px mobile | 11px (10px mobile) / 400 |
-| 7 | Feature-card tags (`.feature-card-tags li`) | `work-with-me.html`, Curaay card: role and year ("Founding Team UX Designer", "2025–26") | Static | Light (white card) | 100px | **5px** 12px (not migrated) | 10px / 600, 0.08em, uppercase |
-| 8 | Case-study hero tag (`body.cs .hero-tag`) | Top of each case study: "Case Study · HAWK AI · April 2026" | Static, **not a pill** (text plus a 40px line) | Light | none | none | 11px / 500, 0.14em, uppercase |
+- `work-with-me.html`, `js/work-with-me.js` and the page's CSS (about 96 lines) come over from `test/before-2`; the home page gets the "Work with me" nav link and the hash-scroll effect. The page links `tokens.css` before `styles.css`; the footer is `.fds-surface-dark`.
+- Roles: lead → `lead` type role, feature card title → `subheading`, eyebrow → `overline`, form check and errors → `small`; the eyebrow's gold became `color-text` like the other migrated eyebrows. Card: `color-surface`, `color-border`, `radius-lg` (was 20px), `shadow-lg` on hover. Errors: `color-error`. Off-grid values rounded up (the tag's 5px became 8px, 14px → `space-4`).
+- The intro's top padding (140px; 104px on small screens) is written as two tokens added together (`space-30 + space-5`; `space-20 + space-6`), because no single step fits.
+- Marked "No token" (no role fits): the checkbox size, the select arrow (a data-URI SVG), the see-through error tint, the disabled opacity.
+- Check: loads from disk on tokens, card 16px, tags 8px 12px, "Work with me" in the nav (screenshot below).
 
-Colours and contrast, per pattern:
+## Task 2: Tag
 
-| # | Fill / text / border | Contrast |
-|---|---|---|
-| 1 | `rgba(255,255,255,.5)` on beige, navy text, 1.5px `color-border` | Navy on the tinted beige 10.6:1. The green dot `#22c55e` is a literal. |
-| 2 | Navy fill, beige text, no border | 10.0:1 |
-| 3 | `white 15%` fill, white text, 1px `white 25%`, blur 8px | Depends on the photo; about 6.2:1 over mid-navy. **Dormant**, see below. |
-| 4 | No fill, `white 80%` text, 1px `white 22%`. Hover/active: gold text and gold border. Pressed: gold fill, navy text | Rest 7.8:1; gold text on navy 6.1:1; pressed navy on gold 6.1:1 |
-| 5 | No fill, gold text `#E8B84B` (literal), 1px gold 50% border | 6.1:1 |
-| 6 | `lvl-2`: gold 18% tint, gold text. `lvl-1`: no fill, 1px gold 45% border, muted text. `is-on`: gold fill, navy text | **`lvl-2` 4.47:1**, see below |
-| 7 | No fill, navy text, 1.5px `gray-warm` border | Navy on white 11.3:1 |
-| 8 | Original: **gold text on `#F5F1EB`**. Migrated: `color-text` navy | Original 1.64:1 (fails); migrated passes |
+Built as proposals; **sizes and class names below are mine, please check them.**
 
-## Decision 54: "Gold chip text on dark waits for Tag"
+**One size (proposal):** the `overline` text role: Inter 600, 0.12em, uppercase, 11px at 390px growing to 12px at 1280px. Padding `space-1` above and below and `space-3` at the sides (the token's own description says "tag padding"), a `border-width.default` border, `radius-pill`, `space-2` between the dot and the label. Rendered: 11.9px text, tag **26.5px tall**, padding 4px 12px. No new token. Reason: the audit found 10, 11 and 12px at weights 400, 500 and 600, and `overline` is the one existing role in that range. Cost: chip text becomes uppercase and 600 (it was sentence case, 400), and the hero and Curaay tags get shorter (their vertical padding 8px → 4px).
 
-It is the skill chip `.sm-chip.lvl-2` in `portfolio-tokens/styles.css` (lines about 1177–1181), on the navy experience section:
+**Variants (proposed names):** `fds-tag` (Default, outlined, follows the surface), `fds-tag--accent` (gold text and border on a solid `color-surface-dark` fill, dark surfaces only), `fds-tag--filled` (gold fill, navy text: the old `is-on`), `fds-tag--muted` (muted text and plain border; the "dimmed" look, added after any variant but a filled one). `fds-tag__dot` is the status dot (`color-success`, light surfaces only). The project tag over a photo is a Default tag that is itself `.fds-surface-dark`: a solid navy pill with light text.
 
-- **Text:** `#E8B84B` as a literal (no role). **Fill:** `oklch(80% 0.13 85 / 0.18)`, a gold 18% tint over navy, which renders as about `rgb(63, 80, 102)`.
-- **Contrast of the text on that tint: 4.47:1** (measured from the rendered pixels; the estimate from the formula was 4.44:1). That is **just under 4.5:1** at 11px (10px on mobile), so it misses AA for body-size text.
-- **In its dimmed state** (`.sm-row.is-dim .sm-chip { opacity: .6 }`) the same text drops to about **2.6:1**, computed. This is a deliberate "not selected" look, but it is the lowest contrast on the page.
-- The same gold literal is in `.sm-clear` (6.1:1, passes) and in the `.sm-skill` hover state.
-- Related: `lvl-1` and `is-on` already use roles (`color-text-muted`, `color-accent` / `color-text-on-accent`). Only `lvl-2` and `sm-clear` still hold the gold literal.
+**No hover, focus or pressed:** `tag.css` has no `:hover`, `:focus`, `:active` or transition.
 
-## Off-grid padding (decision 38)
+### Contrast (all from the real colours; the portfolio numbers are the rendered computed colours)
 
-In the original, tag padding used 3, 5, 6, 7, 10 and 14px:
+| Pair | Before | Now |
+| --- | --- | --- |
+| Core skill chip (`lvl-2`): gold text | 4.47:1 on a gold 18% tint (rendered) | **6.11:1**: `color-accent` text on solid `color-surface-dark` (rendered `rgb(232,184,75)` on `rgb(27,58,107)`) |
+| Dimmed chip | about 2.6:1 (opacity .6) | **6.25:1**: `color-text-muted` on dark (rendered `rgb(200,192,180)` on navy), border `color-border` |
+| Selected chip (`is-on`): navy on gold | 6.11:1 | 6.11:1, unchanged |
 
-- Pattern 1: 6px and 14px (now 8 and 16).
-- Pattern 3: 10px (now 12).
-- Pattern 4: 7px and 6px (now 8; mobile 6px 12px became 8px 12px).
-- Pattern 5: 7px (now 8).
-- Pattern 6: 10px, and 3px on mobile (now 12, and 4px 8px on mobile).
-- Pattern 7: 5px. **Not migrated**, because the page isn't in `portfolio-tokens`.
-- Patterns 2 and 8 had no off-grid values. Medium badge was already 4 and 12.
+Tag at its size, from the tokens (all ≥ 4.5:1): Default on `color-background` 10.01, on `color-surface` 11.27, on `color-surface-subtle` 9.24, inside a dark surface 10.01; Muted 5.25 / 5.91 / 4.85 on the light surfaces and 6.25 on dark; Accent 6.11; Filled 6.11; the status dot (3:1 needed) 7.06 on `color-surface`. The build now also checks `color-accent` on `color-surface-dark` at 4.5:1 (47 pairs).
 
-Other off-grid-ish values in the tag area:
+### Things I changed from the audit or want you to check
 
-- `.sm-skill` margins and the mobile gap (6px) around the filters.
-- Chip margins (6px and 4px → 8px).
+1. **`color-accent` is a fill role, used here as text** (decision 70's wording). It passes only on the Accent tag's own dark fill, so the docs say it isn't a text colour anywhere else. The alternative, `color-text-emphasis`, is allowed only at 24px+ by decision 28, so it can't be used.
+2. **The hero tag loses its see-through white fill** (no token, no contrast guarantee) and **the project tag loses its glass look** (white 15% with blur): over a photo it becomes a solid dark pill so the text passes on any photo.
+3. **Muted + Filled is not allowed** (muted text on gold fails); the docs and preview say so.
+4. The hero tag's pulsing dot is not part of Tag (the dot is static).
 
-## Things worth knowing
+### Docs, preview, Figma
 
-1. **The project tag (pattern 3) is dormant.** `ProjectCard` renders it only when `showText` is true, and `showText = !p.image`. All three projects have an image, so no `.project-tag` is on the page, and I had no way to screenshot it in context. The CSS is live and a "projects without images" card would use it.
-2. **The Medium badge looks like a link but is a `<span>`**, with a hover rule and no `href`.
-3. **Two inconsistent type setups:** the pills use 10, 11 and 12px with weights 400, 500 and 600. The migrated page keeps several of them as literals (`font-size: 11px`) because no type role fits. Decision 56's `label` role (13→14px) is larger than any tag today.
-4. **Skill filter shape changes with width** (8px radius on desktop, a pill on mobile), which decision 39's "every tag and chip is a pill" does not cover.
-5. **Not tags in the CSS sense** (no pill styling): the article category and read-time overline above each article title, and the case-study eyebrow "Featured case study". Also, the `AI · HEALTHCARE` pill in the Curaay image on the work-with-me page, and the institution badges in the Hawk screenshots, are baked into images (JPG), so nothing to do in code.
-6. **The hero status dot** pulses (`pulse-dot`, 2s, infinite). Decision 54 and the 5-second rule apply (WCAG 2.2.2); I noted it and changed nothing.
+- `docs/tag.md`; `docs/tag-preview.html` (default, status dot, filled, muted, accent on dark, and a tag over a photo, on the page background, a subtle surface and a dark surface); README updated.
+- Figma: Tag page in the Regular group after Image (`---` separators kept). Component set: Style (Default, Accent, Filled) × Muted, without a muted Filled: 5 variants; Label text property; Show dot switch. Every fill, stroke, padding and radius bound to variables; the overline text style. Real `tag-component.js` was run on the file (5 created). Page: set, then Variants on the page background, a subtle surface, a dark surface and a photo (it nests the Image).
 
-## Screenshots (in context, on this branch)
+## Portfolio changes (not the Tag component)
 
-| Pattern | File |
-|---|---|
-| 1 Hero status tag | `b025-1-home-hero-tag.png` |
-| 2 Medium badge | `b025-2-medium-badge.png` |
-| 4 Skill filters (desktop, hover and on states) | `b025-3-skill-map-desktop.png` |
-| 4, 5, 6 Filters as pills, Clear, role chips (`lvl-2`, `lvl-1`, `is-on`), mobile 390px | `b025-4-skill-map-mobile.png` |
-| 7 Feature-card tags (original `portfolio`, work-with-me) | `b025-5-work-with-me-feature-tags.png` |
+The portfolio does not load component CSS yet (decision 52's second update), so it did not switch to `fds-tag` classes. Instead:
 
-Missing: pattern 3 (not rendered anywhere) and pattern 8 (behind the password page).
+- The core chip and the dimmed state use the roles above (`a1f5dc1`, `styles.css`).
+- The Medium badge: `:hover` rule and its transition removed.
+- Hero tag, project tag and feature-card tags keep their own classes (on tokens), so they still show their old padding and fill until the portfolio adopts `tag.css`.
+
+## What to check, and where
+
+- Design system `docs/tag-preview.html`, and the Figma Tag page.
+- Portfolio, local branch `design-system/work-with-me`: the home page's skill map (pin a skill; the 390px view shows the chips) and `work-with-me.html` (feature tags).
+
+## Screenshots (this branch)
+
+| Context | File |
+| --- | --- |
+| Tag preview: light page (default, status dot, filled, muted, photo), subtle surface, dark surface (accent, muted) | `b026-1-tag-preview.png` |
+| Figma Tag page (set, Variants, photo) | `b026-2-figma-tag-page.png` |
+| Dark skill chip, core (gold outline) and plain, on the live home page (390px, "AI products" pinned) | `b026-3-portfolio-chips-core-and-plain.png` |
+| Dark skill chip, dimmed rows (muted, not faded) | `b026-4-portfolio-chips-dimmed.png` |
+| Curaay feature-card tags on the migrated `work-with-me.html` | `b026-5-work-with-me-migrated.png` |
+
+I did not take a separate light **hero tag** screenshot: it is unchanged in the portfolio (`b025-1-home-hero-tag.png` on this branch); its Tag version is the "status dot" row in the preview and in Figma.
 
 ## Questions
 
-1. **Which patterns should the Tag component cover?** The pills that carry a label (1, 3, 6, 7) look like one family, while 2 is a source badge, 4 and 5 are controls (they belong to Button or a Filter component), and 8 isn't a pill. Recommendation: Tag = static pills (1, 3, 6, 7), and treat 4 and 5 separately. Reason: Tag then has one job, and the interactive ones need focus, pressed and disabled states that a static Tag shouldn't carry.
-2. **How should the gold-on-dark chip be fixed?** Options: (a) raise the tint opacity or use a lighter tint so `lvl-2` clears 4.5:1, (b) give the chip the `color-accent` role on a dark fill, (c) keep the tint and bump the size/weight. Recommendation: (b), because it uses an existing role and gives a margin (6.1:1) instead of 4.47:1.
-3. **The dimmed chip (2.6:1)**: is "not selected" allowed to drop below 4.5:1 (the text is still readable, but it's below AA)? Recommendation: dim by colour (muted role) rather than `opacity: .6`, so it stays above 4.5:1.
-4. **Tag size**: one size (11px) or two (10px for tags on photos and in cards, 11px elsewhere)? Not decided here; the audit shows 10, 11, 12px in use.
-5. **Should `work-with-me.html` be migrated into `portfolio-tokens` first**, so pattern 7 can be checked with real tokens?
+1. **The size** (11–12px overline, 4px 12px padding, uppercase 600). OK, or one of: the larger `label` role (13–14px, weight 500) or the same overline with `space-2` vertical padding?
+2. **Variant names** `accent`, `filled`, `muted` and the `dot` part: keep, or rename?
+3. **Hero tag without the see-through fill, and the project tag as a solid dark pill**: OK? (Both come from "no token, no contrast guarantee".)
+4. **Uppercase skill chips** (they were sentence case): OK for names like "Complex B2B tools", or should chips be a variant without uppercase?
+5. **Portfolio adoption of `tag.css`**: when? It needs the tokens re-synced (the site's `tokens.css` predates `border-width` and others), so I did not do it here. I can do it as the next portfolio step.
+6. The portfolio branch `design-system/work-with-me` is local only. Push it, or merge it into the portfolio's `main` first?
