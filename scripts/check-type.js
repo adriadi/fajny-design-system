@@ -5,7 +5,7 @@
 import { readFileSync } from 'node:fs';
 
 const REQUIRED = ['family', 'line-height', 'weight', 'letter-spacing'];
-const OPTIONAL = ['text-transform'];
+const OPTIONAL = ['text-transform', 'style'];
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));
 const names = (group) => Object.keys(group ?? {}).filter((k) => !k.startsWith('$'));

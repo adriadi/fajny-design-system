@@ -71,6 +71,7 @@
   --fds-font-size-overline: clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem); /** 11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline. */
   --fds-font-size-label: clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem); /** 13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label. */
   --fds-font-size-field: 1rem; /** 16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field's text is under 16px, and body is 15px on phones. In rem, so it follows the browser's font size setting. */
+  --fds-font-size-quote: clamp(1.125rem, 0.9059rem + 0.899vw, 1.625rem); /** 18px to 26px. The text of a quote, an insight or a cited statistic in the Highlight (decision 76): Syne, italic through font.style.quote. Never gold. */
   --fds-font-line-height-display: 1.05;
   --fds-font-line-height-title: 1.1;
   --fds-font-line-height-heading: 1.1;
@@ -82,6 +83,7 @@
   --fds-font-line-height-overline: 1.3;
   --fds-font-line-height-label: 1.2;
   --fds-font-line-height-field: 1.5;
+  --fds-font-line-height-quote: 1.4;
   --fds-font-weight-display: 500;
   --fds-font-weight-title: 500;
   --fds-font-weight-heading: 500;
@@ -93,6 +95,7 @@
   --fds-font-weight-overline: 600;
   --fds-font-weight-label: 500;
   --fds-font-weight-field: 400;
+  --fds-font-weight-quote: 400;
   --fds-font-letter-spacing-display: -0.03em;
   --fds-font-letter-spacing-title: -0.025em;
   --fds-font-letter-spacing-heading: -0.025em;
@@ -104,8 +107,10 @@
   --fds-font-letter-spacing-overline: 0.12em;
   --fds-font-letter-spacing-label: 0.06em;
   --fds-font-letter-spacing-field: 0;
+  --fds-font-letter-spacing-quote: 0;
   --fds-font-text-transform-overline: uppercase; /** Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out. */
   --fds-font-text-transform-label: uppercase; /** Button and navigation link text is always uppercase. Write it in sentence case in the HTML. */
+  --fds-font-style-quote: italic; /** Quote is always italic. Syne has no italic of its own, so the browser slants it. */
   --fds-color-text: var(--fds-navy-900); /** All text: headings, body, labels, links, eyebrows, metric numbers. The only main text colour (decision 20). On a dark surface it becomes color-text-on-dark. */
   --fds-color-text-muted: var(--fds-stone-600); /** Secondary text: captions, meta, hints. 4.85:1 or better on every light background. On a dark surface it becomes color-text-muted-on-dark. */
   --fds-color-text-emphasis: var(--fds-gold-800); /** Gold italic words in headings (decision 18). Allowed only in display, title and heading, the roles that never go below 24px (decision 28). Never in subheading, card-title or text roles: at 3.5–3.8:1 on the beige backgrounds (4.3:1 on white) it passes AA only as large text. On a dark surface it becomes color-text-emphasis-on-dark. */
@@ -149,6 +154,7 @@
   --fds-font-family-overline: var(--fds-font-typeface-inter);
   --fds-font-family-label: var(--fds-font-typeface-inter);
   --fds-font-family-field: var(--fds-font-typeface-inter);
+  --fds-font-family-quote: var(--fds-font-typeface-syne);
   --fds-color-text-placeholder: var(--fds-color-text-muted); /** Input placeholders (decision 19). Forms appear only on light surfaces. */
 }
 
@@ -166,7 +172,8 @@
   --fds-color-text-on-action: var(--fds-color-text-on-accent);
 }
 
-.fds-card:not(.fds-card--dark) {
+.fds-card:not(.fds-card--dark),
+.fds-highlight:not(.fds-highlight--dark) {
   --fds-color-text: var(--fds-navy-900);
   --fds-color-text-muted: var(--fds-stone-600);
   --fds-color-text-emphasis: var(--fds-gold-800);
@@ -177,11 +184,13 @@
   --fds-color-text-on-action: var(--fds-sand-50);
 }
 
-.fds-card:not(.fds-card--dark) > * {
+.fds-card:not(.fds-card--dark) > *,
+.fds-highlight:not(.fds-highlight--dark) > * {
   --fds-color-focus: var(--fds-navy-900);
 }
 
-.fds-card--dark {
+.fds-card--dark,
+.fds-highlight--dark {
   --fds-color-text: var(--fds-color-text-on-dark);
   --fds-color-text-muted: var(--fds-color-text-muted-on-dark);
   --fds-color-text-emphasis: var(--fds-color-text-emphasis-on-dark);
@@ -192,7 +201,8 @@
   --fds-color-text-on-action: var(--fds-color-text-on-accent);
 }
 
-.fds-card--dark > * {
+.fds-card--dark > *,
+.fds-highlight--dark > * {
   --fds-color-focus: var(--fds-color-focus-on-dark);
 }
 
