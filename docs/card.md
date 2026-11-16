@@ -28,8 +28,7 @@ Cards in a row are as tall as the tallest; the footer sits at the bottom of each
 | Text only | `fds-card` | Articles, notes, quotes, anything without a picture. |
 | With an image | `fds-card fds-card--image` | Case studies, projects: an Image on top, at 16:10. A linked one shows the gold badge on hover. |
 | Default | — | Every card, on any surface. It's always white with dark text: inside `.fds-surface-dark` it brings back the light roles for itself. |
-| Secondary | `fds-card--dark` | A quieter card for a dark surface, such as a row of experience cards: a light veil over the surface and a border, no fill of its own. Choose it on purpose; nothing switches a card to it by itself. Not for light surfaces: there the veil can't be seen. |
-| Secondary, with a sheen | `fds-card--dark fds-card--sheen` | A prototype to compare with the flat veil: the veil is strongest at the top left corner and fades to nothing at the bottom right. |
+| Secondary | `fds-card--dark` | A quieter card for a dark surface, such as a row of experience cards: a diagonal sheen of light over the surface, strongest at the top left corner and fading to nothing at the bottom right, and a border; no fill of its own. Choose it on purpose; nothing switches a card to it by itself. Not for light surfaces: there the sheen can't be seen. |
 
 ## The hover badge
 
@@ -64,11 +63,11 @@ Every type in every state, on the page background, on a subtle surface and insid
 
 The lift, the shadow and the badge take `duration-base` with `easing-standard`. Under reduced motion the card doesn't lift and the badge doesn't fade or scale; the shadow and the badge still show.
 
-| Pair | Default card | Secondary card, flat veil | Secondary card, peak of the sheen |
-| --- | --- | --- | --- |
-| Title, `color-text` | 11.27:1 | 8.16:1 | 7.33:1 |
-| Overline, text and meta, `color-text-muted` | 5.91:1 | 5.10:1 | 4.58:1 |
-| Arrow on the badge, `color-text-on-accent` on `color-accent` | 6.11:1 | 6.11:1 | 6.11:1 |
+| Pair | Default card | Secondary card, at the peak of the sheen |
+| --- | --- | --- |
+| Title, `color-text` | 11.27:1 | 7.33:1 |
+| Overline, text and meta, `color-text-muted` | 5.91:1 | 4.58:1 |
+| Arrow on the badge, `color-text-on-accent` on `color-accent` | 6.11:1 | 6.11:1 |
 
 The border is decorative: a linked card is found by its heading link, not by its outline.
 
@@ -130,7 +129,7 @@ Padding `space-6`. Overline to title `space-3`, title to text `space-2`, at leas
   </div>
 </article>
 
-<!-- Secondary card, on a dark surface (add fds-card--sheen to compare the diagonal sheen) -->
+<!-- Secondary card, on a dark surface  -->
 <section class="fds-surface-dark">
 <article class="fds-card fds-card--dark">
   <div class="fds-card__body">

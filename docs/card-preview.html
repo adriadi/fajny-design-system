@@ -360,8 +360,8 @@
  *   </article>
  *
  * Variants: fds-card--image (an fds-image on top, in an fds-card__media; a linked image card also has
- * an fds-card__badge there), fds-card--dark (the secondary card, for a dark surface: a veil of light
- * over the surface; fds-card--sheen fades that veil diagonally, a prototype to compare).
+ * an fds-card__badge there), fds-card--dark (the secondary card, for a dark surface: a diagonal sheen of
+ * light over the surface).
  * A card with an fds-card__link in its title is one link: the link's ::after covers the whole card.
  * A card without it has no hover. States come from the element: :hover, :active, :focus-visible.
  *
@@ -383,8 +383,10 @@
   color: var(--fds-color-text);
 }
 
-/* The secondary card (decision 66) is for a dark surface: it has no fill of its own but a veil of
-   light over the surface, drawn behind its content, and a border for its edge. */
+/* The secondary card (decisions 66, 68) is for a dark surface: it has no fill of its own but a sheen
+   of light over the surface, drawn behind its content, and a border for its edge. The sheen is
+   strongest at the top left and fades to nothing at the bottom right. Its peak is one and a half
+   times the tint opacity: at twice that, the muted text at the corner would drop under 4.5:1. */
 .fds-card--dark {
   isolation: isolate;
   background-color: transparent;
@@ -395,18 +397,9 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: var(--fds-color-surface);
-  opacity: var(--fds-opacity-tint);
-  pointer-events: none;
-}
-
-/* Prototype B: the veil is strongest at the top left and fades to nothing at the bottom right. Its
-   peak is one and a half times the flat veil: at twice the flat veil the muted text at the corner
-   would drop under 4.5:1. */
-.fds-card--sheen::before {
-  background-color: transparent;
   background-image: linear-gradient(to bottom right, var(--fds-color-surface), transparent);
   opacity: calc(var(--fds-opacity-tint) * 1.5);
+  pointer-events: none;
 }
 
 /* ── Parts ───────────────────────────────────────────────── */
@@ -837,7 +830,7 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
           </div>
         </article>
     </div>
-    <p class="note">Secondary card, prototype A: a flat veil of light over the surface</p>
+    <p class="note">Secondary card: a diagonal sheen of light over the surface</p>
     <div class="grid">
       <article class="fds-card fds-card--dark" id="c25">
           <div class="fds-card__body"><p class="fds-card__overline">2022 – 2024</p>
@@ -860,33 +853,6 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
       <article class="fds-card fds-card--image fds-card--dark" id="c28"><div class="fds-card__media"><img class="fds-image" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%201000%22%3E%3Crect%20width%3D%221600%22%20height%3D%221000%22%20fill%3D%22%23E4EAF4%22%2F%3E%3Crect%20x%3D%22420%22%20y%3D%22180%22%20width%3D%22760%22%20height%3D%22520%22%20rx%3D%2224%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2228%22%20rx%3D%2214%22%20fill%3D%22%23B3C8E6%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22310%22%20width%3D%22560%22%20height%3D%2216%22%20rx%3D%228%22%20fill%3D%22%23D9D1C5%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22345%22%20width%3D%22480%22%20height%3D%2216%22%20rx%3D%228%22%20fill%3D%22%23D9D1C5%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22420%22%20width%3D%22640%22%20height%3D%22220%22%20rx%3D%2216%22%20fill%3D%22%23F5F1EB%22%2F%3E%3Ccircle%20cx%3D%221240%22%20cy%3D%22760%22%20r%3D%22120%22%20fill%3D%22%23B3C8E6%22%2F%3E%3C%2Fsvg%3E" alt="" width="1600" height="1000"><span class="fds-card__badge" aria-hidden="true"><svg data-icon="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></div>
           <div class="fds-card__body"><p class="fds-card__overline">Case study</p>
             <h3 class="fds-card__title"><a class="fds-card__link" href="#c28">Field notes that work offline</a></h3><p class="fds-card__text">Mobile reporting for teams with no signal, and what it changed.</p>
-            <div class="fds-card__footer"><span class="fds-card__more" aria-hidden="true">Read more</span></div>
-          </div>
-        </article>
-    </div>
-    <p class="note">Secondary card, prototype B: a diagonal sheen, strongest at the top left</p>
-    <div class="grid">
-      <article class="fds-card fds-card--dark fds-card--sheen" id="c29">
-          <div class="fds-card__body"><p class="fds-card__overline">2022 – 2024</p>
-            <h3 class="fds-card__title">Senior product designer</h3><p class="fds-card__text">Led the design of a booking flow for a team of twelve.</p>
-            
-          </div>
-        </article>
-      <article class="fds-card fds-card--dark fds-card--sheen" id="c30">
-          <div class="fds-card__body"><p class="fds-card__overline">2019 – 2022</p>
-            <h3 class="fds-card__title">Product designer</h3><p class="fds-card__text">Built the first design system and the research habit.</p>
-            
-          </div>
-        </article>
-      <article class="fds-card fds-card--dark fds-card--sheen" id="c31">
-          <div class="fds-card__body"><p class="fds-card__overline">2016 – 2019</p>
-            <h3 class="fds-card__title">UX designer</h3><p class="fds-card__text">Shipped mobile apps for three small teams.</p>
-            
-          </div>
-        </article>
-      <article class="fds-card fds-card--image fds-card--dark fds-card--sheen" id="c32"><div class="fds-card__media"><img class="fds-image" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%201000%22%3E%3Crect%20width%3D%221600%22%20height%3D%221000%22%20fill%3D%22%23E4EAF4%22%2F%3E%3Crect%20x%3D%22420%22%20y%3D%22180%22%20width%3D%22760%22%20height%3D%22520%22%20rx%3D%2224%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2228%22%20rx%3D%2214%22%20fill%3D%22%23B3C8E6%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22310%22%20width%3D%22560%22%20height%3D%2216%22%20rx%3D%228%22%20fill%3D%22%23D9D1C5%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22345%22%20width%3D%22480%22%20height%3D%2216%22%20rx%3D%228%22%20fill%3D%22%23D9D1C5%22%2F%3E%3Crect%20x%3D%22480%22%20y%3D%22420%22%20width%3D%22640%22%20height%3D%22220%22%20rx%3D%2216%22%20fill%3D%22%23F5F1EB%22%2F%3E%3Ccircle%20cx%3D%221240%22%20cy%3D%22760%22%20r%3D%22120%22%20fill%3D%22%23B3C8E6%22%2F%3E%3C%2Fsvg%3E" alt="" width="1600" height="1000"><span class="fds-card__badge" aria-hidden="true"><svg data-icon="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></div>
-          <div class="fds-card__body"><p class="fds-card__overline">Case study</p>
-            <h3 class="fds-card__title"><a class="fds-card__link" href="#c32">Field notes that work offline</a></h3><p class="fds-card__text">Mobile reporting for teams with no signal, and what it changed.</p>
             <div class="fds-card__footer"><span class="fds-card__more" aria-hidden="true">Read more</span></div>
           </div>
         </article>

@@ -54,8 +54,8 @@ const CARDS = [
 ];
 
 let n = 0;
-const cardHtml = (c, dark, state, sheen) => {
-  const classes = ['fds-card', c.image && 'fds-card--image', dark && 'fds-card--dark', sheen && 'fds-card--sheen'].filter(Boolean).join(' ');
+const cardHtml = (c, dark, state) => {
+  const classes = ['fds-card', c.image && 'fds-card--image', dark && 'fds-card--dark'].filter(Boolean).join(' ');
   const preview = state ? ` data-preview="${state}"` : '';
   const id = `c${++n}`;
   const title = c.linked ? `<a class="fds-card__link" href="#${id}">${c.title}</a>` : c.title;
@@ -77,17 +77,17 @@ const cardHtml = (c, dark, state, sheen) => {
 const SURFACES = [['Page background', ''], ['Subtle surface', ' subtle'], ['Dark surface', ' fds-surface-dark']];
 
 // The secondary card (decision 66) in a row like the Experience section: a few non-linked cards and
-// one linked card with an image, flat veil (A) against the diagonal sheen (B).
+// one linked card with an image.
 const EXPERIENCE = [
   { image: false, linked: false, overline: '2022 – 2024', title: 'Senior product designer', text: 'Led the design of a booking flow for a team of twelve.' },
   { image: false, linked: false, overline: '2019 – 2022', title: 'Product designer', text: 'Built the first design system and the research habit.' },
   { image: false, linked: false, overline: '2016 – 2019', title: 'UX designer', text: 'Shipped mobile apps for three small teams.' },
   CARDS[1],
 ];
-const secondary = (title, sheen) => `
-    <p class="note">${title}</p>
+const secondary = () => `
+    <p class="note">Secondary card: a diagonal sheen of light over the surface</p>
     <div class="grid">
-      ${EXPERIENCE.map((c) => cardHtml(c, true, '', sheen)).join('\n      ')}
+      ${EXPERIENCE.map((c) => cardHtml(c, true, '')).join('\n      ')}
     </div>`;
 
 const panel = ([name, cls]) => {
@@ -105,7 +105,7 @@ const panel = ([name, cls]) => {
       ${cardHtml(CARDS[0], false, 'focus')}
       ${cardHtml(CARDS[1], false, 'hover')}
       ${cardHtml(CARDS[1], false, 'focus')}
-    </div>${dark ? secondary('Secondary card, prototype A: a flat veil of light over the surface', false) + secondary('Secondary card, prototype B: a diagonal sheen, strongest at the top left', true) : ''}
+    </div>${dark ? secondary() : ''}
   </section>`;
 };
 

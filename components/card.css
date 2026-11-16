@@ -14,8 +14,8 @@
  *   </article>
  *
  * Variants: fds-card--image (an fds-image on top, in an fds-card__media; a linked image card also has
- * an fds-card__badge there), fds-card--dark (the secondary card, for a dark surface: a veil of light
- * over the surface; fds-card--sheen fades that veil diagonally, a prototype to compare).
+ * an fds-card__badge there), fds-card--dark (the secondary card, for a dark surface: a diagonal sheen of
+ * light over the surface).
  * A card with an fds-card__link in its title is one link: the link's ::after covers the whole card.
  * A card without it has no hover. States come from the element: :hover, :active, :focus-visible.
  *
@@ -37,8 +37,10 @@
   color: var(--fds-color-text);
 }
 
-/* The secondary card (decision 66) is for a dark surface: it has no fill of its own but a veil of
-   light over the surface, drawn behind its content, and a border for its edge. */
+/* The secondary card (decisions 66, 68) is for a dark surface: it has no fill of its own but a sheen
+   of light over the surface, drawn behind its content, and a border for its edge. The sheen is
+   strongest at the top left and fades to nothing at the bottom right. Its peak is one and a half
+   times the tint opacity: at twice that, the muted text at the corner would drop under 4.5:1. */
 .fds-card--dark {
   isolation: isolate;
   background-color: transparent;
@@ -49,18 +51,9 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: var(--fds-color-surface);
-  opacity: var(--fds-opacity-tint);
-  pointer-events: none;
-}
-
-/* Prototype B: the veil is strongest at the top left and fades to nothing at the bottom right. Its
-   peak is one and a half times the flat veil: at twice the flat veil the muted text at the corner
-   would drop under 4.5:1. */
-.fds-card--sheen::before {
-  background-color: transparent;
   background-image: linear-gradient(to bottom right, var(--fds-color-surface), transparent);
   opacity: calc(var(--fds-opacity-tint) * 1.5);
+  pointer-events: none;
 }
 
 /* ── Parts ───────────────────────────────────────────────── */

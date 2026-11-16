@@ -1,9 +1,11 @@
 // Builds tokens/figma/card-component.js: a Figma plugin script, run through the Figma MCP use_figma
 // tool, that writes the Card component set and the Card page (decisions 58, 62). The Card with an
 // image nests the Image component (run image-component.js first), so the page belongs to the
-// Advanced group. The secondary card (Style=Dark) is for dark surfaces: a veil of light, the fill in
-// color/surface at opacity/tint, over a backdrop in color/surface-dark that its variant carries, since
-// the veil can't be seen on a light page. Its gradient prototype (B) is shown in Variants for comparison.
+// Advanced group. The secondary card (Style=Dark) is for dark surfaces: a diagonal sheen of light, a
+// gradient of color/surface from opacity/tint x sheenPeak at the top left to nothing at the bottom
+// right. The card has no opaque fill of its own: the dark backdrop that lets the sheen be seen lives
+// in the frames around it (the Variants surfaces and a backdrop behind the set's Dark rows), never
+// inside the component.
 //
 // Image (No, Yes) × Link (Yes, No) × Style (Default, Dark) × State. A linked card has Default, Hover,
 // Focus and Active; a card that isn't a link has Default only. Overline, Title, Text and Meta are text
@@ -120,8 +122,8 @@ async function fill(comp, v) {
   comp.primaryAxisSizingMode = 'AUTO';
   comp.counterAxisSizingMode = 'FIXED';
   comp.resize(S.width, comp.height);
-  // The secondary card carries the dark surface it belongs on, so its veil and its text can be seen.
-  comp.fills = v.style === 'Dark' ? [docPaint(S.backdrop)] : [];
+  // No fill on the variant, whatever its style: the secondary card is see-through.
+  comp.fills = [];
   comp.clipsContent = false;
   comp.itemSpacing = 0;
   for (const f of ['paddingLeft', 'paddingRight']) { comp.setBoundVariable(f, null); comp[f] = 0; }
@@ -134,8 +136,7 @@ async function fill(comp, v) {
   card.setExplicitVariableModeForCollection(cc, cid);
   const [tc, tid] = docModeOf('typography', 'Desktop');
   card.setExplicitVariableModeForCollection(tc, tid);
-  // The default card is white; the secondary card is the same white at opacity/tint, a veil (its
-  // paint is set once the other paints are resolved, below).
+  // The default card is white; the secondary card's sheen is set once the other paints are resolved, below.
   card.fills = [docPaint(S.fill[v.style])];
   card.strokes = [docPaint(S.border)];
   card.strokeAlign = 'INSIDE';
@@ -239,7 +240,7 @@ if (!set) {
   for (const comp of fresh) set.appendChild(comp);
 }
 ids.created = fresh.map((c) => c.id);
-set.description = 'Text only or with an Image on top; default (always white) or secondary (a veil of light for dark surfaces); linked (one link, lifts by space-1 with its shadow on hover, and a gold badge on an image card) or not (no hover). Decisions 62, 65, 66. Bound to the color, spacing, radius, focus and border-width variables, the shadow effect styles and the text styles. Same as components/card.css.';
+set.description = 'Text only or with an Image on top; default (always white) or secondary (a diagonal sheen of light for dark surfaces); linked (one link, lifts by space-1 with its shadow on hover, and a gold badge on an image card) or not (no hover). Decisions 62, 65, 66, 68. Bound to the color, spacing, radius, focus and border-width variables, the shadow effect styles and the text styles. Same as components/card.css.';
 
 // Text and boolean properties: found by name, created once, then every variant's layers point to them.
 const propKey = (name, type, val) => Object.keys(set.componentPropertyDefinitions).find((k) => k.split('#')[0] === name)
@@ -294,6 +295,19 @@ docSurface(holder, 'Light surface');
 for (const child of [...holder.children]) if (child !== set) child.remove();
 set.x = 0; set.y = 0;
 holder.resize(set.width, set.height);
+// The sheen can't be seen on a light page, so the Dark rows of the set sit on a dark backdrop. It is a
+// rectangle in this frame behind the set, never a fill of the set or of a variant.
+set.fills = [];
+const darkRows = rows.filter((row) => row.key.endsWith('Dark'));
+const backdropTop = Math.min(...darkRows.flatMap((row) => row.comps.map((c) => c.y))) - PAD / 2;
+const backdropBottom = Math.max(...darkRows.flatMap((row) => row.comps.map((c) => c.y + c.height))) + PAD / 2;
+const backdrop = figma.createRectangle();
+backdrop.name = 'Dark surface backdrop';
+holder.insertChild(0, backdrop);
+if (holder.layoutMode !== 'NONE') backdrop.layoutPositioning = 'ABSOLUTE';
+backdrop.x = 0; backdrop.y = backdropTop;
+backdrop.resize(set.width, backdropBottom - backdropTop);
+backdrop.fills = [docPaint(S.backdrop)];
 
 // A bound paint also stores a fallback colour, and Figma draws main components with it. Set it to
 // the value the variable resolves to where the paint is. Nested instances keep their main's paints.
@@ -315,14 +329,20 @@ async function resolvePaints(node) {
 }
 await resolvePaints(holder);
 
-// The secondary card's veil: color/surface (white) at opacity/tint. Set last, and not bound to the
-// colour variable: a bound paint loses its opacity in instances. The colour is read from color/surface
-// as it is now; the opacity from opacity/tint.
+// The secondary card's sheen: color/surface (white) fading from opacity/tint x sheenPeak at the top
+// left to nothing at the bottom right. Set last, and not bound to the colour variable: a bound stop
+// ignores its own alpha. The colour is read from color/surface as it is now; the opacity from
+// opacity/tint.
 for (const comp of set.children) {
   if (!comp.name.includes('Style=Dark')) continue;
   const card = comp.findChild((n) => n.name === 'card');
   const { r, g, b } = docVar(S.fill.Dark).resolveForConsumer(card).value;
-  card.fills = [{ type: 'SOLID', color: { r, g, b }, opacity: value(S.veil) / 100 }];
+  const peak = value(S.veil) / 100 * S.sheenPeak;
+  card.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[0.5, 0.5, 0], [-0.5, 0.5, 0.5]],
+    gradientStops: [
+      { position: 0, color: { r, g, b, a: peak } },
+      { position: 1, color: { r, g, b, a: 0 } },
+    ] }];
 }
 
 // ── The page around the set: rebuilt on every run ──
@@ -335,30 +355,13 @@ slot.name = 'Component set placeholder'; slot.fills = [];
 slot.resize(holder.width, holder.height);
 setSection.appendChild(slot);
 
-// Variants: every kind of card at rest, on three surfaces; on the dark surface also the two
-// treatments of the secondary card, side by side (A, the flat veil, is the one in the set).
+// Variants: every kind of card at rest, on three surfaces; on the dark surface also the secondary card.
 const variantsSection = await docSection(root, 'Variants', PLAN.variantsSubtitle, 'subheading');
 const shown = [['No', 'Yes'], ['Yes', 'Yes'], ['No', 'No'], ['Yes', 'No']];
 const linkedStates = [['No', 'Hover'], ['No', 'Focus'], ['Yes', 'Hover'], ['Yes', 'Focus']];
 const instanceOf = (image, link, style, state) =>
   set.findChild((n) => n.name === variantName({ image, link, style, state })).createInstance();
 
-// Prototype B: the same veil, strongest at the top left and fading to nothing at the bottom right.
-// The peak is sheenPeak times the flat veil. The stops take the colour of color/surface as it is now;
-// they aren't bound, because a bound stop ignores its own alpha.
-function sheen(instance) {
-  const card = instance.findOne((n) => n.name === 'card');
-  const surface = docVar(S.fill.Dark);
-  const { r, g, b } = surface.resolveForConsumer(card).value;
-  const peak = value(S.veil) / 100 * S.sheenPeak;
-  card.fills = [{ type: 'GRADIENT_LINEAR', gradientTransform: [[0.5, 0.5, 0], [-0.5, 0.5, 0.5]],
-    gradientStops: [
-      { position: 0, color: { r, g, b, a: peak } },
-      { position: 1, color: { r, g, b, a: 0 } },
-    ] }];
-}
-
-const treatments = [];
 for (const [name, mode, fillRole] of PLAN.surfaces) {
   const frame = docFrame(name, 'VERTICAL', { itemSpacing: 32, paddingTop: 40, paddingBottom: 40, paddingLeft: 40, paddingRight: 40 });
   variantsSection.appendChild(frame);
@@ -370,17 +373,14 @@ for (const [name, mode, fillRole] of PLAN.surfaces) {
     ['Linked card, hovered and focused (the gold badge shows on an image card)', 'Default', null, linkedStates.map(([i, st]) => [i, 'Yes', st])],
   ];
   if (mode === 'Dark surface') {
-    rows.push(['Secondary card, prototype A: a flat veil of light over the surface (the one in the component set)', 'Dark', 'A', shown.map(([i, l]) => [i, l, 'Default'])]);
-    rows.push(['Secondary card, prototype B: a diagonal sheen, strongest at the top left (for comparison)', 'Dark', 'B', shown.map(([i, l]) => [i, l, 'Default'])]);
+    rows.push(['Secondary card: a diagonal sheen of light over the surface', 'Dark', null, shown.map(([i, l]) => [i, l, 'Default'])]);
   }
   for (const [title, style, treatment, cards] of rows) {
     frame.appendChild(await docText(title, 'small', 'color/text-muted'));
     const line = docFrame(style + ' ' + (treatment || ''), 'HORIZONTAL', { itemSpacing: 24, counterAxisAlignItems: 'MIN' });
     frame.appendChild(line);
     for (const [image, link, state] of cards) {
-      const instance = instanceOf(image, link, style, state);
-      line.appendChild(instance);
-      if (treatment === 'B') { sheen(instance); treatments.push(instance.id); }
+      line.appendChild(instanceOf(image, link, style, state));
     }
   }
 }
@@ -394,7 +394,7 @@ holder.y = slot.absoluteBoundingBox.y;
 docUnclip(holder);
 
 return { componentSetId: set.id, variants: set.children.length, updated: ids.updated.length, created: ids.created.length,
-  variantIds: set.children.map((c) => c.id).sort(), sheenInstances: treatments.length, properties: Object.keys(set.componentPropertyDefinitions), page: componentPage.id,
+  variantIds: set.children.map((c) => c.id).sort(), properties: Object.keys(set.componentPropertyDefinitions), page: componentPage.id,
   order: figma.root.children.map((p) => p.name) };
 `;
 

@@ -26,7 +26,7 @@
   },
   "duration": {
     "$type": "duration",
-    "$description": "With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes. An animation that starts on its own stops within 5 seconds (WCAG 2.2.2).",
+    "$description": "An animation that starts on its own stops within 5 seconds (WCAG 2.2.2), except a loading indicator, which keeps going until its content arrives or fails — it isn't decorative, and it ends on its own. With prefers-reduced-motion: reduce, drop every movement (transforms, slides, fade-in travel, shakes, smooth scrolling, looping animations) and keep colour and opacity changes.",
     "fast": { "$value": "200ms", "$description": "Colour, background and border changes; presses." },
     "base": { "$value": "300ms", "$description": "Hover lifts with shadow, menus, toggles." },
     "slow": { "$value": "700ms", "$description": "Content fading in as it appears." }
