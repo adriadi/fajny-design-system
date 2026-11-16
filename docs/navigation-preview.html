@@ -324,12 +324,19 @@
  *   </nav>
  *
  * Variants: the full navigation, and fds-nav--minimal (a brand name and a back link, no menu; for the
- * case-study bar). The current page is the link with aria-current="page": it gets a 1.5px color-accent
- * underline. The bar is sticky and has a solid fill (color-background, or color-surface-dark with
- * .fds-surface-dark on it).
+ * case-study bar). The current page is the link with aria-current="page": it gets a 1.5px color-border-rule
+ * underline and its text takes the same role: navy on a light surface, gold on a dark one (the role switches
+ * by itself inside .fds-surface-dark). The bar is sticky and has a solid fill (color-background, or
+ * color-surface-dark with .fds-surface-dark on it); once the page has scrolled it turns see-through and
+ * blurred on a light surface (fds-nav--scrolled), and the open drawer dims the page with a scrim.
+ *
+ * The see-through fill, the blur and the scrim are decoration that has no token (decision 54): they are
+ * literals, and each line carries the marker "Decoration, not a token" that scripts/check-components.js
+ * accepts. Nothing else in a component may be a literal.
  *
  * Classes the script sets: fds-nav--ready (the script is running), fds-nav--collapsed (the links don't fit
- * in the bar, so they sit in a drawer under it, behind the toggle) and fds-nav--open (the drawer is open).
+ * in the bar, so they sit in a drawer under it, behind the toggle), fds-nav--open (the drawer is open) and
+ * fds-nav--scrolled (the page has scrolled).
  * The collapse comes from measuring the bar, not from a breakpoint, so it follows the number and the length
  * of the links. Without the script the links stay in the bar and wrap.
  */
@@ -354,6 +361,12 @@
 
 .fds-nav.fds-surface-dark {
   --fds-nav-fill: var(--fds-color-surface-dark);
+}
+
+/* Scrolled, on a light surface: the bar is see-through and blurred, so the page shows faintly behind it. */
+.fds-nav--scrolled:not(.fds-surface-dark) {
+  background-color: oklch(96% 0.012 75 / 0.92); /* Decoration, not a token: a see-through fill. */
+  backdrop-filter: blur(12px); /* Decoration, not a token: a blur. */
 }
 
 /* With the script running, the bar is one line; it collapses instead of wrapping. */
@@ -406,8 +419,8 @@
 }
 
 .fds-nav .fds-nav__link[aria-current="page"] {
-  border-bottom-color: var(--fds-color-accent);
-  color: var(--fds-color-text);
+  border-bottom-color: var(--fds-color-border-rule);
+  color: var(--fds-color-border-rule);
 }
 
 /* ── Menu button: only while the links are collapsed ─────── */
@@ -535,11 +548,14 @@
     transform var(--fds-duration-base) var(--fds-easing-standard);
 }
 
-/* Open: an invisible layer over the page, so a click or tap outside the drawer closes it. */
+/* Open: a scrim over the page, under the bar, so a click or tap outside the drawer closes it. The script
+   puts it at the end of <body>, not inside the bar: a bar with backdrop-filter would hold a fixed child
+   inside itself. */
 .fds-nav__backdrop {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 99;
+  background-color: oklch(0% 0 0 / 0.18); /* Decoration, not a token: a scrim. */
 }
 
 /* ── Minimal: a brand name and a back link ───────────────── */
@@ -571,12 +587,13 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
 .frame { position: relative; max-width: calc(var(--fds-space-30) * 8); border: var(--fds-border-width-default) solid var(--fds-color-border); background: var(--fds-color-surface-subtle); }
 .frame.phone { width: calc(var(--fds-space-30) * 3 + var(--fds-space-10)); max-width: 100%; min-height: calc(var(--fds-space-30) * 3); }
 .frame .fds-nav { position: relative; }
+.frame.behind { background: linear-gradient(to right, var(--fds-color-surface-highlight), var(--fds-color-accent) 70%, var(--fds-color-surface-dark)); }
 </style>
 </head>
 <body id="top">
   <section class="panel">
     <h2>Full navigation</h2>
-    <p class="note">The current page has the gold underline and aria-current="page"; Contact is a Button</p>
+    <p class="note">The current page has the underline and aria-current="page" (navy on a light surface); Contact is a Button</p>
     <div class="frame">
     <nav class="fds-nav" aria-label="Main">
       <a class="fds-nav__brand" href="#top">Brand name</a>
@@ -591,7 +608,7 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
       </div>
     </nav>
     </div>
-    <p class="note">On a dark surface: the roles switch by themselves, and the underline stays gold</p>
+    <p class="note">On a dark surface: the roles switch by themselves: the current link and its underline turn gold</p>
     <div class="frame">
     <nav class="fds-nav fds-surface-dark" aria-label="Main">
       <a class="fds-nav__brand" href="#top">Brand name</a>
@@ -609,7 +626,7 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
   </section>
   <section class="panel">
     <h2>Collapsed: the links don't fit</h2>
-    <p class="note">Closed: the drawer is hidden and out of the tab order. Press the menu button, then try Tab, Shift+Tab and Escape</p>
+    <p class="note">Closed: the drawer is hidden and out of the tab order. Press the menu button (the page dims behind the drawer), then try Tab, Shift+Tab and Escape</p>
     <div class="frame phone">
     <nav class="fds-nav" aria-label="Main">
       <a class="fds-nav__brand" href="#top">Brand name</a>
@@ -641,6 +658,24 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
     </div>
   </section>
   <section class="panel">
+    <h2>Scrolled</h2>
+    <p class="note">After 40px of scroll the bar on a light surface is see-through and blurred, so the page shows faintly behind it (the colours behind are only for the preview)</p>
+    <div class="frame behind">
+    <nav class="fds-nav fds-nav--ready fds-nav--scrolled" aria-label="Main">
+      <a class="fds-nav__brand" href="#top">Brand name</a>
+      <button class="fds-nav__toggle" type="button" aria-expanded="false" aria-controls="menu-5" aria-label="Menu"><span class="fds-nav__bars" aria-hidden="true"></span></button>
+      <div class="fds-nav__menu" id="menu-5">
+        <ul class="fds-nav__list">
+        <li><a class="fds-button fds-button--link fds-nav__link" href="#work" aria-current="page">Work</a></li>
+        <li><a class="fds-button fds-button--link fds-nav__link" href="#about">About</a></li>
+        <li><a class="fds-button fds-button--link fds-nav__link" href="#journal">Journal</a></li>
+        <li><a class="fds-button fds-button--primary fds-button--nav" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
+  </section>
+  <section class="panel">
     <h2>Minimal</h2>
     <p class="note">A brand name and a back link: the case-study bar. No menu, no drawer</p>
     <div class="frame">
@@ -658,8 +693,10 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
  *    behind the menu button). It measures the bar, so there is no breakpoint to keep in step with the links.
  *  - The drawer: the button sets aria-expanded; while the drawer is closed it is hidden and inert, so none
  *    of its links can be reached by keyboard; while it is open, Tab and Shift+Tab stay inside the navigation.
- *  - Closing: Escape, a click outside the drawer, or choosing a link closes it, and focus goes back to the
- *    menu button.
+ *  - Closing: Escape, a click on the scrim outside the drawer, or choosing a link closes it, and focus goes
+ *    back to the menu button.
+ *  - Scrolled: after 40px of scroll it adds fds-nav--scrolled, which makes the bar on a light surface
+ *    see-through and blurred.
  *  - Links to a section of the page (href="#id") are real links; the script adds a smooth scroll to them,
  *    and a plain jump under prefers-reduced-motion. Give the sections a scroll-margin-top the height of
  *    the bar, since it is sticky.
@@ -675,6 +712,10 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
     var toggle = nav.querySelector('.fds-nav__toggle');
     var menu = nav.querySelector('.fds-nav__menu');
     nav.classList.add(READY);
+    var SCROLLED = 'fds-nav--scrolled';
+    function markScroll() { nav.classList.toggle(SCROLLED, window.scrollY > 40); }
+    window.addEventListener('scroll', markScroll, { passive: true });
+    markScroll();
     // The minimal bar has no menu: nothing to collapse or open, only the smooth scroll below.
     var backdrop = null;
 
@@ -726,7 +767,8 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
       backdrop = document.createElement('div');
       backdrop.className = 'fds-nav__backdrop';
       backdrop.hidden = true;
-      nav.appendChild(backdrop);
+      // At the end of <body>, under the bar: inside the bar, its backdrop-filter would hold a fixed child.
+      document.body.appendChild(backdrop);
       backdrop.addEventListener('click', function () { close(true); });
 
       toggle.addEventListener('click', function () { if (isOpen()) close(true); else open(); });

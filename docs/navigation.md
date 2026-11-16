@@ -11,7 +11,7 @@ Two variants of one component: the full navigation, and the minimal bar for page
 | Full | `fds-nav` | The main navigation of the site: brand, links, a call to action. |
 | Minimal | `fds-nav fds-nav--minimal` | A page deep in the site that needs only a brand name and a way back, such as a case study: no menu, no drawer. |
 
-On a dark surface, add `fds-surface-dark` to the navigation: the roles switch by themselves, the bar takes `color-surface-dark`, the call to action turns gold and the current-page underline stays gold.
+On a dark surface, add `fds-surface-dark` to the navigation: the roles switch by themselves, the bar takes `color-surface-dark`, the call to action turns gold, and the current link and its underline turn gold.
 
 ## Parts
 
@@ -29,9 +29,9 @@ Write labels in sentence case: the label text role makes them uppercase.
 
 ## The current page
 
-The link to the page you're on has `aria-current="page"` and a `border-bottom` of 1.5px in `color-accent` under it (the same gold underline as the secondary link), and its text turns `color-text`. Set `aria-current="page"` in the page's own markup, on every page that has a link to itself. A link to a section of the page (`href="#id"`) is never "current": the underline marks the page, not the scroll position, so the navigation doesn't announce changes while you read.
+The link to the page you're on has `aria-current="page"` and a `border-bottom` of 1.5px in `color-border-rule` under it, and its text takes the same role: navy on a light surface, gold inside a dark surface, where the role switches by itself (decisions 72 and 73). Set `aria-current="page"` in the page's own markup, on every page that has a link to itself. A link to a section of the page (`href="#id"`) is never "current": the underline marks the page, not the scroll position, so the navigation doesn't announce changes while you read.
 
-The gold underline on a light surface is 1.64:1 against `color-background` (1.84:1 against `color-surface`), under the 3:1 that WCAG 1.4.11 asks of a graphic that shows a state; on a dark surface it's 6.11:1. The text turning navy is 1.91:1 against the muted links. So on a light surface the marker is the colour pair together, with `aria-current` for screen readers.
+The marker passes on every surface: navy on a light surface is 10.01:1 against `color-background`, 11.27:1 against `color-surface`, 9.24:1 against `color-surface-subtle`; gold on a dark surface is 6.11:1 against `color-surface-dark`. Gold on a light surface (the first idea in decision 72) was 1.64:1, under the 3:1 that WCAG 1.4.11 asks of a graphic that shows a state, which is why the role is `color-border-rule`. The underline is the cue that doesn't depend on colour; `aria-current` is for screen readers.
 
 ## Collapsing
 
@@ -41,7 +41,11 @@ The links collapse into the drawer when they don't fit in the bar: the script me
 | --- | --- |
 | Full | Brand left, links and call to action right; no menu button. |
 | Collapsed, closed | Brand and menu button. The drawer is hidden: out of the tab order and the accessibility tree (`visibility: hidden`, and `inert` from the script). |
-| Collapsed, open | The drawer under the bar, with the links in a column and the call to action full width; the button shows an X and `aria-expanded="true"`. |
+| Collapsed, open | The drawer under the bar, with the links in a column and the call to action full width; the button shows an X and `aria-expanded="true"`. A scrim dims the page behind it, and a click or tap on the scrim closes the drawer. |
+
+## Scrolled
+
+After 40px of scroll the script adds `fds-nav--scrolled`: on a light surface the bar turns see-through (a 92% light fill) and blurred, so the page shows faintly behind it. On a dark surface the bar stays solid. The see-through fill, the blur and the scrim are decoration with no token (decision 54): they're the only literals in `navigation.css`, each on a line marked "Decoration, not a token", and they're listed under "Allowed decoration" in the README.
 
 ## Keyboard and screen readers
 
@@ -53,12 +57,12 @@ The links collapse into the drawer when they don't fit in the bar: the script me
 
 ## Type and size
 
-Brand and links use the `label` text role (13px at 390px, growing to 14px at 1280px; Inter 500; uppercase; 0.06em). The bar is at least `space-16` (64px) high, with the page's `space-gutter` at the sides, a `border-width.default` line under it in `color-border` and a solid fill: `color-background`, or `color-surface-dark` on a dark surface. The links are `space-10` apart; the underline sits `space-1` below the text. The menu button is `space-10` (40px) square, with three `space-6`-wide lines; the links in the drawer have a 48px hit area. Contrast: links `color-text-muted` on `color-background` 5.25:1 (`color-text` on hover and for the current page, 10.01:1); on a dark surface 6.25:1 and 10.01:1.
+Brand and links use the `label` text role (13px at 390px, growing to 14px at 1280px; Inter 500; uppercase; 0.06em). The bar is at least `space-16` (64px) high, with the page's `space-gutter` at the sides, a `border-width.default` line under it in `color-border` and a solid fill: `color-background`, or `color-surface-dark` on a dark surface. The links are `space-10` apart; the underline sits `space-1` below the text. The menu button is `space-10` (40px) square, with three `space-6`-wide lines; the links in the drawer have a 48px hit area. Contrast: links `color-text-muted` on `color-background` 5.25:1 (`color-text` on hover, `color-border-rule` for the current page, both 10.01:1); on a dark surface 6.25:1, 10.01:1 and 6.11:1.
 
 ## Do and don't
 
 - **Do** write the links once, in one `<ul>`: the same markup is the bar and the drawer.
-- **Do** put `aria-current="page"` on the link to the current page.
+- **Do** put `aria-current="page"` on the link to the current page, and let the role colour it.
 - **Do** keep one call to action, as the last item.
 - **Do** give the navigation an `aria-label`.
 - **Don't** put a link and a second copy of it in a separate mobile menu.

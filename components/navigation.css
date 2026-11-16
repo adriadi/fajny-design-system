@@ -16,12 +16,19 @@
  *   </nav>
  *
  * Variants: the full navigation, and fds-nav--minimal (a brand name and a back link, no menu; for the
- * case-study bar). The current page is the link with aria-current="page": it gets a 1.5px color-accent
- * underline. The bar is sticky and has a solid fill (color-background, or color-surface-dark with
- * .fds-surface-dark on it).
+ * case-study bar). The current page is the link with aria-current="page": it gets a 1.5px color-border-rule
+ * underline and its text takes the same role: navy on a light surface, gold on a dark one (the role switches
+ * by itself inside .fds-surface-dark). The bar is sticky and has a solid fill (color-background, or
+ * color-surface-dark with .fds-surface-dark on it); once the page has scrolled it turns see-through and
+ * blurred on a light surface (fds-nav--scrolled), and the open drawer dims the page with a scrim.
+ *
+ * The see-through fill, the blur and the scrim are decoration that has no token (decision 54): they are
+ * literals, and each line carries the marker "Decoration, not a token" that scripts/check-components.js
+ * accepts. Nothing else in a component may be a literal.
  *
  * Classes the script sets: fds-nav--ready (the script is running), fds-nav--collapsed (the links don't fit
- * in the bar, so they sit in a drawer under it, behind the toggle) and fds-nav--open (the drawer is open).
+ * in the bar, so they sit in a drawer under it, behind the toggle), fds-nav--open (the drawer is open) and
+ * fds-nav--scrolled (the page has scrolled).
  * The collapse comes from measuring the bar, not from a breakpoint, so it follows the number and the length
  * of the links. Without the script the links stay in the bar and wrap.
  */
@@ -46,6 +53,12 @@
 
 .fds-nav.fds-surface-dark {
   --fds-nav-fill: var(--fds-color-surface-dark);
+}
+
+/* Scrolled, on a light surface: the bar is see-through and blurred, so the page shows faintly behind it. */
+.fds-nav--scrolled:not(.fds-surface-dark) {
+  background-color: oklch(96% 0.012 75 / 0.92); /* Decoration, not a token: a see-through fill. */
+  backdrop-filter: blur(12px); /* Decoration, not a token: a blur. */
 }
 
 /* With the script running, the bar is one line; it collapses instead of wrapping. */
@@ -98,8 +111,8 @@
 }
 
 .fds-nav .fds-nav__link[aria-current="page"] {
-  border-bottom-color: var(--fds-color-accent);
-  color: var(--fds-color-text);
+  border-bottom-color: var(--fds-color-border-rule);
+  color: var(--fds-color-border-rule);
 }
 
 /* ── Menu button: only while the links are collapsed ─────── */
@@ -227,11 +240,14 @@
     transform var(--fds-duration-base) var(--fds-easing-standard);
 }
 
-/* Open: an invisible layer over the page, so a click or tap outside the drawer closes it. */
+/* Open: a scrim over the page, under the bar, so a click or tap outside the drawer closes it. The script
+   puts it at the end of <body>, not inside the bar: a bar with backdrop-filter would hold a fixed child
+   inside itself. */
 .fds-nav__backdrop {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 99;
+  background-color: oklch(0% 0 0 / 0.18); /* Decoration, not a token: a scrim. */
 }
 
 /* ── Minimal: a brand name and a back link ───────────────── */

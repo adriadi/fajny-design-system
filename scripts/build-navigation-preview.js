@@ -62,14 +62,18 @@ body { margin: 0; background: var(--fds-color-background); color: var(--fds-colo
 .frame { position: relative; max-width: calc(var(--fds-space-30) * 8); border: var(--fds-border-width-default) solid var(--fds-color-border); background: var(--fds-color-surface-subtle); }
 .frame.phone { width: calc(var(--fds-space-30) * 3 + var(--fds-space-10)); max-width: 100%; min-height: calc(var(--fds-space-30) * 3); }
 .frame .fds-nav { position: relative; }
+.frame.behind { background: linear-gradient(to right, var(--fds-color-surface-highlight), var(--fds-color-accent) 70%, var(--fds-color-surface-dark)); }
 </style>
 </head>
 <body id="top">
   <section class="panel">
-    <h2>Full navigation</h2>${frame('The current page has the gold underline and aria-current="page"; Contact is a Button', full())}${frame('On a dark surface: the roles switch by themselves, and the underline stays gold', full({ classes: ' fds-surface-dark' }))}
+    <h2>Full navigation</h2>${frame('The current page has the underline and aria-current="page" (navy on a light surface); Contact is a Button', full())}${frame('On a dark surface: the roles switch by themselves: the current link and its underline turn gold', full({ classes: ' fds-surface-dark' }))}
   </section>
   <section class="panel">
-    <h2>Collapsed: the links don't fit</h2>${frame('Closed: the drawer is hidden and out of the tab order. Press the menu button, then try Tab, Shift+Tab and Escape', full(), ' phone')}${frame('Open: the same bar with its drawer open (shown as it looks; the interactive one is above)', full({ state: ' fds-nav--ready fds-nav--collapsed fds-nav--open', open: true }), ' phone')}
+    <h2>Collapsed: the links don't fit</h2>${frame('Closed: the drawer is hidden and out of the tab order. Press the menu button (the page dims behind the drawer), then try Tab, Shift+Tab and Escape', full(), ' phone')}${frame('Open: the same bar with its drawer open (shown as it looks; the interactive one is above)', full({ state: ' fds-nav--ready fds-nav--collapsed fds-nav--open', open: true }), ' phone')}
+  </section>
+  <section class="panel">
+    <h2>Scrolled</h2>${frame('After 40px of scroll the bar on a light surface is see-through and blurred, so the page shows faintly behind it (the colours behind are only for the preview)', full({ state: ' fds-nav--ready fds-nav--scrolled' }), ' behind')}
   </section>
   <section class="panel">
     <h2>Minimal</h2>${frame('A brand name and a back link: the case-study bar. No menu, no drawer', minimal())}

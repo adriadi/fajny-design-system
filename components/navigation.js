@@ -5,8 +5,10 @@
  *    behind the menu button). It measures the bar, so there is no breakpoint to keep in step with the links.
  *  - The drawer: the button sets aria-expanded; while the drawer is closed it is hidden and inert, so none
  *    of its links can be reached by keyboard; while it is open, Tab and Shift+Tab stay inside the navigation.
- *  - Closing: Escape, a click outside the drawer, or choosing a link closes it, and focus goes back to the
- *    menu button.
+ *  - Closing: Escape, a click on the scrim outside the drawer, or choosing a link closes it, and focus goes
+ *    back to the menu button.
+ *  - Scrolled: after 40px of scroll it adds fds-nav--scrolled, which makes the bar on a light surface
+ *    see-through and blurred.
  *  - Links to a section of the page (href="#id") are real links; the script adds a smooth scroll to them,
  *    and a plain jump under prefers-reduced-motion. Give the sections a scroll-margin-top the height of
  *    the bar, since it is sticky.
@@ -22,6 +24,10 @@
     var toggle = nav.querySelector('.fds-nav__toggle');
     var menu = nav.querySelector('.fds-nav__menu');
     nav.classList.add(READY);
+    var SCROLLED = 'fds-nav--scrolled';
+    function markScroll() { nav.classList.toggle(SCROLLED, window.scrollY > 40); }
+    window.addEventListener('scroll', markScroll, { passive: true });
+    markScroll();
     // The minimal bar has no menu: nothing to collapse or open, only the smooth scroll below.
     var backdrop = null;
 
@@ -73,7 +79,8 @@
       backdrop = document.createElement('div');
       backdrop.className = 'fds-nav__backdrop';
       backdrop.hidden = true;
-      nav.appendChild(backdrop);
+      // At the end of <body>, under the bar: inside the bar, its backdrop-filter would hold a fixed child.
+      document.body.appendChild(backdrop);
       backdrop.addEventListener('click', function () { close(true); });
 
       toggle.addEventListener('click', function () { if (isOpen()) close(true); else open(); });

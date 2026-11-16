@@ -48,7 +48,7 @@ const PLAN = {
     "border": "color/border",
     "text": "color/text",
     "muted": "color/text-muted",
-    "accent": "color/accent",
+    "rule": "color/border-rule",
     "dark": "color/surface-dark",
     "darkMode": "Dark surface",
     "button": {
@@ -238,13 +238,13 @@ const label = async (chars, color, name) => {
   return t;
 };
 
-// A link: its text, with the current-page underline (border-bottom, color/accent) under it.
+// A link: its text, with the current-page underline (border-bottom, color/border-rule) under it.
 async function link(chars, current, name) {
   const f = docFrame(name, 'VERTICAL', { itemSpacing: 0 });
   bind(f, 'paddingBottom', S.underlinePad);
-  f.appendChild(await label(chars, current ? S.text : S.muted, 'text'));
+  f.appendChild(await label(chars, current ? S.rule : S.muted, 'text'));
   if (current) {
-    f.strokes = [docPaint(S.accent)];
+    f.strokes = [docPaint(S.rule)];
     f.strokeAlign = 'INSIDE';
     f.strokeTopWeight = 0; f.strokeLeftWeight = 0; f.strokeRightWeight = 0;
     bind(f, 'strokeBottomWeight', S.weight);
@@ -351,7 +351,7 @@ if (!set) {
   for (const comp of fresh) set.appendChild(comp);
 }
 ids.created = fresh.map((c) => c.id);
-set.description = 'The bar at the top of a page: full (brand, links, a call to action that is a Button) or minimal (a brand name and a back link). When the links do not fit they sit in a drawer behind a menu button: Layout=Collapsed, Menu=Closed or Open. The current page has a 1.5px color-accent underline and aria-current="page" in code. Decision 72. Bound to the color, spacing and border-width variables, the shadow-md effect style and the label text style. Same as components/navigation.css.';
+set.description = 'The bar at the top of a page: full (brand, links, a call to action that is a Button) or minimal (a brand name and a back link). When the links do not fit they sit in a drawer behind a menu button: Layout=Collapsed, Menu=Closed or Open. The current page has a 1.5px color-border-rule underline (navy; gold on a dark surface) and aria-current="page" in code. Decisions 72, 73. Bound to the color, spacing and border-width variables, the shadow-md effect style and the label text style. Same as components/navigation.css.';
 
 // A text property for the brand name, found by name, created once, then every variant's layer points to it.
 const brandKey = Object.keys(set.componentPropertyDefinitions).find((k) => k.split('#')[0] === S.props.brand)
@@ -421,7 +421,7 @@ const light = docFrame('Page background', 'VERTICAL', { itemSpacing: 24, padding
 variantsSection.appendChild(light);
 docSurface(light, 'Light surface');
 light.appendChild(await docText('Page background', 'overline', 'color/text-muted'));
-await note(light, 'Full: the current page has the gold underline; the call to action is a Button');
+await note(light, 'Full: the current page has the underline; the call to action is a Button');
 light.appendChild(instance(PLAN.variants[0]));
 await note(light, 'Collapsed, closed and open: the links sit in a drawer behind the menu button');
 const pair = docFrame('collapsed', 'HORIZONTAL', { itemSpacing: 48, counterAxisAlignItems: 'MIN' });
@@ -436,7 +436,7 @@ const dark = docFrame('Dark surface', 'VERTICAL', { itemSpacing: 24, paddingTop:
 variantsSection.appendChild(dark);
 docSurface(dark, 'Dark surface');
 dark.appendChild(await docText('Dark surface', 'overline', 'color/text-muted'));
-await note(dark, 'Full and minimal on a dark surface: the roles switch, the call to action turns gold, the underline stays gold');
+await note(dark, 'Full and minimal on a dark surface: the roles switch, the call to action turns gold, the current link and its underline turn gold');
 const [cc, cid] = docModeOf('color', S.darkMode);
 for (const v of [PLAN.variants[0], PLAN.variants[3]]) {
   const inst = instance(v);

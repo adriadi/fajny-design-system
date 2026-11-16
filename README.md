@@ -64,6 +64,17 @@ Components set text in eleven roles, never in a typeface or a size of their own.
 
 Link `tokens/css/tokens.css` first, then the component's stylesheet. Components use only `--fds-*` tokens; `npm run build` fails if a component stylesheet contains a colour, a length or a duration of its own.
 
+
+### Allowed decoration
+
+A component may hold a literal value only for see-through decoration that never carries meaning, which has no token (decision 54). Each such line carries the comment "Decoration, not a token", and `npm run build` fails on any other literal, so this list is the whole list:
+
+| Where | Literal | What it is |
+| --- | --- | --- |
+| `components/navigation.css`, `.fds-nav--scrolled` | `background-color: oklch(96% 0.012 75 / 0.92)` | The bar's see-through fill once the page has scrolled, on a light surface |
+| `components/navigation.css`, `.fds-nav--scrolled` | `backdrop-filter: blur(12px)` | The blur behind that bar |
+| `components/navigation.css`, `.fds-nav__backdrop` | `background-color: oklch(0% 0 0 / 0.18)` | The scrim over the page while the drawer is open |
+
 ## Use the tokens
 
 Link the built CSS, then use the semantic variables:

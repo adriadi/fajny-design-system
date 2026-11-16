@@ -52,7 +52,8 @@ export const PAIRS = [
   ['color-success', LIGHT, 4.5],
   ['color-border-input', LIGHT, 3],
   ['color-border-strong', LIGHT, 3],
-  ['color-border-rule', [...ALL_LIGHT, ...DARK], 3],
+  // Decorative lines, and the current link of the Navigation (text and underline): 4.5 covers the text.
+  ['color-border-rule', [...ALL_LIGHT, ...DARK], 4.5],
   ['color-focus', [...ALL_LIGHT, ...DARK], 3],
   // Text on fills, on light and dark surfaces alike.
   ['color-text-on-action', ['color-action', 'color-action-hover'], 4.5],
