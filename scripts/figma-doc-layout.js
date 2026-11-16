@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 export const DOC_GROUPS = [
   { name: 'Basic', pages: ['Colors', 'Typography', 'Spacing', 'Corner radius', 'Shadows'] },
   { name: 'Regular', pages: ['Button', 'Input', 'Image', 'Tag'] },
-  { name: 'Advanced', pages: ['Card'] },
+  { name: 'Advanced', pages: ['Card', 'Navigation'] },
 ];
 export const DOC_SEPARATOR = '---';
 
