@@ -1,82 +1,69 @@
-# B-032 · Highlight audit
+# B-033 · Report
 
-Audit only: no code changed, no commits besides this report.
+Highlight is built on `components/highlight` (commit `7bc561c`, pushed). Not merged to `main`. `npm run build`: exit 0 (47 contrast pairs, 12 type roles, 7 component stylesheets).
 
-## Where I looked
+## Names I picked
 
-`portfolio-tokens` (branch `design-system/work-with-me`, the site on tokens), read in the source and measured in a browser at 1440px: all three case studies (`hawk`, `curaay`, `scouting-notes`), the home page, and the original `portfolio` for the pre-migration values. **Screenshots:** `scouting-notes-case-study.html` has no password gate (the home page links straight to it), so the screenshots below are from it and are in this branch. The Hawk and Curaay pages are gated: I checked them in the browser with the gate set and describe them in words; the two screenshots I took of them are only on this machine (`~/fajny-screenshots/b032-*-LOCAL-ONLY.png`).
+- **Root class `fds-highlight`**, light by default; **`fds-highlight--dark`** for the dark variant. Parts: `__icon`, `__body`, `__quote`, `__cite` (light) and `__label`, `__title`, `__text` (dark).
+- **Markup:** the light variant is a `<figure>` with a `<blockquote>` (or a `<p>`, for an insight with no source) and a `<figcaption>`; the dark one a `<div>` with a `<p>`, an `<h3>` (the level is the page's) and `<p>`s. The classes work on any element; the docs recommend those.
+- **Figma page:** in the **Regular** group, after Tag (it nests nothing). Component set: Variant (Light, Dark) with Quote, Source, Show icon, Show source and, for the dark one, Label, Title and Paragraph 1 and 2 as properties.
 
-## Summary
+## The new text role (please check)
 
-Highlight exists today as two blocks that are **identical in all three case studies**: the **tension** block (8 uses: Hawk 3, Scouting 3, Curaay 2) and the **pull-quote** (4 uses: Hawk 2, Scouting 1, Curaay 1). Both are plain CSS classes (`.tension`, `.pullquote`) with no shared component and no semantic markup. There is a **third pattern** (`.platform-insight`, a pull-quote that has drifted) and a few other quote-shaped things, listed below.
+**`quote`**, the twelfth: Syne, weight **400**, line height **1.4**, letter spacing **0**, italic through a new token **`font.style.quote: italic`** (its CSS name is `--fds-font-style-quote`; the type check accepts an optional `style` group, like `text-transform`).
 
-## 1. The tension block (dark variant)
+- **Size: one fluid range, 18px at 390px to 26px at 1280px**, `clamp(1.125rem, 0.9059rem + 0.899vw, 1.625rem)`. I unified rather than keep two sizes: 18 to 26px is the pull-quote's own size, and it's 4 of the 5 uses. **The cost:** the insight (Scouting's `.platform-insight`), which used 15 to 18px, takes 18 to 26px, so it grows (about 40% at desktop). Flagging as asked; if the insight should stay smaller, the choice is a second role (a bigger system) or keeping it in `lead` (not italic Syne).
+- Check: the 2.5× zoom rule passes (26/18 = 1.44) and the contrast check is unaffected (12 sizes, 11 fluid).
+- **Figma has no Syne italic** (its Syne styles are Regular to ExtraBold, and the browser slants the text), so the Figma `quote` text style is **upright**, and its description says "Italic in code". The typography script was re-run on the file: it created the `font/size/quote` variable and the `quote` style, and rebuilt the Typography page (12 roles).
+- Never gold; written in the token description.
 
-- **Where:** 8 blocks, each a `div.tension.fds-surface-dark` with a label (`.tension-label`), an `h3` and one or two `p`. Labels, for example: "The core gap", "The decision", "The trade-off", "What we inherited", "The real tension", "The reframe", "The design principle".
-- **Styling now:** `color-surface-dark` navy `rgb(27, 58, 107)` (via the `.fds-surface-dark` class), padding `space-10` `space-12` (40px 48px), `radius-sm` (4px), margin `space-12` above and below. Label: 12px, 600, 0.12em, uppercase (the `overline` role). Heading: Syne 30px at 1440 (the `subheading` role). Body: Inter 16px (`body`).
-- **Is the decision 22 bug still there? No, it's gone.** The heading is `rgb(245, 241, 235)` on navy, **10.01:1**. It was fixed in two steps: the navy background (decision 30), then the surface switching (decision 33), which gives the heading and the label the light `color-text` by themselves. All 8 blocks measure the same.
-- **Contrast of everything in it:**
+## Rendered contrast
 
-| Element | Colours | Ratio |
+| Variant | Element | Colours | Ratio |
+| --- | --- | --- | --- |
+| Light | Quote and icon | `rgb(27, 58, 107)` on `rgb(228, 234, 244)` | **9.32:1** |
+| Light | Source | `rgb(107, 99, 89)` on the same fill | **4.89:1** |
+| Light | Rule | `rgb(127, 168, 212)`, 1.5px, against the fill | 2.06:1 (decorative, decision 31) |
+| Dark | Label and heading | `rgb(245, 241, 235)` on `rgb(27, 58, 107)` | **10.01:1** |
+| Dark | Text | `rgb(200, 192, 180)` on the same navy | **6.25:1** |
+
+All measured from the computed colours in the preview; the light variant is the same inside a dark surface (it stays light: quote `rgb(27, 58, 107)` on `rgb(228, 234, 244)`).
+
+## The two spacing fixes (before and after)
+
+How: every part that sets a margin, a colour or a type style uses **two classes** (`.fds-highlight .fds-highlight__title`), which beat the page's one-class-and-an-element rules (`body.cs h3`, `body.cs p`) without `!important`. The preview has an article with those rules and measures the result:
+
+| Gap | Before (the page rule won) | Now, in an article with the page rules |
 | --- | --- | --- |
-| Label and heading | sand on navy | 10.01:1 |
-| Body | `color-text-muted` (on-dark `rgb(200, 192, 180)`) on navy | 6.25:1 |
+| Dark: label to heading | 40px | **16px** (`space-4`; the heading's margin-top is 0, the page's is 40) |
+| Light: quote to source | 20px | **12px** (`space-3`; the quote `<p>` has margin 0 where a plain `<p>` there gets 20) |
 
-- **One quirk that is still there (same class of bug as decision 22, for spacing):** `.tension h3` sets `margin-top: 0`, but the page-wide `body.cs h3 { margin-top: space-10 }` is more specific and wins: the computed margin above the heading is **40px**, so the gap between the label and the heading is about 40px, not the 16px the block intends (visible in the screenshot). The label's own `margin-bottom: space-4` loses to it too.
-- **Screenshot:** `b032-1-tension-scouting.png` (Scouting, "What we inherited"). Hawk's blocks measure the same.
+The second dark-block gap I also fixed in the same way: between the two paragraphs it's `space-3`.
 
-## 2. The pull-quote (light variant)
+## What else the brief's list covers
 
-- **Where:** 4 blocks, each a `div.pullquote` with a `p` and a `cite`; no `<blockquote>` or `<figure>`.
-  - Hawk: a compliance analyst's quote ("Compliance Analyst · German Financial Institution"), and a second one captioned "From my design rationale" (the author's own words).
-  - Scouting: "Diego De La Vega · Sr. Agricultural Advisor, La Pampa, Argentina".
-  - Curaay: it is used for a **statistic** with a source ("AAPA (2023) · American Academy of Physician Associates…"), not a quote. So one class does three jobs: a user quote, the author's rationale and a cited fact.
-- **Styling now:** `color-surface-highlight` background `rgb(228, 234, 244)`, a **3px** left rule in `color-border-highlight` `rgb(127, 168, 212)`, padding `space-6` `space-8` (24px 32px), margin `space-12`, radius 0 on the left and `radius-sm` on the right. Text: Syne italic, `clamp(18px, 2.5vw, 26px)` (26px at 1440), line height 1.4, `color-text`. The citation: Inter 14px, normal style, `color-text-muted`.
-- **Contrast:**
+- Fill `color-surface-highlight`; rule `color-border-highlight` at **`border-width.default` 1.5px** (was 3px).
+- **Square corners on all four** (decision 75); the dark variant keeps `radius-sm` on all four (it has no one-sided border).
+- **Icon slot:** an optional `span.fds-highlight__icon` (20px, `color-text`, `aria-hidden`) before the body; absent for a plain quote.
+- **Surfaces:** I added the two classes to `scripts/surfaces.js` (`LIGHT_ELEMENTS` and `DARK_ELEMENTS`, the mechanism the Card uses), so `tokens.css` switches the roles itself: the light variant stays light inside `.fds-surface-dark`, the dark one stays dark anywhere. This is the one change to that script.
+- **Padding:** light `space-6` `space-8`; dark `space-10` above and below and `space-gutter` (16 to 48px) at the sides, so it has no media query (a length can't be a token there); on a phone the sides are 16px, where the portfolio's block had 24px.
+- **No outer margin**: the space around is the page's (the portfolio's `margin: space-12` is not in the component).
+- Out of scope, untouched: the testimonials, `.patient-quote`, `.market-card--gap`, and the portfolio's `.tension`, `.pullquote` and `.platform-insight`.
 
-| Element | Colours | Ratio |
-| --- | --- | --- |
-| Quote text | navy on `rgb(228, 234, 244)` | 9.32:1 |
-| Citation | muted on the highlight fill | 4.89:1 |
-| **The rule** | `rgb(127, 168, 212)` against the fill | **2.06:1** (decision 31's number: confirmed, unchanged; 2.21:1 against the page background) |
+## Docs, preview, Figma
 
-- **The same spacing quirk:** `.pullquote p` sets `margin-bottom: space-3` (12px) but `body.cs p { margin-bottom: space-5 }` wins, so the space between the quote and its citation is **20px**.
-- **Screenshot:** `b032-2-pullquote-scouting.png`.
-
-## 3. What decision 54's "quotes wait for Highlight" refers to
-
-The type of the quote text. `.pullquote p` (and `.platform-insight p`) carry the comment `No type role: a quote.`: Syne italic with a fluid `clamp(18px, 2.5vw, 26px)` and line height 1.4. None of the 11 text roles fits it, so those lines stayed literals in the migration, and the Highlight component is where its role (or a role plus a size) has to be decided. Nothing else in the blocks is waiting: the colours already use the Highlight roles (`surface-highlight`, `border-highlight`).
-
-## 4. Other quote- or highlight-shaped patterns
-
-1. **`.platform-insight` (Scouting only, an inline style in the page).** The pull-quote's twin: the same fill, the same 3px rule, the same 24px 32px padding and the same radius, **with a ↻ icon beside the text**, a smaller quote (Syne italic `clamp(15px, 1.8vw, 18px)`) and `margin-top: space-10`. It's a pull-quote that drifted: a copy of the CSS in the page instead of a variant. Screenshot: `b032-3-platform-insight-scouting.png`. Its icon is `color-text` 20px.
-2. **`.patient-quote` (Curaay, 4 of them; an inline style).** Short quoted phrases ("No appointments available", "8-week waiting time") as pill-like white cards: `color-surface`, a 1px `color-border` line, a **6px** radius (a literal, "No token"; the scale has 4 and 8), padding `space-3` `space-4`, italic 14px muted text (5.91:1 on white), no wrap. Local only.
-3. **`.market-card--gap` (Curaay, an inline style).** A highlighted card: `color-surface-highlight` with a **2px** `color-border-highlight` line (2.06:1) and `radius-lg`; the matrix quadrant tint uses the same fill. This is the token's "highlighted area" use, not a quote.
-4. **Testimonials on the home page ("Kind words", 7 cards).** Cards (`.rec-card`, `radius-lg`, `color-background` fill with a 1px border) with a name (Syne 22px, navy), a role (14px muted, 5.25:1) and the quote as plain 14px muted body text (5.25:1): **no quote marks, no italic, no Highlight styling**. They are quotes in meaning, but they look like Cards. Screenshot: `b032-4-home-testimonials.png`.
-5. The straight `"` quote marks in the pull-quotes and patient quotes are typed into the text, not typographic quotes.
-
-## 5. Off-grid spacing
-
-**None in the two blocks.** Pre-migration (`portfolio`): `.pullquote` padding 24px 32px, margin 48px, quote `margin-bottom` 12px; `.tension` padding 40px 48px, margin 48px, label `margin-bottom` 16px: all on the 4px grid already, so decision 38's off-grid count didn't touch them. What is still **off the scale** around them:
-
-- The **3px** pull-quote rule (and the platform insight's), and the **2px** market card line, against the system's one border width (`border-width.default`, 1.5px, decision 64).
-- The **6px** `.patient-quote` radius (the radius scale is 4, 8, 16, pill, round).
-- Type: the quote's `clamp(18px, 2.5vw, 26px)` and the insight's `clamp(15px, 1.8vw, 18px)`, and the 20px insight icon.
-- The two margin overrides in sections 1 and 2.
+- `docs/highlight.md` (parts, the `quote` role's spec, corners and rule, spacing and the two fixes with before and after, contrast, do and don't, copy-paste HTML); `docs/highlight-preview.html`: the light variant (quote, cited statistic, insight with the icon) and the dark one on the page background, a subtle surface and a dark surface (the dark variant is the same navy there, so it is shown on the light surfaces), plus the article. README updated.
+- Figma Highlight page: the set, then Variants on the page background, a subtle surface and a dark surface: light (no icon, a statistic, the icon with no source) and dark. `highlight-component.js` was run on the file (2 variants). The preview needs the Syne font to look right: this machine doesn't have it, so the preview screenshots show a sans fallback in the quote and the heading (the Figma page uses Syne).
 
 ## Screenshots (this branch)
 
 | What | File |
 | --- | --- |
-| Tension block in context (Scouting, "What we inherited") | `b032-1-tension-scouting.png` |
-| Pull-quote in context (Scouting) | `b032-2-pullquote-scouting.png` |
-| The platform insight, the drifted pull-quote (Scouting) | `b032-3-platform-insight-scouting.png` |
-| Home page testimonials | `b032-4-home-testimonials.png` |
+| The preview: dark, light without icon, light with icon (the insight), the statistic, on three surfaces and in the article with its own rules | `b033-1-highlight-preview.png` |
+| The Figma Highlight page, the Variants frame on the page background (light without icon, a statistic, light with the icon, dark) | `b033-2-figma-highlight-page-frame.png` |
 
 ## Questions
 
-1. **The pull-quote's job.** It currently shows a user quote, the author's own words and a cited statistic. Should Highlight keep one light variant for all three, or should the statistic (and the platform insight) get their own treatment, for example a variant with an icon?
-2. **The quote type.** A new text role (Syne italic, fluid, line height 1.4), or an existing one (`heading`, `subheading` or `lead` in italic)? The sizes in use run from 15 to 26px.
-3. **The rule width:** 3px as it is, or `border-width.default` (1.5px, decision 64)? It stays 2.06:1 either way (decision 31).
-4. **The home page testimonials:** in scope for Highlight (a quote with a name and role), or do they stay Cards?
-5. **The two margin overrides** (the heading's 40px, the quote's 20px): should the component fix them by being specific enough, which changes today's spacing slightly (label to heading 40px → 16px)?
+1. **The quote size.** One role, 18 to 26px, makes the insight bigger than it is now (15 to 18px). Keep that, or should the insight stay smaller?
+2. **`font.style.quote`.** A new token group `font.style` (one entry). Fine, or would you rather italic be part of the role name or handled another way?
+3. **Italic in Figma.** The Figma text style is upright because Figma has no italic Syne. Accept this limit, or should the Figma documentation note it somewhere more visible than the style's description?
