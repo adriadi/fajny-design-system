@@ -60,6 +60,7 @@ Components set text in eleven roles, never in a typeface or a size of their own.
 | Image | `components/image.css` | [docs/image.md](docs/image.md): the 16:10 ratio, export sizes, alt text and loading |
 | Card | `components/card.css` (and `image.css` for a card with an image) | [docs/card.md](docs/card.md), every variant on three surfaces in `docs/card-preview.html` |
 | Tag | `components/tag.css` | [docs/tag.md](docs/tag.md), every variant on three surfaces and over a photo in `docs/tag-preview.html` |
+| Navigation | `components/navigation.css` and `navigation.js` (and `button.css`, for its links and call to action) | [docs/navigation.md](docs/navigation.md), the full and minimal bars and the drawer open and closed in `docs/navigation-preview.html` |
 
 Link `tokens/css/tokens.css` first, then the component's stylesheet. Components use only `--fds-*` tokens; `npm run build` fails if a component stylesheet contains a colour, a length or a duration of its own.
 
@@ -100,7 +101,7 @@ The repo JSON stays the source of truth (decision 25). The Figma file is documen
 | --- | --- |
 | Basic | the token pages: Colors, Typography, Spacing, Corner radius, Shadows |
 | Regular | Button, Input, Image, Tag and other simple components |
-| Advanced | components that nest other components: Card (it nests Image) |
+| Advanced | components that nest other components: Card (it nests Image), Navigation (it nests Button) |
 
 A separator page named `---` sits between two groups that have pages; Figma shows it as a divider. The scripts own the page order and the separators: every run puts the pages in this order, reuses the separators, adds a missing one and removes an extra empty one, so the separator before Advanced appears once an Advanced page exists. The groups and their pages are listed in `scripts/figma-doc-layout.js`; a new component page goes into the group the owner chooses.
 
@@ -117,6 +118,7 @@ Every section on a page has a title and a one-sentence subtitle, taken from the 
 | Figma MCP, from `image-component.js` | the Image component and the Image page |
 | Figma MCP, from `card-component.js` | the Card component set and the Card page |
 | Figma MCP, from `tag-component.js` | the Tag component set and the Tag page |
+| Figma MCP, from `navigation-component.js` | the Navigation component set and the Navigation page |
 
 After any token change:
 
@@ -130,6 +132,7 @@ After any token change:
 8. Run `tokens/figma/image-component.js` the same way. It updates the Image component in place (a 16:10 frame with a placeholder fill, no radius of its own) and rebuilds the Image page: the component and the export sizes from `docs/image.md`.
 9. Run `tokens/figma/card-component.js` the same way, after the Image. It updates the Card component set in place: Image × Link × Style, and for a linked card the Default, Hover, Focus and Active states, with Overline, Title, Text and Meta as text properties. The card with an image nests the Image component. Then it rebuilds the Card page: the set, then "Variants" on the page background, a subtle surface and a dark surface. Running it again is safe.
 10. Run `tokens/figma/tag-component.js` the same way, after the Image (the photo example nests it). It updates the Tag component set in place: Style (Default, Accent, Filled) × Muted, with a Label text property and a Show dot switch, every fill, stroke, padding, radius and the overline text style bound to variables, and rebuilds the Tag page: the set, then "Variants" on the page background, a subtle surface, a dark surface and over a photo.
+11. Run `tokens/figma/navigation-component.js` the same way, after the Button. It updates the Navigation component set in place: Type (Full, Minimal) × Layout (Wide, Collapsed) × Menu (Closed, Open), with a Brand text property, the call to action an instance of the Button (Primary, Navigation size), and rebuilds the Navigation page: the set, then "Variants" on the page background and a dark surface.
 
 In `Dark surface`, the roles that `.fds-surface-dark` switches take their `-on-dark` value, and every other role keeps its light value. Forms and status roles say "Light surfaces only." in their Figma description. Colour roles are aliases of the primitives, so they stay linked in Figma. Motion stays in code (decision 43). Fluid spacing is left out: a Figma variable holds one value, not a `clamp()`.
 

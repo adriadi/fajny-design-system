@@ -1,0 +1,256 @@
+/* Navigation (decision 72). Uses only --fds-* tokens; link tokens.css first, then button.css (the links and
+ * the call to action are Buttons) and, for the menu's behaviour, navigation.js.
+ *
+ *   <nav class="fds-nav" aria-label="Main">
+ *     <a class="fds-nav__brand" href="/">Brand name</a>
+ *     <button class="fds-nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+ *       <span class="fds-nav__bars" aria-hidden="true"></span>
+ *     </button>
+ *     <div class="fds-nav__menu" id="menu">
+ *       <ul class="fds-nav__list">
+ *         <li><a class="fds-button fds-button--link fds-nav__link" href="/work" aria-current="page">Work</a></li>
+ *         <li><a class="fds-button fds-button--link fds-nav__link" href="/about">About</a></li>
+ *         <li><a class="fds-button fds-button--primary fds-button--nav" href="/contact">Contact</a></li>
+ *       </ul>
+ *     </div>
+ *   </nav>
+ *
+ * Variants: the full navigation, and fds-nav--minimal (a brand name and a back link, no menu; for the
+ * case-study bar). The current page is the link with aria-current="page": it gets a 1.5px color-accent
+ * underline. The bar is sticky and has a solid fill (color-background, or color-surface-dark with
+ * .fds-surface-dark on it).
+ *
+ * Classes the script sets: fds-nav--ready (the script is running), fds-nav--collapsed (the links don't fit
+ * in the bar, so they sit in a drawer under it, behind the toggle) and fds-nav--open (the drawer is open).
+ * The collapse comes from measuring the bar, not from a breakpoint, so it follows the number and the length
+ * of the links. Without the script the links stay in the bar and wrap.
+ */
+
+.fds-nav {
+  --fds-nav-fill: var(--fds-color-background);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fds-space-2) var(--fds-space-6);
+  min-height: var(--fds-space-16);
+  padding: 0 var(--fds-space-gutter);
+  border-bottom: var(--fds-border-width-default) solid var(--fds-color-border);
+  background-color: var(--fds-nav-fill);
+  color: var(--fds-color-text);
+}
+
+.fds-nav.fds-surface-dark {
+  --fds-nav-fill: var(--fds-color-surface-dark);
+}
+
+/* With the script running, the bar is one line; it collapses instead of wrapping. */
+.fds-nav--ready {
+  flex-wrap: nowrap;
+}
+
+/* ── Brand ───────────────────────────────────────────────── */
+
+.fds-nav__brand {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fds-space-2);
+  color: var(--fds-color-text);
+  font-family: var(--fds-font-family-label);
+  font-size: var(--fds-font-size-label);
+  line-height: var(--fds-font-line-height-label);
+  font-weight: var(--fds-font-weight-label);
+  letter-spacing: var(--fds-font-letter-spacing-label);
+  text-transform: var(--fds-font-text-transform-label);
+  text-decoration: none;
+}
+
+.fds-nav__brand:focus-visible {
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+}
+
+/* ── Links ───────────────────────────────────────────────── */
+
+.fds-nav__menu {
+  flex: none;
+}
+
+.fds-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--fds-space-10);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A link keeps room for the current-page underline, transparent until it is the current page, so the
+   link doesn't move. The Button's link variant has no border and no padding. */
+.fds-nav .fds-nav__link {
+  padding: 0 0 var(--fds-space-1);
+  border-bottom: var(--fds-border-width-default) solid transparent;
+}
+
+.fds-nav .fds-nav__link[aria-current="page"] {
+  border-bottom-color: var(--fds-color-accent);
+  color: var(--fds-color-text);
+}
+
+/* ── Menu button: only while the links are collapsed ─────── */
+
+.fds-nav__toggle {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fds-space-10);
+  height: var(--fds-space-10);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fds-radius-md);
+  background: none;
+  color: var(--fds-color-text);
+  cursor: pointer;
+}
+
+.fds-nav__toggle:focus-visible {
+  outline: var(--fds-focus-ring-width) solid var(--fds-color-focus);
+  outline-offset: var(--fds-focus-ring-offset);
+}
+
+/* Three lines: the middle one is the span, the others are its pseudo-elements. */
+.fds-nav__bars,
+.fds-nav__bars::before,
+.fds-nav__bars::after {
+  display: block;
+  width: var(--fds-space-6);
+  height: var(--fds-border-width-default);
+  background-color: currentColor;
+}
+
+.fds-nav__bars {
+  position: relative;
+  transition: background-color var(--fds-duration-base) var(--fds-easing-standard);
+}
+
+.fds-nav__bars::before,
+.fds-nav__bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  transition: transform var(--fds-duration-base) var(--fds-easing-standard);
+}
+
+.fds-nav__bars::before {
+  transform: translateY(calc(-1 * var(--fds-space-2)));
+}
+
+.fds-nav__bars::after {
+  transform: translateY(var(--fds-space-2));
+}
+
+.fds-nav--open .fds-nav__bars {
+  background-color: transparent;
+}
+
+.fds-nav--open .fds-nav__bars::before {
+  transform: rotate(45deg);
+}
+
+.fds-nav--open .fds-nav__bars::after {
+  transform: rotate(-45deg);
+}
+
+/* ── Collapsed: the links sit in a drawer under the bar ──── */
+
+.fds-nav--collapsed .fds-nav__toggle {
+  display: inline-flex;
+}
+
+.fds-nav--collapsed .fds-nav__menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  padding: var(--fds-space-4) var(--fds-space-gutter) var(--fds-space-8);
+  border-bottom: var(--fds-border-width-default) solid var(--fds-color-border);
+  background-color: var(--fds-nav-fill);
+  box-shadow: var(--fds-shadow-md);
+}
+
+.fds-nav--collapsed .fds-nav__list {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fds-space-6);
+}
+
+/* The links stay 48px to hit (WCAG 2.5.5) with the underline close to the text. */
+.fds-nav--collapsed .fds-nav__link::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--fds-space-3)) calc(-1 * var(--fds-space-2));
+}
+
+.fds-nav--collapsed .fds-nav__list > li:last-child {
+  align-self: stretch;
+}
+
+.fds-nav--collapsed .fds-nav__list > li:last-child .fds-button {
+  width: 100%;
+}
+
+/* Closed: hidden, so it is out of the tab order and the accessibility tree (the script also sets inert). */
+.fds-nav--collapsed:not(.fds-nav--open) .fds-nav__menu {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--fds-space-2)));
+  pointer-events: none;
+  transition:
+    opacity var(--fds-duration-fast) var(--fds-easing-standard),
+    transform var(--fds-duration-base) var(--fds-easing-standard),
+    visibility var(--fds-duration-base) step-end;
+}
+
+.fds-nav--collapsed.fds-nav--open .fds-nav__menu {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--fds-duration-fast) var(--fds-easing-standard),
+    transform var(--fds-duration-base) var(--fds-easing-standard);
+}
+
+/* Open: an invisible layer over the page, so a click or tap outside the drawer closes it. */
+.fds-nav__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* ── Minimal: a brand name and a back link ───────────────── */
+
+.fds-nav--minimal .fds-nav__link {
+  flex: none;
+}
+
+/* ── Reduced motion: nothing moves; colour and opacity still change ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .fds-nav__bars,
+  .fds-nav__bars::before,
+  .fds-nav__bars::after {
+    transition: none;
+  }
+
+  .fds-nav--collapsed:not(.fds-nav--open) .fds-nav__menu {
+    transform: none;
+    transition-property: opacity, visibility;
+  }
+}

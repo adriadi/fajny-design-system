@@ -88,7 +88,7 @@ await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
 
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image","Tag"]},{"name":"Advanced","pages":["Card"]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image","Tag"]},{"name":"Advanced","pages":["Card","Navigation"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {
