@@ -1,6 +1,6 @@
 {
   "font": {
-    "$description": "Eleven text roles: nine for text, label for button and navigation link text, and field for the text inside form fields. Each role has a size, line-height, weight, letter-spacing and family token with the role's name; overline and label also have a text-transform token. Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). field is the one fixed size, 1rem at every width. Never use a size outside these roles.",
+    "$description": "Twelve text roles: ten for text, label for button and navigation link text, and field for the text inside form fields. Each role has a size, line-height, weight, letter-spacing and family token with the role's name; overline and label also have a text-transform token, and quote a style token (italic). Sizes are fluid: clamp() in rem from a 390px screen to a 1280px screen, so text follows the browser's font size setting and zooms to 200% (WCAG 1.4.4). field is the one fixed size, 1rem at every width. Never use a size outside these roles.",
     "typeface": {
       "$type": "fontFamily",
       "syne":  { "$value": ["Syne", "sans-serif"],              "$description": "Display typeface. Roles use it through font.family.<role>, never directly." },
@@ -18,7 +18,8 @@
       "small":      { "$value": "{font.typeface.inter}" },
       "overline":   { "$value": "{font.typeface.inter}" },
       "label":      { "$value": "{font.typeface.inter}" },
-      "field":      { "$value": "{font.typeface.inter}" }
+      "field":      { "$value": "{font.typeface.inter}" },
+      "quote":      { "$value": "{font.typeface.syne}" }
     },
     "size": {
       "$type": "dimension",
@@ -32,7 +33,8 @@
       "small":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Secondary text: captions, meta, card descriptions." },
       "overline":   { "$value": "clamp(0.6875rem, 0.6601rem + 0.112vw, 0.75rem)",   "$description": "11px to 12px. Uppercase labels above a title (eyebrows). Uppercase through font.text-transform.overline." },
       "label":      { "$value": "clamp(0.8125rem, 0.7851rem + 0.112vw, 0.875rem)",   "$description": "13px to 14px. Button and navigation link text, one size for both. Uppercase through font.text-transform.label." },
-      "field":      { "$value": "1rem",                                             "$description": "16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field's text is under 16px, and body is 15px on phones. In rem, so it follows the browser's font size setting." }
+      "field":      { "$value": "1rem",                                             "$description": "16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field's text is under 16px, and body is 15px on phones. In rem, so it follows the browser's font size setting." },
+      "quote":      { "$value": "clamp(1.125rem, 0.9059rem + 0.899vw, 1.625rem)",    "$description": "18px to 26px. The text of a quote, an insight or a cited statistic in the Highlight (decision 76): Syne, italic through font.style.quote. Never gold." }
     },
     "line-height": {
       "$type": "number",
@@ -46,7 +48,8 @@
       "small":      { "$value": 1.5 },
       "overline":   { "$value": 1.3 },
       "label":      { "$value": 1.2 },
-      "field":      { "$value": 1.5 }
+      "field":      { "$value": 1.5 },
+      "quote":      { "$value": 1.4 }
     },
     "weight": {
       "$type": "fontWeight",
@@ -60,7 +63,8 @@
       "small":      { "$value": 400 },
       "overline":   { "$value": 600 },
       "label":      { "$value": 500 },
-      "field":      { "$value": 400 }
+      "field":      { "$value": 400 },
+      "quote":      { "$value": 400 }
     },
     "letter-spacing": {
       "$type": "dimension",
@@ -74,11 +78,15 @@
       "small":      { "$value": "0" },
       "overline":   { "$value": "0.12em" },
       "label":      { "$value": "0.06em" },
-      "field":      { "$value": "0" }
+      "field":      { "$value": "0" },
+      "quote":      { "$value": "0" }
     },
     "text-transform": {
       "overline": { "$value": "uppercase", "$description": "Overline is always uppercase. Write the text in sentence case; the style makes it uppercase, so screen readers don't spell it out." },
       "label":    { "$value": "uppercase", "$description": "Button and navigation link text is always uppercase. Write it in sentence case in the HTML." }
+    },
+    "style": {
+      "quote": { "$value": "italic", "$description": "Quote is always italic. Syne has no italic of its own, so the browser slants it." }
     }
   }
 }

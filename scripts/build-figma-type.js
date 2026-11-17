@@ -42,6 +42,7 @@ const SAMPLES = {
   overline: { text: 'Account settings · Passwords, sign-ins and that old laptop you forgot about' },
   label: { text: 'Continue' },
   field: { text: 'name@example.com' },
+  quote: { text: 'Nothing ships unless the person it is for can understand it on day one.' },
 };
 
 const { font } = JSON.parse(readFileSync('tokens/typography.tokens.json', 'utf8'));
@@ -90,7 +91,9 @@ for (const role of names(font.size)) {
     tracking,
     letterSpacing: round(em * 100),
     textCase: TEXT_CASE[transform],
-    description: (size.$description ?? '').replaceAll("'", '’'),
+    // Figma has no italic of Syne (its styles are Regular to ExtraBold), so a role that is italic in code
+    // through font.style.<role> is upright in Figma, and its description says so.
+    description: ((size.$description ?? '') + (font.style?.[role]?.$value === 'italic' ? ' Italic in code; Figma has no italic of ' + family + ', so the text style is upright.' : '')).replaceAll("'", '’'),
     sample: sample?.text,
   });
 }

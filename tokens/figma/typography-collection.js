@@ -184,11 +184,27 @@ const PLAN = {
       "textCase": "ORIGINAL",
       "description": "16px at every width. The value and placeholder inside form fields. Fixed at 16px because iOS Safari zooms the page when a field’s text is under 16px, and body is 15px on phones. In rem, so it follows the browser’s font size setting.",
       "sample": "name@example.com"
+    },
+    {
+      "role": "quote",
+      "variable": "font/size/quote",
+      "mobile": 18,
+      "desktop": 26,
+      "family": "Syne",
+      "style": "Regular",
+      "lineHeight": 140,
+      "lineHeightValue": 1.4,
+      "weight": 400,
+      "tracking": "0",
+      "letterSpacing": 0,
+      "textCase": "ORIGINAL",
+      "description": "18px to 26px. The text of a quote, an insight or a cited statistic in the Highlight (decision 76): Syne, italic through font.style.quote. Never gold. Italic in code; Figma has no italic of Syne, so the text style is upright.",
+      "sample": "Nothing ships unless the person it is for can understand it on day one."
     }
   ],
   "page": {
     "name": "Typography",
-    "subtitle": "Eleven text roles: nine for text, label for button and navigation link text, and field for the text inside form fields.",
+    "subtitle": "Twelve text roles: ten for text, label for button and navigation link text, and field for the text inside form fields.",
     "specimenSubtitle": "Interface text in every role, on a 390px and a 1280px screen, on a light and a dark surface.",
     "widths": {
       "Mobile": 390,
@@ -256,7 +272,7 @@ if (unbound.length) throw new Error('Font size could not be bound to its variabl
 // ── The Typography page: rebuilt on every run ──
 
 // ── Documentation page layout (decision 58), shared by every page script ──
-const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image","Tag"]},{"name":"Advanced","pages":["Card","Navigation"]}];
+const DOC_GROUPS = [{"name":"Basic","pages":["Colors","Typography","Spacing","Corner radius","Shadows"]},{"name":"Regular","pages":["Button","Input","Image","Tag","Highlight"]},{"name":"Advanced","pages":["Card","Navigation"]}];
 const DOC_SEPARATOR = "---";
 const docVars = await figma.variables.getLocalVariablesAsync();
 const docVar = (name) => {
