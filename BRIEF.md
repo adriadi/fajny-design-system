@@ -1,32 +1,22 @@
-# B-035 · Second portfolio sync — audit (no building yet)
+# B-036 · Second portfolio sync, step 1: foundation (no component markup yet)
 
-All six components are on `main` now (decision 52's plan: tokens first, then the components). Time for the portfolio's real markup to actually use them, in the portfolio repo (`adriadi/portfolio`). Same as every other round: audit first, I bring the findings and open questions to the owner, then we build.
+Decisions 79–83 (from the B-035 audit). This step changes nothing visible on the live site; it just gets the ground ready for steps 2–4.
 
-## Scope
+## Steps, in order
 
-Portfolio pages: `index.html`, `password.html`, `usecases/hawk-case-study.html`, `usecases/scouting-notes-case-study.html`, `usecases/curaay-case-study.html`, plus `styles.css` (or wherever the page-level CSS actually lives now — confirm the real filename).
+1. **Merge `design-system/work-with-me` into the portfolio's `main` first.** It's unmerged, branches cleanly from `main`, and already carries the skill-chip contrast fix (decision 70) and the Medium-badge hover removal (decision 69) — merging it now means step 2 doesn't redo them. `--no-ff`. If it doesn't merge clean, stop and report the conflict; don't resolve it yourself.
+2. **Re-sync `tokens.css`** from the design system's current `main` (commit `3efeccd` or whatever `main` is at by the time you run this) — it's currently 85 lines behind, copied at `8879a9e`. Same sync mechanism as before, just re-run.
+3. **Extend the sync script** so it also copies `components/*.css` and `navigation.js` into the portfolio (decision 79) — same pattern as `tokens.css`: committed into the repo (not loaded from elsewhere), with the design-system commit noted in a comment, so the static site stays self-contained. Your call on the exact destination folder (a `fds/` folder next to `tokens.css` seems obvious, but say what you pick in the report). Copy the files now, but don't link them from any page yet and don't touch any markup — that's steps 2–4.
+4. **Delete the dead CSS**: `.cv-modal*` and `.btn-accent` (decision 83). No markup uses them.
 
-For each of the six components, find every place on the live site that is that component in spirit but not yet in class:
+## Not in this step
 
-- **Button** — primary/secondary/link buttons sitewide.
-- **Input** — the contact/work-with-me form fields.
-- **Card** — project cards, the "Kind words" testimonial cards (decision 77 keeps these as Cards, not Highlight), any other card-shaped block.
-- **Tag** — the hero tag, skill chips, project tags over photos (decisions 69–71).
-- **Navigation** — the main site nav and the case-study bar (decisions 72–74).
-- **Highlight** — the Curaay pull-quote, the "tension" block, the Scouting `platform-insight` callout (decisions 75–78). Not the testimonials, not `.patient-quote`, not `.market-card--gap` (decision 77 and B-033's out-of-scope list — still out of scope here too).
+No `fds-*` class goes into any page's markup yet. No visual change should be observable on the live site after this step (the removed dead CSS has no markup either, so nothing changes there either). Steps 2–4 (Highlight+Tag, then Button+Input+Card, then Navigation) come as separate briefs once this one is merged and checked.
 
-For each instance, report:
-1. Which file/selector it is now.
-2. Which `fds-*` classes/markup it maps to, and whether the existing markup needs restructuring (e.g. Navigation needs the shared `<ul>` and `navigation.js`; Highlight needs `<figure>/<blockquote>` or the `<div>` shape).
-3. Anything that won't survive the switch as-is — a visual difference, a token with no equivalent, a judgement call (decision 54 flagged several of these already: navy labels, uppercase experience dates, Syne card titles, Curaay market cards, navy form labels — check whether those are still open or already resolved).
-4. Confirm `tokens.css` in the portfolio repo is synced to the design system's current `main` (post-Highlight) or still behind.
+## One correction to the B-035 audit, for later
 
-Also check: does a `design-system/tokens` or similar migration branch already carry any of this partway, or is `main` (post the tokens-only merge) the real starting point? Decision 71 mentioned a `work-with-me.html` migration branch — confirm whether that still exists/applies or was superseded.
-
-## Out of scope for this brief
-
-No markup changes, no CSS changes, no branch. Audit and report only.
+B-035 said the home nav has "no equivalent" for the scrolled, see-through/blurred bar. That's not right — `components/navigation.css` already has `.fds-nav--scrolled:not(.fds-surface-dark)` with exactly that treatment, and `navigation.js` already toggles the class after 40px of scroll, for any `fds-nav`, not just the minimal case-study bar. Nothing to design or decide there; when step 4 (Navigation) comes around, it should just carry over as built. Flagging now so it's not re-litigated later.
 
 ## Report
 
-`REPORT.md` with ID `B-035`: the six-component inventory above, organized by component (not by page), with your recommendation on sequencing (all six in one pass vs. splitting it up) and anything you'd want a decision on before building.
+`REPORT.md` with ID `B-036`: merge commit hash, confirmation `tokens.css` is current, which folder the copied component files landed in and how they're synced/committed, confirmation the dead CSS is gone, and confirmation nothing changed visually (a screenshot of the home page is enough).
