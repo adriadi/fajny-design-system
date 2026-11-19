@@ -1,21 +1,28 @@
-# B-037 · Correction before pushing: work-with-me.html doesn't ship
+# B-038 · Second portfolio sync, step 2: Highlight + Tag
 
-Decision 84. B-036's local commits on the portfolio's `main` are right except for one thing: `work-with-me.html` was always a test fixture (decision 3, "never ships") — merging `design-system/work-with-me` was only ever meant to bring in its two real fixes, not publish the page.
+Decisions 69–71, 75–78, 79, 82, 83. Work on its own branch in the portfolio repo (`portfolio/sync-highlight-tag` or your own name for it) — **not on `main`**. Stop after the report; the merge to `main` is a separate brief, after the owner checks it.
 
-## What to do
+## Highlight
 
-On the portfolio's local `main` (the three unpushed B-036 commits: the merge `d444b5b`, the sync `ba3829b`, the dead-CSS cleanup `429a1ea`):
+Load `fds/highlight.css` (already copied into the portfolio by B-036, just unlinked so far) from every page that needs it.
 
-1. **Remove, before anything is pushed:**
-   - `work-with-me.html`
-   - its script (`js/work-with-me.js`, or whatever the merge actually added — confirm the filename)
-   - the nav link to it in `index.html` (the 8 lines the merge added)
-2. **Keep everything else the merge brought in** — specifically the skill chip's contrast fix (decision 70) and the Medium badge's removed `:hover` rule (decision 69). Those are real fixes that belong on `main`; only the page and its link go.
-3. Confirm no other file references `work-with-me` (a stray link, a sitemap entry, anything) after the removal.
-4. Run the build/whatever check you'd normally run, then push `main`.
+- **Pull-quotes → `fds-highlight`** (light, figure/blockquote shape): hawk (2 instances), scouting (1), curaay (1). Follow `docs/highlight.md`'s exact markup. Square corners (decision 75), 1.5px rule, the `quote` text role.
+- **Tension blocks → `fds-highlight fds-highlight--dark`**: hawk (3), scouting (3), curaay (2) — 8 total. Label/heading/paragraph(s) map to `__label`/`__title`/`__text`; keep the heading level (`h3`).
+- **The Scouting insight → `fds-highlight` with the icon slot** (the `↻` glyph goes in `fds-highlight__icon`, `aria-hidden`).
+- Delete the matching page CSS once converted: `.pullquote`, `.tension`/`.tension-label`, `.platform-insight` and its inline `<style>` block — but not `.patient-quote` or `.market-card--gap` (still out of scope, decision 77).
 
-If removing the page cleanly isn't straightforward from a merge commit (e.g. it's tangled with the fixes in a way that isn't a clean file-level removal), stop and report exactly what's tangled, rather than guessing which lines to keep.
+## Tag
+
+Load `fds/tag.css`.
+
+- **Hero tag → `fds-tag` + `fds-tag__dot`.** The pulsing dot stays as page-level CSS on `.fds-tag__dot` (decision 82) — not part of the component.
+- **Project tag over the photo → `fds-tag` with `fds-surface-dark`** (solid dark pill, decision 71).
+- **Skill chips** (`.sm-chip` lvl-1/lvl-2/is-on) → `fds-tag`/`fds-tag--accent`/`fds-tag--filled`/`fds-tag--muted`. These are visually hidden (screen-reader only), so this is code-only — no visual check needed here, just confirm the markup swap keeps them hidden the same way.
+- **Medium badge → `fds-tag`** (plain or `--filled`, your call — it's a static label either way; no hover, per decision 69, already true since B-036).
+- **`market-tag` (Curaay)** → default `fds-tag` (decision 83's audit note: two fills collapse to the outlined default).
+- Leave the case-study bar's "Case Study · …" label as plain text (decision 83 — not a Tag). Leave `.connector-badge` and `.market-card-badge` alone (diagram label, Curaay card badge — not Tag).
+- Delete the matching old CSS once converted.
 
 ## Report
 
-`REPORT.md` with ID `B-037`: confirmation `work-with-me.html`/its script/its nav link are gone, confirmation the two fixes (decision 69, 70) are still present, confirmation nothing else references the removed page, and the push result.
+`REPORT.md` with ID `B-038`: branch name, every instance converted (file + line), contrast spot-checks where a fill or text colour changed, confirmation the deleted CSS has no remaining references, and screenshots of each case study's pull-quote/tension/insight and of the home page's hero tag, project tag and Medium badge. Flag anything that didn't survive the swap as cleanly as expected, same as always.
