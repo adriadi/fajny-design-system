@@ -1,30 +1,14 @@
-# B-039 · Hero copy change (not a design-system component)
+# B-040 · Merge both portfolio branches into main
 
-Not a Fajny component — a content fix. The owner got feedback that the homepage hero reads too robotic. On its own branch in the portfolio repo, not on `main`; stop after the report, merge is separate.
+Decisions 85–86. Two approved branches to bring into the portfolio's `main` (`cbbfd33`): `portfolio/sync-highlight-tag` (B-038) and `portfolio/hero-copy` (B-039). Both touch `index.html`'s hero area, so merge one at a time and check between them.
 
-## What to change
+## Steps
 
-In `index.html`, the hero (`hero-h1` and `hero-sub`, currently around line 627-636):
-
-**Current:**
-```
-<h1 className="hero-h1 fade-up fade-up-2">
-  Hi, I am <em>Adrianna.</em><br />
-  I am empowering<br />
-  Design with <em>AI.</em>
-</h1>
-<p className="hero-sub fade-up fade-up-3">
-  Looking for my next <strong>full-time role in AI or data-heavy products.</strong><br />
-</p>
-```
-
-**New text (exact, use "-" not "—" anywhere in it):**
-
-- Headline: "Hi, I'm Adrianna - a product designer who builds with AI."
-- Sub: "Not the hype version - I use it daily to design, prototype and ship faster. Looking for a full-time team to do that with."
-
-Keep the existing line-break/`<em>` pattern in spirit (short lines, "Adrianna" and "AI" emphasized in the headline) rather than one long unbroken line - your call on exactly where the `<br />`s land, since you can see it rendered. The sub is noticeably longer than the current one; the hero's `fade-up` animation and layout were sized for the shorter original, so check it still looks right (doesn't overflow, wrap awkwardly, or clash with the hero blobs) and flag it if it doesn't.
+1. Merge `portfolio/sync-highlight-tag` into `main` first, `--no-ff`. If it conflicts, stop and report; don't resolve it yourself.
+2. If that's clean, merge `portfolio/hero-copy` into `main`, `--no-ff`. This one touches the same hero block (the headline/sub lines next to the hero-tag markup B-038 added) — if there's a conflict, it's most likely right there; stop and report it rather than resolving it.
+3. If both merge clean, reload `index.html` locally and sanity check the hero: the tag with its dot, the new four-line headline, the new sub, both buttons. A screenshot is enough.
+4. Push `main`. Keep both branches.
 
 ## Report
 
-`REPORT.md` with ID `B-039`: branch name, the exact markup you landed on (so I can see the line breaks), and a screenshot of the hero with the new copy.
+`REPORT.md` with ID `B-040`: both merge commit hashes, confirmation of no conflicts (or exactly what conflicted, if you stopped), the hero screenshot, and the push result.
