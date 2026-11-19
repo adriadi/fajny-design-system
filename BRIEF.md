@@ -1,22 +1,21 @@
-# B-036 · Second portfolio sync, step 1: foundation (no component markup yet)
+# B-037 · Correction before pushing: work-with-me.html doesn't ship
 
-Decisions 79–83 (from the B-035 audit). This step changes nothing visible on the live site; it just gets the ground ready for steps 2–4.
+Decision 84. B-036's local commits on the portfolio's `main` are right except for one thing: `work-with-me.html` was always a test fixture (decision 3, "never ships") — merging `design-system/work-with-me` was only ever meant to bring in its two real fixes, not publish the page.
 
-## Steps, in order
+## What to do
 
-1. **Merge `design-system/work-with-me` into the portfolio's `main` first.** It's unmerged, branches cleanly from `main`, and already carries the skill-chip contrast fix (decision 70) and the Medium-badge hover removal (decision 69) — merging it now means step 2 doesn't redo them. `--no-ff`. If it doesn't merge clean, stop and report the conflict; don't resolve it yourself.
-2. **Re-sync `tokens.css`** from the design system's current `main` (commit `3efeccd` or whatever `main` is at by the time you run this) — it's currently 85 lines behind, copied at `8879a9e`. Same sync mechanism as before, just re-run.
-3. **Extend the sync script** so it also copies `components/*.css` and `navigation.js` into the portfolio (decision 79) — same pattern as `tokens.css`: committed into the repo (not loaded from elsewhere), with the design-system commit noted in a comment, so the static site stays self-contained. Your call on the exact destination folder (a `fds/` folder next to `tokens.css` seems obvious, but say what you pick in the report). Copy the files now, but don't link them from any page yet and don't touch any markup — that's steps 2–4.
-4. **Delete the dead CSS**: `.cv-modal*` and `.btn-accent` (decision 83). No markup uses them.
+On the portfolio's local `main` (the three unpushed B-036 commits: the merge `d444b5b`, the sync `ba3829b`, the dead-CSS cleanup `429a1ea`):
 
-## Not in this step
+1. **Remove, before anything is pushed:**
+   - `work-with-me.html`
+   - its script (`js/work-with-me.js`, or whatever the merge actually added — confirm the filename)
+   - the nav link to it in `index.html` (the 8 lines the merge added)
+2. **Keep everything else the merge brought in** — specifically the skill chip's contrast fix (decision 70) and the Medium badge's removed `:hover` rule (decision 69). Those are real fixes that belong on `main`; only the page and its link go.
+3. Confirm no other file references `work-with-me` (a stray link, a sitemap entry, anything) after the removal.
+4. Run the build/whatever check you'd normally run, then push `main`.
 
-No `fds-*` class goes into any page's markup yet. No visual change should be observable on the live site after this step (the removed dead CSS has no markup either, so nothing changes there either). Steps 2–4 (Highlight+Tag, then Button+Input+Card, then Navigation) come as separate briefs once this one is merged and checked.
-
-## One correction to the B-035 audit, for later
-
-B-035 said the home nav has "no equivalent" for the scrolled, see-through/blurred bar. That's not right — `components/navigation.css` already has `.fds-nav--scrolled:not(.fds-surface-dark)` with exactly that treatment, and `navigation.js` already toggles the class after 40px of scroll, for any `fds-nav`, not just the minimal case-study bar. Nothing to design or decide there; when step 4 (Navigation) comes around, it should just carry over as built. Flagging now so it's not re-litigated later.
+If removing the page cleanly isn't straightforward from a merge commit (e.g. it's tangled with the fixes in a way that isn't a clean file-level removal), stop and report exactly what's tangled, rather than guessing which lines to keep.
 
 ## Report
 
-`REPORT.md` with ID `B-036`: merge commit hash, confirmation `tokens.css` is current, which folder the copied component files landed in and how they're synced/committed, confirmation the dead CSS is gone, and confirmation nothing changed visually (a screenshot of the home page is enough).
+`REPORT.md` with ID `B-037`: confirmation `work-with-me.html`/its script/its nav link are gone, confirmation the two fixes (decision 69, 70) are still present, confirmation nothing else references the removed page, and the push result.
