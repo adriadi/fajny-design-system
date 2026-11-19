@@ -21,7 +21,7 @@ In `index.html`, the hero (`hero-h1` and `hero-sub`, currently around line 627-6
 **New text (exact, use "-" not "—" anywhere in it):**
 
 - Headline: "Hi, I'm Adrianna - a product designer who builds with AI."
-- Sub: "Not the trendy version - I use it daily to design, prototype and ship faster. Looking for a full-time team to do that with."
+- Sub: "Not the hype version - I use it daily to design, prototype and ship faster. Looking for a full-time team to do that with."
 
 Keep the existing line-break/`<em>` pattern in spirit (short lines, "Adrianna" and "AI" emphasized in the headline) rather than one long unbroken line - your call on exactly where the `<br />`s land, since you can see it rendered. The sub is noticeably longer than the current one; the hero's `fade-up` animation and layout were sized for the shorter original, so check it still looks right (doesn't overflow, wrap awkwardly, or clash with the hero blobs) and flag it if it doesn't.
 
