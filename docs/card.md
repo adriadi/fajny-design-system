@@ -19,7 +19,7 @@ A block that groups a title with its text, and often leads to one page. Two part
 | "Read more" | `<span class="fds-card__more" aria-hidden="true">` in the footer | on every linked card |
 | Action | `<div class="fds-card__action">` with a Button, in the footer | only on a card that isn't a link |
 
-Cards in a row are as tall as the tallest; the footer sits at the bottom of each.
+Cards in a row are as tall as the tallest; the footer sits at the bottom of each. The footer is one line: the meta on the left, "Read more" on the right.
 
 ## Variants
 
