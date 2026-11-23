@@ -1,23 +1,33 @@
-# B-045 · "Kind Words" collapsible on mobile only
+# B-046 · Desktop/tablet: reorder the testimonial masonry, strongest first
 
-Decision 89. New branch for this one - `portfolio/kind-words-mobile`, based on current `main` (not the step-3 branch; this is unrelated to the Button/Input/Card migration, no `fds-*` classes involved).
+Decision 90. Same branch as B-045 (`portfolio/kind-words-mobile`), another commit there.
 
 ## What to do
 
-In `index.html`, the `Recommendations` component (`RECS` array, 7 items; the `columns` array arranges them into 4 masonry columns with the LinkedIn CTA as the 8th tile). Desktop/tablet: no change at all - same masonry, same parallax.
+Only the `columns` array in the `Recommendations` component changes - which `RECS` item sits in which of the 4 columns' two slots. Nothing else about the masonry (grid, parallax, column count, card markup) changes.
 
-Mobile only (the existing `max-width: 640px` breakpoint where `.recs-masonry` already goes to 1 column): show only 3 tiles by default - the LinkedIn CTA card, plus Francisca's and Robin's recommendations. Hide the other 5 (Daniel, Kostas, Rafael, Haein, Samir) behind a "Show more" toggle that reveals them in place.
+Reorder so each column's **first** (top, most-visible) slot holds a stronger recommendation and the **second** (bottom) slot holds a weaker one or the CTA:
 
-Suggested approach (adjust if something cleaner fits the component better):
+- Column 1: Francisca (top), Haein (bottom)
+- Column 2: Robin (top), Kostas (bottom)
+- Column 3: Daniel (top), Rafael (bottom)
+- Column 4: Samir (top), the LinkedIn CTA (bottom - stays where it already is)
 
-- Add a `featured: true` flag to Francisca's and Robin's entries in `RECS` (or match by name - your call), so the markup can tell them apart from the rest.
-- Add local state to `Recommendations` (`const [expanded, setExpanded] = useState(false)`).
-- On each `rec-card` that isn't featured and isn't the CTA, add a class (e.g. `rec-card--extra`) and hide it under the mobile breakpoint when not expanded: `@media (max-width: 640px) { .recs-masonry:not(.is-expanded) .rec-card--extra { display: none; } }`, toggling an `is-expanded` class on the masonry container from `expanded` state.
-- A "Show more" button/link, visible only on mobile and only when collapsed (`display: none` above 640px, and hidden itself once `expanded`), text "Show more" → on click, `setExpanded(true)`. Reasonable default styling (matches the site's existing link/button character - your call on exact placement, centered below the visible cards is the obvious spot).
-- No "Show less" needed - once expanded, stays expanded for that page view.
+Concretely, that's:
 
-Accessibility: the toggle should be a real `<button>` (not a styled `<a>` with no destination), with `aria-expanded` reflecting state.
+```js
+const columns = [
+  [RECS[2], RECS[5]],  // Francisca, Haein
+  [RECS[4], RECS[1]],  // Robin, Kostas
+  [RECS[0], RECS[3]],  // Daniel, Rafael
+  [RECS[6], 'cta'],    // Samir, cta
+];
+```
+
+(Indices assume `RECS` is still in its current order: 0 Daniel, 1 Kostas, 2 Francisca, 3 Rafael, 4 Robin, 5 Haein, 6 Samir - double-check against whatever `RECS` looks like after B-045's `featured` flag is added, in case the array itself got reordered or restructured there.)
+
+This is independent of B-045's mobile "featured" flag (Francisca + Robin) - that's about which 2 show by default on a phone; this is about column position on desktop/tablet. Both end up pointing at Francisca and Robin as the strongest, which is consistent, not a coincidence.
 
 ## Report
 
-`REPORT.md` with ID `B-045`: confirm the approach taken, confirm desktop/tablet are pixel-identical to before, and two screenshots at phone width (375px or so) - collapsed (CTA + 2 cards + "Show more") and expanded (all 8).
+Add to the same `REPORT.md` under a new `B-046` heading (or a fresh one if B-045 already shipped its report) - confirm the new column order, and a screenshot of the desktop masonry showing the top row.
