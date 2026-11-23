@@ -1,16 +1,22 @@
-# B-046 · Desktop/tablet: reorder the testimonial masonry, strongest first
+# B-047 · Consolidated: !important fix + Kind Words mobile collapse
 
-Only the `columns` array in `Recommendations` changed (`index.html`, 4 lines).
+Branch `portfolio/kind-words-mobile`, one new commit on top of B-046, pushed, not merged. Nothing was added to the retired branch.
 
-- **New order, confirmed in the browser at 1280px:** column 1 Francisca / Haein, column 2 Robin / Kostas, column 3 Daniel / Rafael, column 4 Samir / the LinkedIn CTA. Screenshot: `b046-1-masonry.png`.
-- `RECS` is still in its original order (0 Daniel … 6 Samir), so the indices in the brief were right.
-- Grid, parallax, column count and card markup are untouched.
+## 1. `!important` dropped
 
-## Branch (please check)
+The inline `--project-cols` moved onto a plain wrapper `div` around `.portfolio-grid`. The grid has no inline style now, and the mobile rule is `.portfolio-grid { --project-cols: 1; }` with no `!important`. It wins by ordinary cascade, because a value set on the element beats the one it inherits from the wrapper.
 
-The brief says "same branch as B-045 (`portfolio/kind-words-mobile`)", but that branch doesn't exist locally or on `origin`, and there is no B-045 report or `featured` flag in `index.html`. I created `portfolio/kind-words-mobile` from the tip of `portfolio/sync-button-input-card` (so it includes B-041 to B-043) and committed there. It's pushed, not merged.
+Checked: at 500px wide the grid is one column. At 1280px it is three equal columns, as before.
 
-## Questions
+## 2. Kind Words mobile collapse
 
-0. The `handoff` log shows briefs B-044 and B-045 were pushed before B-046, and I haven't done either (my first read of the brief file was already B-046, so I didn't see them). That's why the branch and the `featured` flag were missing. B-044 and B-045 are still open.
-1. Was B-045 meant to run before this one? If so, send it, and it will go on this same branch. If the branch should start from `main` instead, say so and I'll re-do the commit there.
+- **Approach, as briefed:** `featured: true` on Francisca and Robin; non-featured cards get `rec-extra`; `expanded` state adds `is-expanded` to `.recs-masonry`; the CSS hides `.rec-extra` at 640px and below while not expanded; a "Show more" button (`fds-button--secondary`, `recs-more`) renders only while collapsed, with `aria-expanded`. The CTA branch is untouched.
+- **Collapsed at 500px:** three cards (Francisca, Robin, the LinkedIn CTA) and the button. Screenshot: `b047-1-collapsed.png`.
+- **Expanded:** all 8 cards, and the button is gone. Screenshot: `b047-2-expanded.png`.
+- **Desktop at 1280px unchanged:** 4 columns, 8 cards visible, the button is `display: none`.
+
+## Notes
+
+- On a phone the single column shows cards in column order, so Francisca and Robin come first and the CTA last (the CTA is in the last column). That matches "CTA + 2 cards", not the order listed in the brief.
+- Not tested below 500px wide.
+- Open from earlier: B-041 Q2 (server-error line), B-038 (Medium badge style).
