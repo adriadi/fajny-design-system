@@ -12,4 +12,5 @@ The brief says "same branch as B-045 (`portfolio/kind-words-mobile`)", but that 
 
 ## Questions
 
+0. The `handoff` log shows briefs B-044 and B-045 were pushed before B-046, and I haven't done either (my first read of the brief file was already B-046, so I didn't see them). That's why the branch and the `featured` flag were missing. B-044 and B-045 are still open.
 1. Was B-045 meant to run before this one? If so, send it, and it will go on this same branch. If the branch should start from `main` instead, say so and I'll re-do the commit there.
