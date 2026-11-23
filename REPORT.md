@@ -1,20 +1,15 @@
-# B-043 · Project grid: one line when odd, two rows when even
+# B-046 · Desktop/tablet: reorder the testimonial masonry, strongest first
 
-Branch `portfolio/sync-button-input-card`, new commit on top of B-042, pushed, not merged.
+Only the `columns` array in `Recommendations` changed (`index.html`, 4 lines).
 
-- **CSS variable approach, confirmed.** `index.html` sets `style={{ '--project-cols': PROJECTS.length % 2 === 0 ? PROJECTS.length / 2 : PROJECTS.length }}` on `.portfolio-grid`. `styles.css` uses `grid-template-columns: repeat(var(--project-cols, 2), 1fr)`.
-- **Old centring rule removed**, both the base `:last-child:nth-child(odd)` rule and its mobile reset.
-- **3 cards:** one row, three equal columns (378.7px each at 1280px wide), no centring. Screenshot: `b043-1-project-grid.png`.
-- **Even check:** I cloned a card in the browser to make 4 and applied the same formula: two rows of two, 580px columns. Nothing was added to `PROJECTS`, so there is nothing to remove.
-- **Mobile:** at 500px wide the grid is one column.
-- Untouched: `fds-card`, `.articles-grid`.
+- **New order, confirmed in the browser at 1280px:** column 1 Francisca / Haein, column 2 Robin / Kostas, column 3 Daniel / Rafael, column 4 Samir / the LinkedIn CTA. Screenshot: `b046-1-masonry.png`.
+- `RECS` is still in its original order (0 Daniel … 6 Samir), so the indices in the brief were right.
+- Grid, parallax, column count and card markup are untouched.
 
-## Deviation from the brief (please check)
+## Branch (please check)
 
-The brief said the mobile rule should be `.portfolio-grid { --project-cols: 1; }`. That doesn't win: an inline style beats a stylesheet rule, so the grid would stay at 3 columns on a phone. I wrote `--project-cols: 1 !important;` instead, with a comment. The alternative is to drop the inline style and compute the count in CSS, which isn't possible without a rule per count. Say if you want a different approach.
+The brief says "same branch as B-045 (`portfolio/kind-words-mobile`)", but that branch doesn't exist locally or on `origin`, and there is no B-045 report or `featured` flag in `index.html`. I created `portfolio/kind-words-mobile` from the tip of `portfolio/sync-button-input-card` (so it includes B-041 to B-043) and committed there. It's pushed, not merged.
 
 ## Questions
 
-1. B-041 Q2 is still open: keep the plain form-level server-error line?
-2. B-038: Medium badge as a dark pill, or a plain tag?
-3. On a phone the three cards stack at full width, so each is tall. Fine, or should they get a horizontal scroll or two columns?
+1. Was B-045 meant to run before this one? If so, send it, and it will go on this same branch. If the branch should start from `main` instead, say so and I'll re-do the commit there.
