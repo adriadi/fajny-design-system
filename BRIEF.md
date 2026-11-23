@@ -1,24 +1,23 @@
-# B-044 · Clean up B-043's mobile override, re-confirm two already-answered questions
+# B-045 · "Kind Words" collapsible on mobile only
 
-Same branch (`portfolio/sync-button-input-card`), another commit. Three small things.
+Decision 89. New branch for this one - `portfolio/kind-words-mobile`, based on current `main` (not the step-3 branch; this is unrelated to the Button/Input/Card migration, no `fds-*` classes involved).
 
-## 1. Avoid `!important` for the mobile grid override
+## What to do
 
-Good catch on the inline-style specificity problem. Before reaching for `!important`, try moving the computed `--project-cols` assignment off `.portfolio-grid` itself and onto an ancestor that the mobile breakpoint doesn't also need to win against with an inline style - e.g. set it with `style={{ '--project-cols': … }}` on the grid's parent wrapper (or on `<body>`/the root, if there's a convenient place already touched by the page's JS) instead of on `.portfolio-grid`. Then `.portfolio-grid` itself carries no inline style, so the existing mobile rule (`.portfolio-grid { --project-cols: 1; }`) wins by ordinary cascade, no `!important` needed.
+In `index.html`, the `Recommendations` component (`RECS` array, 7 items; the `columns` array arranges them into 4 masonry columns with the LinkedIn CTA as the 8th tile). Desktop/tablet: no change at all - same masonry, same parallax.
 
-If that genuinely doesn't fit the component structure cleanly, `!important` with your comment is an acceptable fallback - just confirm you tried the restructure first and say why it didn't work.
+Mobile only (the existing `max-width: 640px` breakpoint where `.recs-masonry` already goes to 1 column): show only 3 tiles by default - the LinkedIn CTA card, plus Francisca's and Robin's recommendations. Hide the other 5 (Daniel, Kostas, Rafael, Haein, Samir) behind a "Show more" toggle that reveals them in place.
 
-## 2. Two questions from the report - already decided, just re-confirming
+Suggested approach (adjust if something cleaner fits the component better):
 
-- **Form-level error:** per-field only, no banner - this was already settled in the B-041 brief itself (see its line on `.form-error`: "Go with per-field errors only, no separate banner"). Nothing changed; go with that.
-- **Medium badge:** stays the dark `fds-tag fds-surface-dark` pill, not a plain tag - decision 85. Nothing changed; go with that.
+- Add a `featured: true` flag to Francisca's and Robin's entries in `RECS` (or match by name - your call), so the markup can tell them apart from the rest.
+- Add local state to `Recommendations` (`const [expanded, setExpanded] = useState(false)`).
+- On each `rec-card` that isn't featured and isn't the CTA, add a class (e.g. `rec-card--extra`) and hide it under the mobile breakpoint when not expanded: `@media (max-width: 640px) { .recs-masonry:not(.is-expanded) .rec-card--extra { display: none; } }`, toggling an `is-expanded` class on the masonry container from `expanded` state.
+- A "Show more" button/link, visible only on mobile and only when collapsed (`display: none` above 640px, and hidden itself once `expanded`), text "Show more" → on click, `setExpanded(true)`. Reasonable default styling (matches the site's existing link/button character - your call on exact placement, centered below the visible cards is the obvious spot).
+- No "Show less" needed - once expanded, stays expanded for that page view.
 
-(These two seem to be carrying over unanswered in your questions list across a few reports - if something in the handoff makes them look open on your end, let me know so I can see what's missing instead of just repeating the answer.)
-
-## 3. Mobile stacking (your question 3) - noted, not yours to decide
-
-Whether the three project cards should stay full-width-stacked on a phone, or go two-up / horizontal-scroll, is a design call for the owner, not something to build yet. I'll bring it to her and come back with a brief if she wants a change. Leave mobile as the single-column stack for now (today's behavior) - don't build an alternative speculatively.
+Accessibility: the toggle should be a real `<button>` (not a styled `<a>` with no destination), with `aria-expanded` reflecting state.
 
 ## Report
 
-`REPORT.md` with ID `B-044`: confirm whether the restructure avoided `!important` or why it didn't, confirm the two re-answered items are applied as before (no visible change expected), and a screenshot of the mobile grid (one column, as today) so there's a visual record this didn't change.
+`REPORT.md` with ID `B-045`: confirm the approach taken, confirm desktop/tablet are pixel-identical to before, and two screenshots at phone width (375px or so) - collapsed (CTA + 2 cards + "Show more") and expanded (all 8).
