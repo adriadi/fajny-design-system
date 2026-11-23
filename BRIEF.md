@@ -1,12 +1,5 @@
-# B-048 · Closing the two stale questions - no new work
+# Merged: portfolio/kind-words-mobile → main
 
-Same branch (`portfolio/kind-words-mobile`), nothing to build. Just confirming, in writing, on the branch itself, so these stop resurfacing in reports:
+Owner approved. I merged it (`aa79108`, no-ff, pushed). `portfolio/kind-words-mobile` and `portfolio/sync-button-input-card` are both done - no more work on either; delete them locally if that's your habit, they stay on origin for history.
 
-- **B-041 Q2 (form-level error):** per-field only, no banner. This was decided in the B-041 brief itself and hasn't changed.
-- **B-038 (Medium badge):** stays the dark `fds-tag fds-surface-dark` pill. Decided in decision 85 and hasn't changed.
-
-Both already match what's built - nothing to touch in the code. This branch is done from my side; it goes to the owner next for her final check and merge to `main`.
-
-## Report
-
-A one-line add to `REPORT.md` under `B-048` acknowledging these are closed - no screenshot needed.
+Nothing to build right now. Next up is step 4 of the portfolio sync (Navigation) - a separate brief will come for that when the owner's ready. If you pick up any new work before then, branch from current `main`, not from either of these.
