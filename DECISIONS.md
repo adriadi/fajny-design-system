@@ -103,6 +103,7 @@ Every decision I made while building this system: what I chose, why, and what I 
 
 ## Parking lot
 
+- **`build-figma-card.js` still builds the Card footer as a vertical frame** - doesn't match decision 94a's row layout yet. Flagged by the builder in B-051's report; owner OK'd leaving it for a later brief rather than doing it now. Added 2026-11-23.
 - **Input Figma script updates inner layers in place**, like the Button script, so re-runs keep designers' overrides. Needed before designs use Input. Added 2026-11-03.
 - **Checkbox** as its own item, when a form needs one (both "before" test runs added a consent checkbox). Added 2026-11-03.
 - **Redesign the project cards** to make them a better fit for the portfolio's look and feel, based on the design system. Added 2026-10-19.
