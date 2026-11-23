@@ -490,11 +490,13 @@
   letter-spacing: var(--fds-font-letter-spacing-small);
 }
 
-/* Meta, "Read more" and an action sit at the bottom, so cards in a row line up. */
+/* Meta, "Read more" and an action sit at the bottom, so cards in a row line up: meta on the left and
+   "Read more" on the right of one line. */
 .fds-card__footer {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--fds-space-2);
   margin-top: auto;
   padding-top: var(--fds-space-5);
