@@ -1,31 +1,30 @@
-# B-050 · Navigation migration (step 4)
+# B-051 · 4th project card, "Coming soon" (decisions 93 and 94)
 
-Branch `portfolio/navigation-sync`, one commit `8e74634` on top of `main` (`aa79108`). Pushed, not merged. 5 files, +46 / −180.
+Portfolio branch `portfolio/fajny-ds-card`, commit on top of the owner's image commit `3218e03`, pushed, not merged.
+Design system branch `components/card-footer-row`, commit `da4fd29` (see part 5a), pushed, not merged.
 
-## Built as specified
+## 1. The 4th entry
+Added to `PROJECTS` after HAWK AI, with the values from the brief (no `link`; `color` and `accent` as given; they aren't used by the card, which colours itself from the tokens). Image `images/fajny-ds-palette-teaser.png` (1687×949) is the one already on the branch.
 
-- **Home nav:** `Nav` is the full `fds-nav` markup from the brief. The state, scroll listener and `scrollTo` are gone, the links have no `onClick`, and `className` is a literal. A `useEffect` calls `window.fdsNavigation.init(navRef.current)`; `window.fdsNavigation.init` exists, as the script's own comment says, and it works (the bar gets `fds-nav--ready`). The old `.mobile-nav` block and `.nav-overlay` div are deleted; the scrim is the script's own. `navigation.css` and `navigation.js` are linked in `index.html`.
-- **Scroll offset:** `scroll-margin-top: 64px` on `#portfolio`, `#experience` and `#contact` (one rule at the end of `styles.css`).
-- **Case-study bars:** all three pages use the `fds-nav--minimal` markup from the brief. `navigation.css` was not linked there, so I added it, plus `navigation.js` before `loader.js`. No manual `init()`.
-- **CSS cleanup (about 124 lines removed):** `body.home nav`, `nav.scrolled`, `.nav-links` (all states), `.hamburger` (all states), `.mobile-nav` (all states), `.nav-overlay`, `body.cs nav`, `.nav-name`, `.nav-back` and `.nav-back::before`, their entries in the line-height group, the mobile breakpoint and the reduced-motion block. `body.cs a:not(.fds-button)` is left as is.
+## 2. `ProjectCard` with no `link`
+Branches on `project.link` in three places: the badge, the title (plain text, no `<a>`, no `fds-card__link`) and the "Read case study" span. Measured on the 4 cards at 1280px: cards 1 to 3 have a link, badge and "more"; the new card has none of the three, and its tag, description, label and image are as on the others.
 
-## One deviation from the brief's markup (please check)
+## 3. Image attributes
+`width="1687" height="949"`, matching the real size of the four images.
 
-The brief's CTA had `fds-nav__link` on it (`fds-button--primary fds-button--nav fds-nav__link`). I built it that way first and it broke the button: `.fds-nav .fds-nav__link` sets `padding: 0 0 space-1` and a transparent bottom border, which overrides the Button's padding, so "LET'S TALK" sat at the top of the pill with no side padding. I removed `fds-nav__link` from the CTA, which matches the component's own docs (`fds-button--primary fds-button--nav` only). Measured after: 32px high, `padding: 0 24px`. The Button's gold and navy are as in the component.
+## 4. Grid
+2 columns of 580px at 1280px (two rows of two), 1 column of 358px at 390px, as decision 88 intends. No horizontal overflow at 390px.
 
-## Checks (in the browser)
+## 5. Decision 94
+- **a) Footer as a row.** In the design system I changed `.fds-card__footer` to `flex-direction: row; align-items: center; justify-content: space-between` and updated the comment above it. I left the `.fds-card__footer > .fds-card__meta { margin: 0; }` rule. I also added one sentence to `docs/card.md` ("The footer is one line: the meta on the left, 'Read more' on the right"). `npm run build` passes and regenerated `docs/card-preview.html`. Then I ran `scripts/sync-tokens.sh`, which copied from the design-system branch commit `da4fd29`. That commit is on the branch, **not on `main`**, so the portfolio's `fds/*.css` headers name a commit that `main` doesn't have until the owner merges `components/card-footer-row`. Every other `fds/` file and `tokens.css` changed only in that header comment. Measured: on all three linked project cards meta and "Read case study" are on one line (meta 26px from the left edge, "more" 26px from the right); the three Medium cards look the same (screenshots). The LinkedIn card's footer has only the "more" span and looks right.
+- **b) Arrow.** The visible `↗` is gone from the article titles. I kept a `{' '}` between the title and the visually hidden "(opens in a new tab)", so the spoken name doesn't run the two together; it has no visual effect. Checked: no title contains `↗` and all three still have the hidden text.
+- **c) Descriptions.** "Curaay - ", "SKYFLD - " and "HAWK AI - " removed from the start; the rest of each string is unchanged.
 
-- **Desktop, 1280px:** bar is `sticky`, 64px, solid; hero starts at y=64 (as accepted); no console errors. Screenshot `b050-1-home-desktop.png`. The hero looks intentional at that offset; nothing is broken.
-- **Scroll:** after clicking "Experience", the section's top lands at y=64, directly under the bar; the address gains `#experience`; the bar is `fds-nav--scrolled` (the see-through fill).
-- **Phone:** emulated at 390px. The bar collapses, the closed menu is `inert`, the button opens the drawer (`aria-expanded="true"`, scrim shown, links in a column, CTA full width), Escape closes it, and choosing a link closes it and scrolls to the section. Screenshot `b050-3-home-phone-open.png`.
-- **500px (the smallest window I can set):** the bar is **not** collapsed: the gutter is narrower, so the links fit. `b050-2-home-phone-closed.png` shows that state. Collapse starts somewhere between 390 and 500px, so the earlier audit's 525px figure (measured with the desktop gutter) was too high.
-- **Case studies:** all three bars are `fds-nav--minimal fds-nav--ready`, 64px, sticky. Scouting screenshots: solid `b050-4-case-study-bar.png`, scrolled `b050-5-case-study-bar-scrolled.png` (see-through, `oklch(0.96 0.012 75 / 0.92)`). Hawk and Curaay are gated: I unlocked with the sessionStorage flag only, checked the bar in the DOM, took no screenshots, and cleared the flag again.
+## Screenshots
+`b051-1-grid-desktop.png` (the 2×2 grid), `b051-2-new-card-desktop.png`, `b051-3-articles-desktop.png`, `b051-4-new-card-mobile.png`, `b051-5-grid-mobile.png`, `b051-6-articles-mobile.png`.
 
-## Not tested
-
-Keyboard Tab trap inside the open drawer by actual key presses (I tested Escape and link choice); the 390 to 500px range where collapse starts; the narrow desktop windows between 500 and 900px beyond the 500px check; a real touch device; the home page over http (all tests were `file://`).
-
-## Questions
-
-1. The CTA markup deviation above: confirm the brief's `fds-nav__link` on the CTA was a slip, and the docs' markup is right.
-2. The logo is 40px high in a 64px bar and looks small next to the 14px links on desktop? No change made; just noting it as the one thing I'd glance at.
+## Flags
+1. **The teaser image is cropped at the sides.** The image is 1.78:1 and the card crops to 16:10, so the leftmost and rightmost swatch labels are cut ("avy/100", "old/800" in `b051-1-grid-desktop.png`). I didn't change the image (you said not to). Options: a 16:10 export, or a version with more margin at the sides.
+2. **The Figma card script still has a vertical footer.** `scripts/build-figma-card.js` builds the footer as a vertical frame, so the Figma Card page doesn't show the row layout yet. The brief didn't ask for the Figma change, so I left it; say if you want it as its own brief.
+3. **Merge order.** The design-system branch must merge to `main` before the portfolio branch, so the commit named in `fds/` exists.
+4. The `{' '}` in the article title (above).
